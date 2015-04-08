@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition>
+	<h:form>
+          <div class="bs-component">
+          <div class="navbar navbar-default">
+           <div class="navbar navbar-responsive-collapse" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+	    <p:menubar style="width: 100%;" >
+	   	<p:submenu label="Gestión Catalogos" icon="ui-icon-folder-collapsed">
+                    <p:submenu label="Catalogos Generales" style="text-align: left; width: 200px;" >
+        	   	    <p:menuitem value="Niveles Organizativos" url="../contenido/catg_niveles.jsf" />
+                            <p:menuitem value="Dependencias" url="../contenido/catg_depend.jsf" />
+                            <p:menuitem value="Jefes por Dependencia" url="../contenido/catg_jefesdep.jsf" style="text-align: left;"/>
+                            <p:menuitem value="Responsables" url="../contenido/catg_respons.jsf" />
+                            <p:menuitem value="Edificios" url="../contenido/catg_edificios.jsf" />
+                            <p:menuitem value="Areas por Edificio" url="../contenido/catg_areas.jsf" />
+                            <p:menuitem value="Ubicaciones por Area" url="../contenido/catg_ubic.jsf" />
+                            <p:menuitem value="Zonas" url="../contenido/catg_zonas.jsf" />
+                            <p:menuitem value="Departamentos" url="../contenido/catg_deptos.jsf" />
+                            <p:menuitem value="Municipios" url="../contenido/catg_munic.jsf" />
+                    </p:submenu>  
+                    <p:submenu label="Catalogos Bienes Muebles" style="text-align: left; width: 200px;" >
+        	   	    <p:menuitem value="Rubros" url="../contenido/catbm_rubros.jsf"/>
+                            <p:menuitem value="Específicos" url="../contenido/catbm_espec.jsf"/>
+                            <p:menuitem value="Estado Físico del Bien" url="../contenido/catbm_estbien.jsf" style="text-align: left;"/>
+                            <p:menuitem value="Condición del Bien" url="../contenido/catbm_conbien.jsf"/>
+                            <p:menuitem value="Estado de Proceso" url="../contenido/catbm_estproc.jsf" />
+                            <p:menuitem value="Tipos de Movimientos" url="../contenido/catbm_tipmov.jsf"/>
+                            <p:menuitem value="Estado de Movimiento" url="../contenido/catbm_estmov.jsf"/>
+                            <p:menuitem value="Tipos de Descargo" url="../contenido/catbm_tipdesc.jsf"/>
+                    </p:submenu>
+                    <p:submenu label="Catalogos Financieros" style="text-align: left; width: 200px;" >
+        	   	    <p:menuitem value="Fuentes de Financiamiento" url="../contenido/catfn_fuentes.jsf" style="text-align: left;"/>
+                            <p:menuitem value="Formas de Adquisición" url="../contenido/catfn_formas.jsf" style="text-align: left;"/>
+                            <p:menuitem value="Tipos de Documentos" url="../contenido/catfn_tipdoc.jsf" />
+                            <p:menuitem value="Proyectos" url="../contenido/catfn_proyec.jsf"/>
+                            <p:menuitem value="Proveedores" url="../contenido/catfn_provee.jsf"/>
+                            <p:menuitem value="Marcas de Bienes" url="../contenido/catfn_marcas.jsf"/>
+                    </p:submenu>
+                    <p:submenu label="Seguridad" style="text-align: left; width: 200px;" >
+                            <p:menuitem value="Roles" url="../contenido/catsg_roles.jsf"/>
+                            <p:menuitem value="Usuarios" url="../contenido/catsg_usuarios.jsf"/>
+                    </p:submenu>
+                </p:submenu>
+        	<p:submenu label="Bienes Muebles" icon="ui-icon-newwin" >  
+                	<p:menuitem value="Registro de Bienes" />
+                	<p:menuitem value="Movimientos de Bienes" style="text-align: left;"/>
+                	<p:menuitem value="Asignación de Bienes" />
+                	<p:menuitem value="Recepción de Bienes" />
+                	<p:menuitem value="Robo/Hurto de Bienes" style="text-align: left;"/>
+                	<p:menuitem value="Sustitución de Bienes" style="text-align: left;"/>
+                	<p:menuitem value="Descargo de Bienes" />
+        	</p:submenu>
+        	<p:submenu label="Reportes" icon="ui-icon-print">  
+	        	<p:submenu label="Catálogos" icon="ui-icon-document" >
+                            <p:menuitem value="Lista de Proveedores"  />
+                            <p:menuitem value="Lista de Responsables" />
+                            <p:menuitem value="Lista de Proyectos" />
+			    <p:menuitem value="Lista de Rubros" />
+       			    <p:menuitem value="Lista de Específicos" />
+			</p:submenu>
+			<p:menuitem value="Reporte de Bienes" />
+			<p:menuitem value="Individual de Bienes"/>
+			<p:menuitem value="Codificación Física de Bienes" style="text-align: left;"/>
+			<p:menuitem value="Movimientos de Bienes" style="text-align: left;"/>
+			<p:menuitem value="Asignaciones" />
+			<p:menuitem value="Recepción de Bienes"/>
+			<p:menuitem value="Robo/Hurto"/>
+			<p:menuitem value="Sustituciones"/>
+			<p:menuitem value="Descargo de Bienes"/>
+		</p:submenu>
+           	<p:submenu label="Depreciación" icon="ui-icon-gear" >  
+                	<p:menuitem value="Cálculo Depreciación Anual" style="text-align: left;" />  
+                	<p:menuitem value="Reporte para Conciliación"  style="text-align: left;"/>  
+                	<p:menuitem value="Cierre Anual" />  
+                	<p:menuitem value="Reporte de Bienes Depreciados" style="text-align: left;" />  
+        	</p:submenu>  
+           	<p:menuitem value="Salir" icon="ui-icon-close"  />  
+         </p:menubar>
+        </div>
+       </div>
+       </div>
+	</h:form>
+</ui:composition>
+
+</html>

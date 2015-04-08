@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<ui:composition>
+	<h:form>
+	    <p:menubar style="width: 72%;" >
+	   		<p:submenu label="Catalogos" icon="ui-icon-folder-collapsed" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}">
+	   		    <p:menuitem value="Clientes" icon="ui-icon-person" outcome="Clientes" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+                <p:menuitem value="Proveedores" icon="ui-icon-person" outcome="Proveedores" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+                <p:menuitem value="Supervisores" icon="ui-icon-person" outcome="Supervisores" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+                <p:menuitem value="Colecturias"  icon="ui-icon-home" outcome="Colecturias" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+                <p:menuitem value="Colectores" icon="ui-icon-person" outcome="Colectores" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+        	</p:submenu>  
+        	<p:submenu label="Movimientos" icon="ui-icon-pencil" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}">  
+            	<p:menuitem value="Ventas" icon="ui-icon-calculator" outcome="Ventas" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+            	<p:menuitem value="Compras" icon="ui-icon-cart" outcome="Compras" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+            	<p:menuitem value="Remesas" icon="ui-icon-newwin" outcome="Remesas" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+        	</p:submenu>
+        	<p:submenu label="Reportes" icon="ui-icon-pencil">  
+	        	<p:submenu label="Catálogos" icon="ui-icon-document" >
+					<p:menuitem icon="ui-icon-bookmark" value="Lista Proveedores" outcome="Lista Proveedores" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+                    <p:menuitem icon="ui-icon-document-b" value="Lista Clientes" outcome="Lista Clientes"/>
+					<p:menuitem icon="ui-icon-folder-open" value="Lista Colecturías" outcome="Lista Colecturías" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+					<p:menuitem icon="ui-icon-folder-open" value="Lista Colectores" outcome="Lista Colectores" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+					<p:menuitem icon="ui-icon-folder-open" value="Lista Supervisores" outcome="Lista Supervisores" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+				</p:submenu>
+				<p:submenu label="Libros Legales" icon="ui-icon-folder-open" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}">
+					<p:menuitem icon="ui-icon-bookmark" value="Consumidor Final" outcome="Consumidor Final" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+					<p:menuitem icon="ui-icon-document-b" value="Crédito Fiscal" outcome="Crédito Fiscal" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+					<p:menuitem icon="ui-icon-folder-open" value="Libro Compras" outcome="Libro Compras" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+				</p:submenu>
+				<p:submenu label="Diarios" icon="ui-icon-clipboard" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}">
+					<p:submenu label="Ingresos" icon="ui-icon-calculator" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}">
+						<p:menuitem icon="ui-icon-calculator" value="Detallados" outcome="Detallados" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+						<p:menuitem icon="ui-icon-info" value="Consolidados" outcome="Consolidados" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+						<p:menuitem icon="ui-icon-note" value="Fact Adicionales" outcome="Fact Adicionales" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+						<p:menuitem icon="ui-icon-document" value="Remesas Adic" outcome="Remesas Adic" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+						<p:menuitem icon="ui-icon-info" value="Control IVA Diario" outcome="Control IVA Diario" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+						<p:menuitem icon="ui-icon-note" value="Recepción Remesas" outcome="Recepción Remesas" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+					</p:submenu>
+					<p:menuitem icon="ui-icon-info" value="Anulados" outcome="Anulados" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+					<p:menuitem icon="ui-icon-note" value="Verificación" outcome="Verificación" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+					<p:menuitem icon="ui-icon-document" value="Correlativos" outcome="Correlativos" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+				</p:submenu>
+				<p:submenu label="Ventas" icon="ui-icon-gear" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}">
+				    <p:menuitem icon="ui-icon-document-a" value="Por Tipo de Venta" outcome="Por Tipo de Venta" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+					<p:submenu label="Por Colector" icon="ui-icon-person" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}">
+						<p:menuitem icon="ui-icon-document-a" value="Por Colector" outcome="Por Colector" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+						<p:menuitem icon="ui-icon-document-b" value="Acumulado" outcome="Acumulado" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+					</p:submenu>
+					<p:submenu label="Por Colecturía" icon="ui-icon-home" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}">
+						<p:menuitem icon="ui-icon-document-a" value="Mensual" outcome="Mensual" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+						<p:menuitem icon="ui-icon-document-b" value="Acumulada" outcome="Acumulada" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+						<p:menuitem icon="ui-icon-document-c" value="Por Tipo" outcome="Por Tipo" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+					</p:submenu>
+				</p:submenu>
+				<p:submenu label="Compras" icon="ui-icon-gear" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}">
+					<p:menuitem icon="ui-icon-person" value="Por Proveedor" outcome="Por Proveedor" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+					<p:menuitem icon="ui-icon-person" value="Total Proveedores" outcome="Total Proveedores" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+					<p:menuitem icon="ui-icon-document" value="Por Rubro" outcome="Por Rubro" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR') or appSession.usuario.rol.rolNombre.equals('CONSULTAS')}"/>
+				</p:submenu>
+				<p:menuitem icon="ui-icon-print" value="Disponibilidad" outcome="Disponibilidad" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>
+			</p:submenu>
+           	<p:submenu label="Procesos" icon="ui-icon-pencil" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}">  
+            	<p:menuitem value="Consolidar" icon="ui-icon-arrowreturnthick-1-w" outcome="Consolidar" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>  
+            	<p:menuitem value="Cierre Mensual" icon="ui-icon-arrowreturnthick-1-w" outcome="Cierre Mensual" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR') or appSession.usuario.rol.rolNombre.equals('OPERADOR')}"/>  
+            	<p:menuitem value="Cambio de Mes" icon="ui-icon-arrowreturnthick-1-w" outcome="Cambio de Mes" rendered="#{appSession.usuario.rol.rolNombre.equals('ADMINISTRADOR')}"/>  
+        	</p:submenu>  
+           	<p:menuitem value="Salir" icon="ui-icon-close"  url="../j_spring_security_logout" onclick="if (!confirm('Esta seguro que desea salir #{appSession.usuario.usuarioNombre}  #{appSession.usuario.usuarioApellido}?')) return false;"/>  
+         </p:menubar>
+	</h:form>
+</ui:composition>
+
+</html>

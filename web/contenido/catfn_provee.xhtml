@@ -1,0 +1,235 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+        <ui:define name="content" >
+            <h:form id="formProvee" >
+                <div class="table table-responsive table-bordered " >
+
+                    <table id="tprovee" class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                CATALOGO DE PROVEEDORES
+                            </tr>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre</th>
+                                <th>No. de Registro</th>
+                                <th>Teléfono</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{catfnBean.provs}" var="prov" >
+                                <tr>
+                                    <td>#{prov.CProvId}</td>
+                                    <td>#{prov.CProvNombre}</td>
+                                    <td>#{prov.CProvNumreg}</td>
+                                    <td>#{prov.CProvTelef}</td>
+                                    <td>
+                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifProv" action="#{catfnBean.asignarDeptoMuni()}">
+                                            <f:setPropertyActionListener value="#{prov}"
+                                                                         target="#{catfnBean.provSeleccionado}" />
+                                            <p:ajax process="@this" update=":formProvee:displayPv2"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            <div class="col-md-6" align="center" >
+                                <a data-toggle="modal" href="#adicProv" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                            </div>                              
+                        </tbody>  
+                    </table>
+                </div>
+                <div id="adicProv" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Adición de Proveedores</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayPv1" columns="2" >  
+                                    <h:outputLabel value="Código:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catfnBean.nuevoProv.CProvId}" /> 
+
+                                    <h:outputLabel value="No. Registro:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catfnBean.nuevoProv.CProvNumreg}" /> 
+
+                                    <h:outputLabel value="NIT:   *" style="font-weight: bold"/>  
+                                    <p:inputMask value="#{catfnBean.nuevoProv.CProvNit}" mask="9999-999999-999-9"/> 
+
+
+                                    <h:outputLabel value="Nombre:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.nuevoProv.CProvNombre}" style="width: 99%;" required="true"/> 
+
+                                    <h:outputLabel value="Dirección:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catfnBean.nuevoProv.CProvDirec}" /> 
+
+                                    <h:outputLabel value="Departamento:" style="font-weight: bold"/>  
+                                    <h:selectOneMenu id="deptos" value="#{catfnBean.depSeleccionado}" >
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catfnBean.deptos}" var="Depto" itemLabel="#{Depto.CDeptoDesc}" itemValue="#{Depto.CDeptoId}"/>
+                                        <p:ajax  listener="#{catfnBean.municipioSeleccion}" update="municipio"/>                         
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Municipio:" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="municipio" value="#{catfnBean.munSeleccionado}" >
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catfnBean.munic}" var="munic" itemLabel="#{munic.CMuniDesc}" itemValue="#{munic.CMuniId}"/>
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Contacto:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catfnBean.nuevoProv.CProvContacto}" /> 
+
+                                    <h:outputLabel value="Teléfono:   *" style="font-weight: bold"/>  
+                                    <p:inputMask value="#{catfnBean.nuevoProv.CProvTelef}" mask="9999-9999"/> 
+
+                                    <h:outputLabel value="Correo:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catfnBean.nuevoProv.CProvCorreo}" /> 
+
+                                    <h:outputLabel value="Fax:   *" style="font-weight: bold"/>  
+                                    <p:inputMask value="#{catfnBean.nuevoProv.CProvFax}" mask="9999-9999"/> 
+
+                                    <h:outputLabel value="Estado:" style="font-weight: bold"/>  
+                                    <h:selectOneMenu value="#{catfnBean.nuevoProv.CProvEstado}">
+                                        <f:selectItem itemValue="A" itemLabel="Activo" />
+                                        <f:selectItem itemValue="I" itemLabel="Inactivo" />
+                                    </h:selectOneMenu>
+
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catfnBean.guardarPv()}"  rendered="#{!catfnBean.edit}" update="@all" process="@this displayPv1"  oncomplete="handleRequest(xhr, status, args); ; adicProv.hide();" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                                adicProv.hide();
+                                            }
+                                        }
+
+                                    </script>
+
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modifProv" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Modificación de Proveedores</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayPv2" columns="2" >  
+                                    <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catfnBean.provSeleccionado.CProvId}" /> 
+
+                                    <h:outputLabel value="No. Registro:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvNumreg}" /> 
+
+                                    <h:outputLabel value="NIT:   *" style="font-weight: bold"/>  
+                                    <p:inputMask value="#{catfnBean.provSeleccionado.CProvNit}" mask="9999-999999-999-9" /> 
+
+                                    <h:outputLabel value="Nombre:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.provSeleccionado.CProvNombre}" style="width: 99%;" required="true"/> 
+
+                                    <h:outputLabel value="Dirección:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvDirec}" /> 
+
+                                    <h:outputLabel value="Departamento:" style="font-weight: bold"/>  
+                                    <h:selectOneMenu id="deptosm" value="#{catfnBean.depSeleccionado}" >
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catfnBean.deptos}" var="Depto" itemLabel="#{Depto.CDeptoDesc}" itemValue="#{Depto.CDeptoId}"/>
+                                        <p:ajax  listener="#{catfnBean.municipioSeleccion}" update="municipiom"/>                         
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Municipio:" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="municipiom" value="#{catfnBean.munSeleccionado}" >
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catfnBean.munic}" var="munic" itemLabel="#{munic.CMuniDesc}" itemValue="#{munic.CMuniId}"/>
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Contacto:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvContacto}" /> 
+
+                                    <h:outputLabel value="Teléfono:   *" style="font-weight: bold"/>  
+                                    <p:inputMask value="#{catfnBean.provSeleccionado.CProvTelef}" mask="9999-9999"/> 
+
+                                    <h:outputLabel value="Correo:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvCorreo}" /> 
+
+                                    <h:outputLabel value="Fax:   *" style="font-weight: bold"/>  
+                                    <p:inputMask value="#{catfnBean.provSeleccionado.CProvFax}" mask="9999-9999"/> 
+
+                                    <h:outputLabel value="Estado:" style="font-weight: bold"/>  
+                                    <h:selectOneMenu value="#{catfnBean.provSeleccionado.CProvEstado}">
+                                        <f:selectItem itemValue="A" itemLabel="Activo" />
+                                        <f:selectItem itemValue="I" itemLabel="Inactivo" />
+                                    </h:selectOneMenu>
+
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catfnBean.actualPv()}" rendered="#{!catfnBean.edit}" update="@all" process="@this displayPv2"  oncomplete="modifProv.hide();"/>
+
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('#tprovee').dataTable(
+                            {
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
+                });
+            </script>
+        </ui:define>
+
+    </ui:composition>
+</html>

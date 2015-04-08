@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+        <ui:define name="content" >
+            <h:form id="formDepen" >
+              <div class="table table-responsive table-bordered" >
+                  
+                    <table id="tdepen" class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                CATALOGO DE DEPENDENCIAS
+                            </tr>                            
+                            <tr>
+                                <th>Correlativo</th>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Jerarquía</th>
+                                <th>Nivel Organizativo</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{catgeBean.depens}" var="depen" >
+                                <tr>
+                                    <td>#{depen.CDepenId}</td>
+                                    <td>#{depen.CDepenCodigo}</td>
+                                    <td>#{depen.CDepenDesc}</td>
+                                    <td>#{depen.CDepenJerar}</td>
+                                    <td>#{depen.CNivelId.CNivelDescrip}</td>
+                                    <td>
+                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifDep" action="#{catgeBean.asignarNivel()}">
+                                            <f:setPropertyActionListener value="#{depen}"
+                                                                         target="#{catgeBean.depSeleccionada}" />
+                                            <p:ajax process="@this" update=":formDepen:displayD2"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            <div class="col-md-6" align="center" >
+                              <a data-toggle="modal" href="#adicDep" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                            </div>                              
+                        </tbody>  
+                    </table>
+                </div>
+              
+                <div id="adicDep" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Adición de Dependencias</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayD1" columns="2" >  
+                                    <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nuevaDep.CDepenId}" /> 
+
+                                    <h:outputLabel value="Nivel Organizativo: *" style="font-weight: bold"/>
+                                        <h:selectOneMenu id="nivela" value="#{catgeBean.nivSeleccionado}" required="true">
+                                            <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                            <f:selectItems value="#{catgeBean.niveles}" var="nivel" itemLabel="#{nivel.CNivelDescrip}" itemValue="#{nivel.CNivelId}"/>
+                                        </h:selectOneMenu>
+                                    
+                                    <h:outputLabel value="Código de Dependencia:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catgeBean.nuevaDep.CDepenCodigo}" required="true"/>
+
+                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaDep.CDepenDesc}" style="width: 99%;" required="true" /> 
+
+                                    <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catgeBean.nuevaDep.CDepenJerar}" /> 
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarDp()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayD1"  oncomplete="handleRequest(xhr, status, args); ; adicDep.hide();" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                                adicDep.hide();
+                                            }
+                                        }
+                                    </script>
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modifDep" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Modificación de Dependencias</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayD2" columns="2" >  
+                                    <h:outputLabel value="Corr. Dependencia:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.depSeleccionada.CDepenId}" />    
+                                    
+                                    <h:outputLabel value="Nivel Organizativo: *" style="font-weight: bold"/>
+                                        <h:selectOneMenu id="nivelm" value="#{catgeBean.nivSeleccionado}" required="true">
+                                            <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                            <f:selectItems value="#{catgeBean.niveles}" var="nivel" itemLabel="#{nivel.CNivelDescrip}" itemValue="#{nivel.CNivelId}"/>
+                                        </h:selectOneMenu>
+                                    
+
+                                    <h:outputLabel value="Código de Dependencia:" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catgeBean.depSeleccionada.CDepenCodigo}" />
+
+                                    <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.depSeleccionada.CDepenDesc}" /> 
+
+                                    <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catgeBean.depSeleccionada.CDepenJerar}" /> 
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualDp()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayD2"  oncomplete="modifDep.hide();"/>
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </h:form>
+        </ui:define>
+                <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('#tdepen').dataTable(
+                            {
+                    "oLanguage": {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                }
+                            );
+                });
+            </script>
+        </ui:define>
+
+
+    </ui:composition>
+</html>

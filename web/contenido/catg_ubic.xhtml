@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+        <ui:define name="content" >
+            <h:form id="formUbic" >
+                <div class="table table-responsive table-bordered " >
+
+                    <table id="tubic" class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                CATALOGO DE UBICACIONES POR AREA
+                            </tr>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Edificio</th>
+                                <th>Area</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{catgeBean.ubics}" var="ubic" >
+                                <tr>
+                                    <td>#{ubic.CUbicId}</td>
+                                    <td>#{ubic.CUbicDesc}</td>
+                                    <td>#{ubic.CEdifId.CEdifDesc}</td>
+                                    <td>#{ubic.CAreaId.CAreaDesc}</td>
+                                    <td>
+                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifUbic" action="#{catgeBean.asignarEdifArea()}">
+                                            <f:setPropertyActionListener value="#{ubic}"
+                                                                         target="#{catgeBean.ubicSeleccionada}"  />
+                                            <p:ajax process="@this" update=":formUbic:displayU2"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            <div class="col-md-6" align="center" >
+                                <a data-toggle="modal" href="#adicUbic" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                            </div>                              
+                        </tbody>  
+                    </table>
+                </div>
+                <div id="adicUbic" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Adición de Ubicación por Area</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayU1" columns="2" >  
+                                    <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nuevaUbic.CUbicId}" /> 
+
+                                    <h:outputLabel value="Edificio: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="edifa" value="#{catgeBean.ediSeleccionado}" required="true">
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catgeBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif.CEdifId}"/>
+                                        <p:ajax  listener="#{catgeBean.areaSeleccion}" update="area"/>                         
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Area:" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="area" value="#{catgeBean.areSeleccionada}" >
+                                        <f:selectItem itemLabel="Seleccione una..." itemValue="0"/>
+                                        <f:selectItems value="#{catgeBean.areas}" var="area" itemLabel="#{area.CAreaDesc}" itemValue="#{area.CAreaId}"/>
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaUbic.CUbicDesc}" style="width: 99%;" required="true"/> 
+
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarUb()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayU1"  oncomplete="handleRequest(xhr, status, args); ; adicUbic.hide();" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                                adicUbic.hide();
+                                            }
+                                        }
+                                    </script>
+
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modifUbic" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Modificación de Ubicación por Area</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayU2" columns="2" > 
+                                    <h:outputLabel value="Corr. Ubicación:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.ubicSeleccionada.CUbicId}" />    
+
+                                    <h:outputLabel value="Edificio: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="edifm" value="#{catgeBean.ediSeleccionado}" required="true">
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catgeBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif.CEdifId}"/>
+                                        <p:ajax  listener="#{catgeBean.areaSeleccion}" update="aream"/>                         
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Area:" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="aream" value="#{catgeBean.areSeleccionada}" >
+                                        <f:selectItem itemLabel="Seleccione una..." itemValue="0"/>
+                                        <f:selectItems value="#{catgeBean.areas}" var="area" itemLabel="#{area.CAreaDesc}" itemValue="#{area.CAreaId}"/>
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.ubicSeleccionada.CUbicDesc}" /> 
+
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualUb()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayU2"  oncomplete="modifUbic.hide();"/>
+
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('#tubic').dataTable(
+                            {
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
+                });
+            </script>
+        </ui:define>
+
+    </ui:composition>
+</html>

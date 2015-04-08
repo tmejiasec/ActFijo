@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <!--<link href="{request.contextPath}/resources/css/bootstrap.min.css" type="text/css" rel="stylesheet" media="screen"/>-->
+        <link href="#{request.contextPath}/resources/css/newtheme.css" rel="stylesheet" type="text/css" media="screen"/>
+        <link href="#{request.contextPath}/resources/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+        <title>Facelets Template</title>
+    </h:head>
+
+    <h:body>
+        
+        <div id="top" class="container" align="center" >
+        </div>            <ui:insert name="top">
+                    <p:panelGrid id="enca" columns="2" style="width: 100% ">
+                        <p:column rowspan="3">
+                            <h:graphicImage id="banner" url="/resources/imagenes/banner.jpg" class="img-responsive img-rounded" style="margin: 1px auto;" width="100%"/> 
+                        </p:column>
+                        <p:column>
+                            <p:row  >
+                                <div id="user1"><h:outputLabel value="Usuario: " style="font-weight:  bold"/> </div>
+                                <div><h:outputText value="'Nombre Usuario'"/></div>
+                            </p:row>
+                            <p:row>
+                                <div id="rol1"><h:outputLabel value="Perfil: " style="font-weight:  bold"/></div>
+                                <div><h:outputText value="'rol usuario'" /></div>
+                            </p:row>
+                        </p:column>
+                    </p:panelGrid>
+                    <ui:include src="../contenido/menu.xhtml" />
+            </ui:insert>
+
+        <div id="content" class="container">
+            <ui:insert name="content">Content</ui:insert>
+        </div>
+
+        <div id="bottom" class="container" >
+            <ui:insert name="bottom">
+                <h:graphicImage id="piepag" url="/resources/imagenes/piepag.jpg" class="img-rounded img-responsive" style="margin: 1px auto;" width="100%"/> 
+            </ui:insert>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>        
+    </h:body>
+
+</html>

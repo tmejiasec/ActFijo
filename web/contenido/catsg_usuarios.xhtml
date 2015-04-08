@@ -1,0 +1,205 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+        <ui:define name="content" >
+            <h:form id="formUsuarios" >
+
+                <div class="table table-responsive table-bordered " >
+
+                    <table id="tusuarios" class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                CATALOGO DE USUARIOS DEL SISTEMA DE ACTIVO FIJO
+                            </tr>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombre del Usuario</th>
+                                <th>Rol</th>
+                                <th>Dependencia</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{catsgBean.usuarios}" var="usuar" >
+                                <tr>
+                                    <td>#{usuar.CUserId}</td>
+                                    <td>#{usuar.CUserNombre}</td>
+                                    <td>#{usuar.CRolId.CRolNombre}</td>
+                                    <td>#{usuar.CDepenId.CDepenDesc}</td>
+                                    <td>
+                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifUsuar" action="#{catsgBean.asignarRolDep()}">
+                                            <f:setPropertyActionListener value="#{usuar}"
+                                                                         target="#{catsgBean.usuarioSeleccionado}" />
+                                            <p:ajax process="@this" update=":formUsuarios:displayUs2"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            <div class="col-md-6" align="center" >
+                                <a data-toggle="modal" href="#adicUsuar" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                            </div>                              
+                        </tbody>  
+                    </table>
+                </div>
+                <div id="adicUsuar" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Adición de Usuarios del Sistema de Activo Fijo</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayUs1" columns="2" >  
+                                    <h:outputLabel value="Código:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catsgBean.nuevoUsuario.CUserId}" /> 
+
+                                    <h:outputLabel value="Nombre del Usuario:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catsgBean.nuevoUsuario.CUserNombre}" style="width: 99%;" required="true"/> 
+
+                                    <h:outputLabel value="Rol: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="rol" value="#{catsgBean.roleSeleccionado}" required="true">
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catsgBean.roles}" var="roles" itemLabel="#{roles.CRolNombre}" itemValue="#{roles.CRolId}"/>
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Dependencia: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="depen" value="#{catsgBean.depSeleccionada}" required="true">
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catsgBean.depens}" var="depens" itemLabel="#{depens.CDepenDesc}" itemValue="#{depens.CDepenId}"/>
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Login del Usuario:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catsgBean.nuevoUsuario.CUserLogin}" style="width: 99%;" required="true"/> 
+
+                                    <h:outputLabel value="Contraseña del Usuario:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catsgBean.nuevoUsuario.CUserPass}" style="width: 99%;" required="true"/> 
+
+                                    <h:outputLabel value="Estado:" style="font-weight: bold"/>  
+                                    <h:selectOneMenu value="#{catsgBean.nuevoUsuario.CUserEstado}">
+                                        <f:selectItem itemValue="A" itemLabel="Activo" />
+                                        <f:selectItem itemValue="I" itemLabel="Inactivo" />
+                                    </h:selectOneMenu>
+
+
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catsgBean.guardarUs()}"  rendered="#{!catfnBean.edit}" update="@all" process="@this displayUs1"  oncomplete="handleRequest(xhr, status, args); ; adicUsuar.hide();" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                                adicUsuar.hide();
+                                            }
+                                        }
+
+                                    </script>
+
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modifUsuar" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Modificación de Usuarios del Sistema</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayUs2" columns="2" >  
+                                    <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catsgBean.usuarioSeleccionado.CUserId}" /> 
+
+                                    <h:outputLabel value="Nombre del Usuario:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catsgBean.usuarioSeleccionado.CUserNombre}" style="width: 99%;" required="true"/> 
+
+                                    <h:outputLabel value="Rol: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="rolm" value="#{catsgBean.roleSeleccionado}" required="true">
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catsgBean.roles}" var="roles" itemLabel="#{roles.CRolNombre}" itemValue="#{roles.CRolId}"/>
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Dependencia: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="depenm" value="#{catsgBean.depSeleccionada}" required="true">
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catsgBean.depens}" var="depens" itemLabel="#{depens.CDepenDesc}" itemValue="#{depens.CDepenId}"/>
+                                    </h:selectOneMenu>
+
+                                    <h:outputLabel value="Login del Usuario:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catsgBean.usuarioSeleccionado.CUserLogin}" style="width: 99%;" required="true"/> 
+
+                                    <h:outputLabel value="Contraseña del Usuario:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catsgBean.usuarioSeleccionado.CUserPass}" style="width: 99%;" required="true"/> 
+
+                                    <h:outputLabel value="Estado:" style="font-weight: bold"/>  
+                                    <h:selectOneMenu value="#{catsgBean.usuarioSeleccionado.CUserEstado}">
+                                        <f:selectItem itemValue="A" itemLabel="Activo" />
+                                        <f:selectItem itemValue="I" itemLabel="Inactivo" />
+                                    </h:selectOneMenu>
+
+
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catsgBean.actualUs()}" rendered="#{!catsgBean.edit}" update="@all" process="@this displayUs2"  oncomplete="modifUsuar.hide();"/>
+
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('#tusuarios').dataTable(
+                            {
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
+                });
+            </script>
+        </ui:define>
+
+    </ui:composition>
+</html>

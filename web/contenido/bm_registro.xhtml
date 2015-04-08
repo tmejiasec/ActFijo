@@ -1,0 +1,1401 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"        
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+
+        <ui:define name="content">
+            <ul class="nav nav-tabs">
+                <li class="active"><a aria-expanded="true" href="#adicion" data-toggle="tab">Adición</a></li>
+                <li class=""><a aria-expanded="false" href="#consulta" data-toggle="tab">Consulta</a></li>
+                <li class=""><a aria-expanded="false" href="#imagenes" data-toggle="tab">Imágenes</a></li>
+                <li class=""><a aria-expanded="false" href="#lotes" data-toggle="tab">Lotes</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="adicion">
+                    <div class="well bs-component">
+                        <h:form id="adiBien" class="form-horizontal" enctype="multipart/form-data" >
+                            <p:growl id="growl" />
+                            <legend>
+                                <div class="form-header">
+                                    <button type="button" class="close"  aria-hidden="true">Cancelar ×</button>
+                                    <h4 class="modal-title">Registro de Bienes Muebles</h4>
+                                </div>
+                            </legend>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label >Tipo de Inventario</label>
+                                    <h:selectOneMenu value="#{bienesBean.nuevoBien.TBienTipinv}">
+                                        <f:selectItem itemValue="C" itemLabel="Contable" />
+                                        <f:selectItem itemValue="A" itemLabel="Administrativo" />
+                                    </h:selectOneMenu>                                        
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="cod" >Código</label>
+                                    <div>
+                                        <p:inputMask id="cod" value="#{bienesBean.nuevoBien.TBienCodigo}" mask="99-9999-9999"> 
+                                            <p:ajax listener="#{bienesBean.buscarCod}" update="@this :adiBien:growl :adiBien:guard"/>
+                                        </p:inputMask>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="using">Ingresado Por</label>
+                                    <div>
+                                        <h:outputText id="using" value="#{bienesBean.nuevoBien.TBienUscrea}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="respo" >Responsable</label>
+                                    <h:selectOneMenu id="respo" value="#{bienesBean.nuevoBien.CRespId}" style="width: 100%" converter="#{respConverter}">
+                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                        <f:selectItems value="#{bienesBean.respons}" var="resp" itemLabel="#{resp.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec} #{resp.CRespNom1} #{resp.CRespNom2}" itemValue="#{resp}"/>
+                                    </h:selectOneMenu>  
+                                </div>
+                                <div class="col-md-4">
+                                    <label >Nivel Organizativo</label>
+                                    <div >
+                                        <h:selectOneMenu id="nivel" value="#{bienesBean.nuevoBien.CNivelId}" style="width: 100%;" converter="#{nivConverter}">
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.niveles}" var="niv" itemLabel="#{niv.CNivelDescrip}" itemValue="#{niv}" />
+                                            <p:ajax  listener="#{bienesBean.depSeleccionA()}" update="depen"/>                         
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label >Dependencia</label>
+                                    <div >
+                                        <h:selectOneMenu id="depen" value="#{bienesBean.nuevoBien.CDepenId}" style="width: 100%" converter="#{depeConverter}">
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.depens}" var="depe" itemLabel="#{depe.CDepenDesc}" itemValue="#{depe}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="edi" >Edificio</label>
+                                    <div>
+                                        <h:selectOneMenu id="edi" value="#{bienesBean.nuevoBien.CEdifId}"  style="width: 100%;" converter="#{edifConverter}" >
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif}"/>
+                                            <p:ajax  listener="#{bienesBean.areaSeleccionA}" update="area"/>                         
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="area" >Area</label>
+                                    <div>
+                                        <h:selectOneMenu id="area" value="#{bienesBean.nuevoBien.CAreaId}" style="width: 100%;" converter="#{areaConverter}" >
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.areas}" var="area" itemLabel="#{area.CAreaDesc}" itemValue="#{area}"/>
+                                            <p:ajax  listener="#{bienesBean.ubicSeleccionA}" update="ubic"/>                         
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="ubic" >Ubicación Física</label>
+                                    <div>
+                                        <h:selectOneMenu id="ubic" value="#{bienesBean.nuevoBien.CUbicId}" style="width: 100%;" converter="#{ubicConverter}">
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.ubics}" var="ubica" itemLabel="#{ubica.CUbicDesc}" itemValue="#{ubica}"/>
+                                        </h:selectOneMenu>                                        
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="rub" >Rubro</label>
+                                    <div>
+                                        <h:selectOneMenu id="rub" value="#{bienesBean.nuevoBien.CRubroId}" required="true" style="width: 100%;" converter="#{rubConverter}">
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.rubros}" var="rubro" itemLabel="#{rubro.CRubroDesc}" itemValue="#{rubro}"/>
+                                            <p:ajax  listener="#{bienesBean.espSeleccionA}" update="espe"/>                         
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="esp" >Específico</label>
+                                    <div>
+                                        <h:selectOneMenu id="espe" value="#{bienesBean.nuevoBien.CEspecId}" required="true" style="width: 100%;" converter="#{especConverter}">
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.especs}" var="espec" itemLabel="#{espec.CEspecDesc}" itemValue="#{espec}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="desc" >Descripción</label>
+                                    <div>
+                                        <h:inputText id="desc" value="#{bienesBean.nuevoBien.TBienDesc}" required="true" style="width: 100%;"/> 
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="marc" >Marca</label>
+                                    <div>
+                                        <h:selectOneMenu id="marc" value="#{bienesBean.nuevoBien.CMarcaId}" style="width: 100%;" converter="#{marcaConverter}">
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="mod" >Modelo</label>
+                                    <div>
+                                        <h:inputText id="mod" value="#{bienesBean.nuevoBien.TBienModelo}" style="width: 100%;"/> 
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="serie" >Serie</label>
+                                    <div>
+                                        <h:inputText id="serie" value="#{bienesBean.nuevoBien.TBienSerie}" style="width: 100%;"/> 
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="fecad">Fecha de Adquisición</label>
+                                    <div>
+                                        <p:calendar id="feci"
+                                                    value="#{bienesBean.nuevoBien.TBienFechadq}" locale="es"
+                                                    pattern="dd/MM/yyyy" showOn="button" 
+                                                    size="12" tabindex="2" style="width: 100%;">
+                                            <p:ajax event="dateSelect" />
+                                        </p:calendar>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="formad">Forma de Adquisición</label>
+                                    <div>
+                                        <h:selectOneMenu id="formad" value="#{bienesBean.nuevoBien.CFormadId}" style="width: 100%;" converter="#{formadConverter}">
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.formas}" var="forma" itemLabel="#{forma.CFormadDesc}" itemValue="#{forma}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>    
+                                <div class="col-md-4">
+                                    <label for="ftef" >Fuente de Financiamiento</label>
+                                    <div>
+                                        <h:selectOneMenu id="ftef" value="#{bienesBean.nuevoBien.CFuentesId}" style="width: 100%;" converter="#{ftefConverter}">
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.fuentes}" var="fte" itemLabel="#{fte.CFuestesDesc}" itemValue="#{fte}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="docin" >Documento de Ingreso</label>
+                                    <div>
+                                        <h:selectOneMenu id="docin" value="#{bienesBean.nuevoBien.CTipdId}" style="width: 100%;" converter="#{tipdConverter}">
+                                            <f:selectItem itemLabel="Seleccione uno..." itemValue="" noSelectionOption="true" />
+                                            <f:selectItems value="#{bienesBean.tipdocs}" var="tdoc" itemLabel="#{tdoc.CTipdDesc}" itemValue="#{tdoc}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="nudoc" >No. de Documento</label>
+                                    <div>
+                                        <h:inputText id="nudoc" value="#{bienesBean.nuevoBien.TBienNumdoc}" /> 
+                                    </div>
+                                </div>           
+                                <div class="col-md-4">
+                                    <label for="valcom" >Valor de Compra/Adquisición</label>
+                                    <div>
+                                        <h:inputText id="valcom" value="#{bienesBean.nuevoBien.TBienValoradq}" /> 
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="fecvg">Vencimiento de Garantía</label>
+                                    <div>
+                                        <p:calendar id="fecvg"
+                                                    value="#{bienesBean.nuevoBien.TBienFechvgar}" locale="es"
+                                                    pattern="dd/MM/yyyy" showOn="button" 
+                                                    size="12" tabindex="2" style="width: 100%;">
+                                            <p:ajax event="dateSelect" />
+                                        </p:calendar>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="prov" >Proveedor</label>
+                                    <div>
+                                        <h:selectOneMenu id="prov" value="#{bienesBean.nuevoBien.CProvId}" style="width: 100%;" converter="#{provConverter}">
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.provs}" var="prove" itemLabel="#{prove.CProvNombre}" itemValue="#{prove}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="proy" >Proyecto</label>
+                                    <div>
+                                        <h:selectOneMenu id="proy" value="#{bienesBean.nuevoBien.CProyId}" style="width: 100%;" converter="#{proyConverter}">
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.proys}" var="proye" itemLabel="#{proye.CProyDesc}" itemValue="#{proye}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="nupart" >No. de Partida</label>
+                                    <div>
+                                        <h:inputText id="nupart" value="#{bienesBean.nuevoBien.TBienPartida}"  /> 
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="fecre">Fecha de Registro</label>
+                                    <div>
+                                        <p:calendar id="fecre"
+                                                    value="#{bienesBean.nuevoBien.TBienFechregb}" locale="es"
+                                                    pattern="dd/MM/yyyy" showOn="button" 
+                                                    size="12" tabindex="2" style="width: 100%;">
+                                            <p:ajax event="dateSelect" />
+                                        </p:calendar>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="depre" >Es Depreciable?</label>
+                                    <h:selectOneRadio value="#{bienesBean.nuevoBien.TBienDepreciable}">
+                                        <f:selectItem itemValue="TRUE" itemLabel="Si"/>
+                                        <f:selectItem itemValue="FALSE" itemLabel="No"/></h:selectOneRadio>
+                                </div> 
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="fecind">Inicio de Depreciación</label>
+                                    <div>
+                                        <p:calendar id="fecind"
+                                                    value="#{bienesBean.nuevoBien.TBienFechinidep}" locale="es"
+                                                    pattern="dd/MM/yyyy" showOn="button" 
+                                                    size="12" tabindex="2" style="width: 100%;">
+                                            <p:ajax event="dateSelect" />
+                                        </p:calendar>
+                                    </div>
+                                </div>                                
+                                <div class="col-md-4">
+                                    <label for="estfb" >Estado Físico del Bien</label>
+                                    <div>
+                                        <h:selectOneMenu id="estfb" value="#{bienesBean.nuevoBien.CEstadbId}" style="width: 100%;" converter="#{estb}">
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.estbiens}" var="estb" itemLabel="#{estb.CEstadbDesc}" itemValue="#{estb}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="condb" >Condición del Bien</label>
+                                    <div>
+                                        <h:selectOneMenu id="condb" value="#{bienesBean.nuevoBien.CCondbId}" style="width: 100%;" converter="#{condbConverter}">
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.conbiens}" var="conb" itemLabel="#{conb.CCondbDesc}" itemValue="#{conb}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="nupart" >El bien está en uso?</label>
+                                    <h:selectOneRadio value="#{bienesBean.nuevoBien.TBienUso}">
+                                        <f:selectItem itemValue="TRUE" itemLabel="Si"/>
+                                        <f:selectItem itemValue="FALSE" itemLabel="No"/></h:selectOneRadio>
+                                </div>                                
+                                <div class="col-md-4">
+                                    <label for="estpb" >Bien en proceso de:</label>
+                                    <div>
+                                        <h:selectOneMenu id="estpb" value="#{bienesBean.nuevoBien.CEstproId}" style="width: 100%;" converter="#{estpConverter}">
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.estprocs}" var="estp" itemLabel="#{estp.CEstproDesc}" itemValue="#{estp}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="tipd" >Tipo de Descargo</label>
+                                    <div>
+                                        <h:selectOneMenu id="tipd" value="#{bienesBean.nuevoBien.CTipdescId}" style="width: 100%;" converter="#{tdescargConverter}">
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{bienesBean.tipdes}" var="tipde" itemLabel="#{tipde.CTipdescDesc}" itemValue="#{tipde}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="nupart" >Ingreso por lote?</label>
+                                    <h:selectOneRadio value="#{bienesBean.nuevoBien.TBienInglote}">
+                                        <f:selectItem itemValue="TRUE" itemLabel="Si"/>
+                                        <f:selectItem itemValue="FALSE" itemLabel="No"/></h:selectOneRadio>
+                                </div>                                
+                                <div class="col-md-2">
+                                    <label for="cant" >Cantidad</label>
+                                    <div >
+                                        <h:inputText id="cant" value="#{bienesBean.nuevoBien.TBienCantxlote}"  /> 
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="form-group">
+                                <div class="col-lg-10 col-lg-offset-8">
+                                    <p:commandButton id="guard" class="btn btn-primary" value="Guardar Bien"  action="#{bienesBean.guardarB()}"  rendered="#{!bienesBean.edit}" disabled="#{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                            }
+                                        }
+                                    </script>
+
+                                    <!--aqui agregar boton ingreso por lote-->
+
+                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                                                     action="#{bienesBean.limpiarB()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                        <script type="text/javascript">
+                                            function refrescar(xhr, status, args) {
+                                                if (args.validationFailed) {
+                                                    alert('Ha ocurrido un error');
+                                                } else {
+                                                    alert('nuevo');
+                                                    location.reload(true);
+                                                }
+                                            }
+                                        </script>
+
+
+                                    </p:commandButton>
+                                </div>
+                            </div>
+                            <!--aqui agregar dialogo ingreso por lote-->
+                        </h:form>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="consulta">
+                    <h:head></h:head>                    
+                    <h:form id="formBien" >
+                        <div class="table table-responsive table-bordered" >
+                            <table id="tbienes" class="table table-striped table-condensed paginada" >
+                                <thead>
+                                    <tr align="center">
+                                        CONSULTA DE BIENES MUEBLES
+                                    </tr>
+                                    <tr>
+                                        <th>Nivel Organizativo</th>
+                                        <th>Dependencia</th>
+                                        <th>Código</th>
+                                        <th>Rubro</th>
+                                        <th>Específico</th>
+                                        <th>Descripción</th>
+                                        <th >Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{bienesBean.bienes}" var="bien" >
+                                        <tr>
+                                            <td>#{bien.CNivelId.CNivelDescrip}</td>
+                                            <td>#{bien.CDepenId.CDepenDesc}</td>
+                                            <td>#{bien.TBienCodigo}</td>
+                                            <td>#{bien.CRubroId.CRubroDesc}</td>
+                                            <td>#{bien.CEspecId.CEspecDesc}</td>
+                                            <td>#{bien.TBienDesc}</td>
+                                            <td>
+                                                <h:commandLink value="Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifBien" >
+                                                    <f:setPropertyActionListener value="#{bien}"
+                                                                                 target="#{bienesBean.bienSeleccionado}" />
+                                                    <p:ajax process="@this" update=":formBien:modiBien:displayB2"/>
+                                                </h:commandLink>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>  
+                            </table>
+                        </div>
+                        <div id="modifBien" class="modal">
+                            <div class="modal-dialog">
+                                <h:head></h:head>
+                                <h:form id="modiBien" > 
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar ×</button>
+                                            <h4 class="modal-title">Modificación de Bienes Muebles</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body" id="modiPy2">
+                                                    <h:panelGroup id="displayB2"> 
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label >Tipo de Inventario</label>
+                                                                <h:selectOneMenu value="#{bienesBean.bienSeleccionado.TBienTipinv}">
+                                                                    <f:selectItem itemValue="C" itemLabel="Contable" />
+                                                                    <f:selectItem itemValue="A" itemLabel="Administrativo" />
+                                                                </h:selectOneMenu>                                        
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="codm" >Código</label>
+                                                                <div>
+                                                                    <p:inputMask id="codm" value="#{bienesBean.bienSeleccionado.TBienCodigo}" mask="99-9999-9999" /> 
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="usingm">Modificado Por</label>
+                                                                <div>
+                                                                    <h:outputText id="usingm" value="#{bienesBean.bienSeleccionado.TBienUsmodif}"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label for="respm" >Responsable</label>
+                                                                <h:selectOneMenu id="respm" value="#{bienesBean.bienSeleccionado.CRespId}" style="width: 100%" converter="#{respConverter}">
+                                                                    <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                    <f:selectItems value="#{bienesBean.respons}" var="resp" itemLabel="#{resp.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec} #{resp.CRespNom1} #{resp.CRespNom2}" itemValue="#{resp}"/>
+                                                                </h:selectOneMenu>    
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label >Nivel Organizativo</label>
+                                                                <div >
+                                                                    <h:selectOneMenu id="nivelm" value="#{bienesBean.bienSeleccionado.CNivelId}" style="width: 100%;" converter="#{nivConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.niveles}" var="niv" itemLabel="#{niv.CNivelDescrip}" itemValue="#{niv}" />
+                                                                        <p:ajax  listener="#{bienesBean.depSeleccion()}" update="depenm"/>                         
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label >Dependencia</label>
+                                                                <div >
+                                                                    <h:selectOneMenu id="depenm" value="#{bienesBean.bienSeleccionado.CDepenId}" style="width: 100%" converter="#{depeConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.depens}" var="depe" itemLabel="#{depe.CDepenDesc}" itemValue="#{depe}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label >Edificio</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="edifm" value="#{bienesBean.bienSeleccionado.CEdifId}"  style="width: 100%;" converter="#{edifConverter}" >
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif}"/>
+                                                                        <p:ajax  listener="#{bienesBean.areaSeleccion}" update="aream"/>                         
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label >Area</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="aream" value="#{bienesBean.bienSeleccionado.CAreaId}" style="width: 100%;" converter="#{areaConverter}" >
+                                                                        <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.areas}" var="area" itemLabel="#{area.CAreaDesc}" itemValue="#{area}"/>
+                                                                        <p:ajax  listener="#{bienesBean.ubicSeleccion}" update="ubicm"/>                         
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label >Ubicación Física</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="ubicm" value="#{bienesBean.bienSeleccionado.CUbicId}" style="width: 100%;" converter="#{ubicConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.ubics}" var="ubica" itemLabel="#{ubica.CUbicDesc}" itemValue="#{ubica}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>                                
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label >Rubro</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="rubm" value="#{bienesBean.bienSeleccionado.CRubroId}" required="true" style="width: 100%;" converter="#{rubConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.rubros}" var="rubro" itemLabel="#{rubro.CRubroDesc}" itemValue="#{rubro}"/>
+                                                                        <p:ajax  listener="#{bienesBean.espSeleccion}" update="espem"/>                         
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label >Específico</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="espem" value="#{bienesBean.bienSeleccionado.CEspecId}" required="true" style="width: 100%;" converter="#{especConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.especs}" var="espec" itemLabel="#{espec.CEspecDesc}" itemValue="#{espec}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="descm" >Descripción</label>
+                                                                <div>
+                                                                    <h:inputText id="descm" value="#{bienesBean.bienSeleccionado.TBienDesc}" required="true" style="width: 100%;"/> 
+                                                                </div>
+                                                            </div>                                
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label>Marca</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="marcm" value="#{bienesBean.bienSeleccionado.CMarcaId}" style="width: 100%;" converter="#{marcaConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="modm" >Modelo</label>
+                                                                <div>
+                                                                    <h:inputText id="modm" value="#{bienesBean.bienSeleccionado.TBienModelo}" style="width: 100%;"/> 
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="seriem" >Serie</label>
+                                                                <div>
+                                                                    <h:inputText id="seriem" value="#{bienesBean.bienSeleccionado.TBienSerie}" style="width: 100%;"/> 
+                                                                </div>
+                                                            </div>                                
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label for="fecadm">Fecha de Adquisición</label>
+                                                                <div>
+                                                                    <p:calendar id="fecim"
+                                                                                value="#{bienesBean.bienSeleccionado.TBienFechadq}" locale="es"
+                                                                                pattern="dd/MM/yyyy" showOn="button" 
+                                                                                size="12" tabindex="2" style="width: 100%;">
+                                                                        <p:ajax event="dateSelect" />
+                                                                    </p:calendar>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label>Forma de Adquisición</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="formadm" value="#{bienesBean.bienSeleccionado.CFormadId}" style="width: 100%;" converter="#{formadConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.formas}" var="forma" itemLabel="#{forma.CFormadDesc}" itemValue="#{forma}"/>
+                                                                    </h:selectOneMenu>
+
+                                                                </div>
+                                                            </div>                                
+                                                            <div class="col-md-4">
+                                                                <label >Fuente de Financiamiento</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="ftefm" value="#{bienesBean.bienSeleccionado.CFuentesId}" style="width: 100%;" converter="#{ftefConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.fuentes}" var="fte" itemLabel="#{fte.CFuestesDesc}" itemValue="#{fte}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label >Documento de Ingreso</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="docinm" value="#{bienesBean.bienSeleccionado.CTipdId}" style="width: 100%;" converter="#{tipdConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="" noSelectionOption="true" />
+                                                                        <f:selectItems value="#{bienesBean.tipdocs}" var="tdoc" itemLabel="#{tdoc.CTipdDesc}" itemValue="#{tdoc}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="nudocm" >No. de Documento</label>
+                                                                <div>
+                                                                    <h:inputText id="nudocm" value="#{bienesBean.bienSeleccionado.TBienDocing}" /> 
+                                                                </div>
+                                                            </div>                                
+                                                            <div class="col-md-4">
+                                                                <label for="valcomm" >Valor de Compra/Adquisición</label>
+                                                                <div>
+                                                                    <h:inputText id="valcomm" value="#{bienesBean.bienSeleccionado.TBienValoradq}" /> 
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label for="fecvgm">Garantía Vence</label>
+                                                                <div>
+                                                                    <p:calendar id="fecvgm"
+                                                                                value="#{bienesBean.bienSeleccionado.TBienFechvgar}" locale="es"
+                                                                                pattern="dd/MM/yyyy" showOn="button" 
+                                                                                size="12" tabindex="2" style="width: 100%;">
+                                                                        <p:ajax event="dateSelect" />
+                                                                    </p:calendar>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label>Proveedor</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="provm" value="#{bienesBean.bienSeleccionado.CProvId}" style="width: 100%;" converter="#{provConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.provs}" var="prove" itemLabel="#{prove.CProvNombre}" itemValue="#{prove}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label>Proyecto</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="proym" value="#{bienesBean.bienSeleccionado.CProyId}" style="width: 100%;" converter="#{proyConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.proys}" var="proye" itemLabel="#{proye.CProyDesc}" itemValue="#{proye}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label for="nupartm" >No. de Partida</label>
+                                                                <div>
+                                                                    <h:inputText id="nupartm" value="#{bienesBean.bienSeleccionado.TBienPartida}"  /> 
+                                                                </div>
+                                                            </div>                                
+                                                            <div class="col-md-4">
+                                                                <label for="fecrem">Fecha de Registro</label>
+                                                                <div>
+                                                                    <p:calendar id="fecrem"
+                                                                                value="#{bienesBean.bienSeleccionado.TBienFechregb}" locale="es"
+                                                                                pattern="dd/MM/yyyy" showOn="button" 
+                                                                                size="12" tabindex="2" style="width: 100%;">
+                                                                        <p:ajax event="dateSelect" />
+                                                                    </p:calendar>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label for="deprem" >Es Depreciable?</label>
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        <input name="optionsDep" id="optionsDep1" value="T" checked="" type="radio"/>
+                                                                        Si
+                                                                    </label>
+                                                                    <label>
+                                                                        <input name="optionsDep" id="optionsDep2" value="F" type="radio"/>
+                                                                        No
+                                                                    </label>
+                                                                </div>
+                                                            </div> 
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label for="fecindm">Inicio de Depreciación</label>
+                                                                <div>
+                                                                    <p:calendar id="fecindm"
+                                                                                value="#{bienesBean.bienSeleccionado.TBienFechinidep}" locale="es"
+                                                                                pattern="dd/MM/yyyy" showOn="button" 
+                                                                                size="12" tabindex="2" style="width: 100%;">
+                                                                        <p:ajax event="dateSelect" />
+                                                                    </p:calendar>
+                                                                </div>
+                                                            </div>   
+                                                            <div class="col-md-4">
+                                                                <label>Estado Físico del Bien</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="estfbm" value="#{bienesBean.bienSeleccionado.CEstadbId}" style="width: 100%;" converter="#{estfConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.estbiens}" var="estb" itemLabel="#{estb.CEstadbDesc}" itemValue="#{estb}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label>Condición del Bien</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="condbm" value="#{bienesBean.bienSeleccionado.CCondbId}" style="width: 100%;" converter="#{condbConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.conbiens}" var="conb" itemLabel="#{conb.CCondbDesc}" itemValue="#{conb}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label for="busom" >El bien está en uso?</label>
+                                                                <div class="radio">
+                                                                    <label>
+                                                                        <input name="optionsUso" id="optionsUso1" value="T" checked="" type="radio"/>
+                                                                        Si
+                                                                    </label>
+                                                                    <label>
+                                                                        <input name="optionsUso" id="optionsUso2" value="F" type="radio"/>
+                                                                        No
+                                                                    </label>
+                                                                </div>
+                                                            </div>       
+                                                            <div class="col-md-4">
+                                                                <label>Bien en proceso de:</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="estpbm" value="#{bienesBean.bienSeleccionado.CEstproId}" style="width: 100%;" converter="#{estpConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.estprocs}" var="estp" itemLabel="#{estp.CEstproDesc}" itemValue="#{estp}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label>Tipo de Descargo</label>
+                                                                <div>
+                                                                    <h:selectOneMenu id="tipdm" value="#{bienesBean.bienSeleccionado.CTipdescId}" style="width: 100%;" converter="#{tdescargConverter}">
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{bienesBean.tipdes}" var="tipde" itemLabel="#{tipde.CTipdescDesc}" itemValue="#{tipde}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="form-group">
+                                                            <div class="col-md-4">
+                                                                <label for="nupart" >Ingreso por lote?</label>
+                                                                <h:selectOneRadio value="#{bienesBean.bienSeleccionado.TBienInglote}">
+                                                                    <f:selectItem itemValue="TRUE" itemLabel="Si"/>
+                                                                    <f:selectItem itemValue="FALSE" itemLabel="No"/></h:selectOneRadio>
+                                                            </div>                                
+                                                            <div class="col-md-2">
+                                                                <label for="cant" >Cantidad</label>
+                                                                <div >
+                                                                    <h:inputText id="cant" value="#{bienesBean.bienSeleccionado.TBienCantxlote}"  /> 
+                                                                </div>
+                                                            </div>                                
+                                                        </div>
+                                                        <br></br>
+                                                        <div class="col-lg-10 col-lg-offset-8">                                                               
+                                                            <p:commandButton id="actua" icon="ui-icon-pencil" class="btn btn-primary" value="Actualizar"  action="#{bienesBean.actualB()}"  rendered="#{!bienesBean.edit}" update="@all" process="@this :formBien:modiBien:displayB2"  oncomplete="refrescar(xhr, status, args); ;modifBien.hide();" />
+                                                            <script type="text/javascript">
+                                                                function refrescar(xhr, status, args) {
+                                                                    if (args.validationFailed) {
+                                                                        alert('Ha ocurrido un error');
+                                                                    } else {
+                                                                        alert('Datos actualizados correctamente');
+                                                                        location.reload(true);
+                                                                        modifBien.hide();
+                                                                    }
+                                                                }
+                                                            </script>
+                                                        </div>                                                
+                                                    </h:panelGroup>  
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+                <div class="tab-pane fade" id="imagenes">
+                    <h:form id="formImag" enctype="multipart/form-data" >
+                        <p:growl id="growl" />
+                        <div class="table table-responsive table-bordered" >
+                            <table id="tarchs" class="table table-striped table-condensed paginada">
+                                <thead>
+
+                                    <tr align="center">
+                                        CONSULTA DE IMAGENES Y DOCUMENTOS DE BIENES
+                                    </tr>
+                                    <tr>
+                                        <th>Correlativo</th>
+                                        <th>Código</th>
+                                        <th>Tipo</th>
+                                        <th>Nombre</th>
+                                        <th>Descripción</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{bienesBean.docums}" var="docs" >
+                                        <tr>
+                                            <td>#{docs.TArchId}</td>
+                                            <td>#{docs.TArchCodref}</td>
+                                            <td>#{docs.TArchTipref}</td>
+                                            <td>#{docs.TArchNombre}</td>
+                                            <td>#{docs.TArchDesc}</td>
+                                            <td>
+                                                <h:commandLink value="Editar" class="btn btn-default" pt:data-toggle="modal" pt:data-target="#modifDoc">
+                                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                                    <f:setPropertyActionListener value="#{docs}"
+                                                                                 target="#{bienesBean.archSeleccionado}" />
+                                                    <p:ajax process="@this" update=":formImag:modImag:dispDoc2"/>
+                                                </h:commandLink>
+                                            </td>
+                                            <td>
+                                                <h:commandLink value="Descargar" class="btn btn-default" pt:data-toggle="modal" pt:data-target="#viewDoc">
+                                                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                                                    <f:setPropertyActionListener value="#{docs}"
+                                                                                 target="#{bienesBean.archSeleccionado}" />
+                                                    <p:ajax process="@this" update=":formImag:verDoc:dispDocD"/>
+                                                </h:commandLink>
+                                            </td>
+                                            <td>
+                                                <h:commandLink value="Eliminar" class="btn btn-default" pt:data-toggle="modal" pt:data-target="#elimDoc">
+                                                    <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>                                                    
+                                                    <f:setPropertyActionListener value="#{docs}"
+                                                                                 target="#{bienesBean.archSeleccionado}" />
+                                                    <p:ajax process="@this" update=":formImag:elimImag:dispDoc3"/>
+                                                </h:commandLink>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                    <div class="col-md-6" align="center" >
+                                        <a data-toggle="modal" href="#adiDoc" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Agregar</a>
+                                    </div>                              
+                                </tbody>  
+                            </table>
+                        </div>
+                        <div id="adiDoc" class="modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <h:head></h:head>
+                                    <h:form id="formDoc" enctype="multipart/form-data">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Agregar Imagen/documento</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="col-md-3">
+                                                    <label for="codi" >Código</label>
+                                                    <div>
+                                                        <p:inputMask id="codi" value="#{bienesBean.nuevoArch.TArchCodref}" mask="99-9999-9999" style="width: 100%;"> 
+                                                            <p:ajax listener="#{bienesBean.buscarCodI}" update="@this :formImag:growl :formImag:formDoc:guardI"/>
+                                                        </p:inputMask>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-5">
+                                                    <label for="descm" >Descripción</label>
+                                                    <div>
+                                                        <h:inputText id="descm" value="#{bienesBean.nuevoArch.TArchDesc}" required="true" style="width: 100%;"/> 
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label >Tipo de Archivo</label>
+                                                    <h:selectOneMenu value="#{bienesBean.nuevoArch.TArchTipo}">
+                                                        <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                        <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                    </h:selectOneMenu>                                        
+                                                </div> 
+                                            </div> 
+                                            <br></br>
+                                            <br></br>
+                                            <div class="col-md-12">
+                                                <p:panelGrid id="doc1" columns="2" >
+                                                    <p:fileUpload id="doc" fileUploadListener="#{bienesBean.handleFileUpload(event)}" value="#{bienesBean.picture}" mode="simple" required="true" sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="mesaj" >
+                                                        <p:growl id="mesaj" showDetail="true" />
+                                                    </p:fileUpload>
+                                                    <p:commandButton id="guardI" value="Guardar" ajax="false" disabled="#{bienesBean.estadoI}"
+                                                                     action="#{bienesBean.guardarImagen()}" />
+                                                </p:panelGrid>  
+                                            </div>
+                                            <br></br>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="modifDoc" class="modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <h:head></h:head>
+                                    <h:form id="modImag" enctype="multipart/form-data">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Modificación de Documentos e Imágenes</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h:panelGroup id="dispDoc2"  >  
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label for="ida" class="control-label">Corr Img</label>
+                                                        <h:outputText id="ida" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="codia" class="control-label">Código</label>
+                                                        <h:outputText id="codia" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="noma" class="control-label">Nombre del Archivo</label>
+                                                        <h:outputText id="noma" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
+                                                    </div>                                      
+                                                </div> 
+                                                <br></br>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <label for="desci" class="control-label">Descripción</label>
+                                                        <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
+                                                    </div>        
+                                                    <div class="col-md-3">
+                                                        <label for="tipar" class="control-label">Archivo Tipo</label>
+                                                        <h:selectOneMenu id="tipar" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
+                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                        </h:selectOneMenu>                                                
+                                                    </div>                             
+                                                    <div class="col-md-3">
+                                                        <label for="ref" class="control-label">Referencia</label>
+                                                        <h:outputText id="ref" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                    </div>
+                                                </div>
+                                                <br></br>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                    </div>                                                 
+                                                    <div class="col-md-6">
+                                                        <p:commandButton id="actuaI" icon="ui-icon-pencil" class="btn btn-primary" value="Actualizar"  action="#{bienesBean.actualA()}"  rendered="#{!bienesBean.edit}" update="@all" process="@this :formImag:modImag:dispDoc2"  oncomplete="refrescarI(xhr, status, args); ;modifDoc.hide();" />
+                                                        <script type="text/javascript">
+                                                            function refrescarI(xhr, status, args) {
+                                                                if (args.validationFailed) {
+                                                                    alert('Ha ocurrido un error');
+                                                                } else {
+                                                                    alert('Datos actualizados correctamente');
+                                                                    location.reload(true);
+                                                                    modifDoc.hide();
+                                                                }
+                                                            }
+                                                        </script>                                                    
+
+                                                        <!--<p:commandButton value="Actualizar" icon="ui-icon-pencil" action="{bienesBean.actualA()}" rendered="{!bienesBean.edit}" update="@all" process="@this :formImag:dispDoc2"  oncomplete="modifDoc.hide();"/>-->
+                                                    </div>                                             
+                                                </div>
+                                            </h:panelGroup>  
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="viewDoc" class="modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <h:head></h:head>
+                                    <h:form id="verDoc" enctype="multipart/form-data"> 
+                                        <p:growl id="growl" />
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Descargar Documento o Imagen</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h:panelGroup id="dispDocD"  >  
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label for="ida" class="control-label">Corr Img</label>
+                                                        <h:outputText id="ida" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="codia" class="control-label">Código</label>
+                                                        <h:outputText id="codia" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="noma" class="control-label">Nombre del Archivo</label>
+                                                        <h:outputText id="noma" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
+                                                    </div>                                      
+                                                </div> 
+                                                <br></br>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <label for="desci" class="control-label">Descripción</label>
+                                                        <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
+                                                    </div>        
+                                                    <div class="col-md-3">
+                                                        <label for="tipar" class="control-label">Archivo Tipo</label>
+                                                        <h:selectOneMenu id="tipar" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
+                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                        </h:selectOneMenu>                                                
+                                                    </div>                             
+                                                    <div class="col-md-3">
+                                                        <label for="ref" class="control-label">Referencia</label>
+                                                        <h:outputText id="ref" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                    </div>
+                                                </div>
+                                                <br></br>
+
+                                                <!--                                                <p:commandButton id="downloadLink" value="Descargar" ajax="false" actionListener="{bienesBean.fileDownloadController()}" onclick="PrimeFaces.monitorDownload(showStatus, hideStatus)">
+                                                                                                    <p:fileDownload value="{bienesBean.download}" />
+                                                                                                    <script type="text/javascript">
+                                                                                                        function showStatus() {
+                                                                                                            statusDialog.show();
+                                                                                                        }
+                                                                                                        function hideStatus() {
+                                                                                                            statusDialog.hide();
+                                                                                                        }
+                                                                                                    </script>
+                                                                                                </p:commandButton>    -->
+                                                <h:commandLink value="C:\\home\Actfijo\adjuntos\71-0113-0304\SALA 5.jpg">Descargar</h:commandLink>
+                                                <!--<h:link   value="C:\\home\Actfijo\adjuntos\71-0113-0304\SALA 5.jpg">descarga</h:link>-->
+
+                                            </h:panelGroup>  
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="elimDoc" class="modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <h:head></h:head>
+                                    <h:form id="elimImag" enctype="multipart/form-data">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Eliminar Documento o Imagen</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h:panelGroup id="dispDoc3" >  
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label for="idae" class="control-label">Corr Img</label>
+                                                        <h:outputText id="idae" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label for="codiae" class="control-label">Código</label>
+                                                        <h:outputText id="codiae" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="nomae" class="control-label">Nombre del Archivo</label>
+                                                        <h:outputText id="nomae" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
+                                                    </div>                                      
+                                                </div> 
+                                                <br></br>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <label for="descie" class="control-label">Descripción</label>
+                                                        <h:inputText id="descie" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
+                                                    </div>        
+                                                    <div class="col-md-3">
+                                                        <label for="tipare" class="control-label">Archivo Tipo</label>
+                                                        <h:selectOneMenu id="tipare" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
+                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                        </h:selectOneMenu>                                                
+                                                    </div>                             
+                                                    <div class="col-md-3">
+                                                        <label for="refe" class="control-label">Referencia</label>
+                                                        <h:outputText id="refe" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                    </div>
+                                                </div>
+                                                <br></br>
+                                                <div class="form-group">
+                                                    <div class="col-md-10">
+                                                        <p:commandButton id="elimI" icon="ui-icon-delete" class="btn btn-primary" value="Confirmar Eliminación Imagen"  action="#{bienesBean.borrarA()}"  update="@this :formImag" process="@this :formImag:elimImag:dispDoc3"  oncomplete="refrescarIe(xhr, status, args); ;elimDoc.hide();" />
+                                                        <script type="text/javascript">
+                                                            function refrescarIe(xhr, status, args) {
+                                                                if (args.validationFailed) {
+                                                                    alert('Ha ocurrido un error');
+                                                                } else {
+                                                                    alert('Imagen eliminada correctamente');
+                                                                    location.reload(true);
+                                                                    elimDoc.hide();
+                                                                }
+                                                            }
+                                                        </script>                                                    
+                                                    </div>                                      
+                                                </div>
+                                            </h:panelGroup>  
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </h:form>
+
+                </div>
+                <div class="tab-pane fade" id="lotes">
+                    <h:form id="formLotes" enctype="multipart/form-data" >
+                        <p:growl id="growl" />
+                        <div class="table table-responsive table-bordered" >
+                            <table id="tlotes" class="table table-striped table-condensed paginada">
+                                <thead>
+
+                                    <tr align="center">
+                                        INGRESO POR LOTE
+                                    </tr>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Rubro</th>
+                                        <th>Específico</th>
+                                        <th>Descripción</th>
+                                        <th>Cantidad</th>
+                                        <th>Proceso</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{bienesBean.lotes}" var="lote" >
+                                        <tr>
+                                            <td>#{lote.TBienCodigo}</td>
+                                            <td>#{lote.CRubroId.CRubroDesc}</td>
+                                            <td>#{lote.CEspecId.CEspecDesc}</td>
+                                            <td>#{lote.TBienDesc}</td>
+                                            <td>#{lote.TBienCantxlote}</td>
+                                            <td>
+                                                <h:commandLink value="Ingresar" class="btn btn-default" pt:data-toggle="modal" pt:data-target="#genIngre">
+                                                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                                    <f:setPropertyActionListener value="#{lote}"
+                                                                                 target="#{bienesBean.bienIngLote}" />
+                                                    <p:ajax process="@this" update=":formLotes:adiIngre:dispIng"/>
+                                                </h:commandLink>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>  
+                            </table>
+                        </div>
+                        <div id="genIngre" class="modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <h:head></h:head>
+                                    <h:form id="adiIngre" enctype="multipart/form-data">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Ingreso por Lote</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h:panelGroup id="dispIng" >                                              
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Código</label>
+                                                        <div>
+                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienCodigo}" style="width: 100%;"/> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <label >Descripción</label>
+                                                        <div>
+                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienDesc}" style="width: 100%;"/> 
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                                <br></br>
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label>Marca</label>
+                                                        <div>
+                                                            <h:outputText value="#{bienesBean.bienIngLote.CMarcaId.CMarcaDesc}" style="width: 100%;"/> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label >Modelo</label>
+                                                        <div>
+                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienModelo}" style="width: 100%;"/> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label >Serie</label>
+                                                        <div>
+                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienSerie}" style="width: 100%;"/> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label >Cantidad a Ingresar</label>
+                                                        <div>
+                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienCantxlote}" style="width: 100%;"/> 
+                                                        </div>
+                                                    </div>
+                                                </div> 
+                                                <br></br>
+                                            </h:panelGroup>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <h:commandLink value="Proceso" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#mosIngre">
+                                                <span class="glyphicon glyphicon-plus-cog" aria-hidden="true"></span>
+                                                <f:setPropertyActionListener value="#{lote}"
+                                                                             target="#{bienesBean.bienIngLote}" />
+                                                <!--<p:ajax process="@this" update=":formLotes:mosIngre"/>-->
+                                            </h:commandLink>
+
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                        </div>
+
+
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+                        <!--probable aqui dialogo de mostrar ingreso-->
+                        <div id="mosIngre" class="modal">
+
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <h:form id="lisIngre" enctype="multipart/form-data">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Datos a Ingresar por Lote</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h:panelGroup id="datIngL" >                                              
+                                                <div class="form-group">
+                                                    <div class="col-md-4">
+                                                        <label>Código Inicial</label>
+                                                        <div>
+                                                            <p:inputMask value="#{bienesBean.bienIngLote.TBienCodinilot}" mask="99-9999-9999" style="width: 100%;"/> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <label>Código Final</label>
+                                                        <div>
+                                                            <p:inputMask value="#{bienesBean.bienIngLote.TBienCodfinlot}" mask="99-9999-9999" style="width: 100%;"/> 
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div>
+                                                            <p:commandButton id="confI" icon="ui-icon-process" class="btn btn-primary" value="Generar Lote" 
+                                                                             action="#{bienesBean.generarI()}"  update="@this :formLotes:lisIngre" process="@this" />
+                                                        </div>
+                                                    </div>
+
+                                                </div> 
+                                                <br></br>
+                                                <br></br>
+<!--                                                <p:dataTable id="ingLote" value="{bienesBean.bienesIn}" var="bieni"  paginator="true" rows="8">
+                                                    <f:facet name="header">CODIGOS A INGRESAR</f:facet>
+
+                                                    <p:column headerText="Datos" width="120" >  
+                                                        <h:outputText value="{bieni[15]}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Rubro" >  
+                                                        <h:outputText value="{bieni[44]}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Específico" >  
+                                                        <h:outputText value="{bieni[43]}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Descripción" >  
+                                                        <h:outputText value="{bieni[16]}">
+                                                        </h:outputText>
+                                                    </p:column>                                                
+                                                    <p:column headerText="Modelo" >  
+                                                        <h:outputText value="{bieni[17]}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Serie" >  
+                                                        <h:outputText value="{bieni[18]}" >
+                                                        </h:outputText>
+                                                    </p:column>
+
+                                                    <f:facet name="footer">  
+
+                                                    </f:facet> 
+
+
+                                                </p:dataTable>-->
+
+                                                <div class="table table-responsive table-bordered" >
+                                                    <table id="tingre" class="table table-striped table-condensed paginada">
+                                                        <thead>
+
+                                                            <tr align="center">
+                                                                CODIGOS A INGRESAR
+                                                                <tr>
+                                                                </tr>
+                                                                <th>Código</th>
+                                                                <th>Rubro</th>
+                                                                <th>Específico</th>
+                                                                <th>Descripción</th>
+                                                                <th>Modelo</th>
+                                                                <th>Serie</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <ui:repeat value="#{bienesBean.bienesIn}" var="bieni" >
+                                                                <tr>
+                                                                    <td>#{bieni[15]}</td>
+                                                                    <td>#{bieni[44]}</td>
+                                                                    <td>#{bieni[43]}</td>
+                                                                    <td>#{bieni[16]}</td>
+                                                                    <td>#{bieni[17]}</td>
+                                                                    <td>#{bieni[18]}</td>
+                                                                </tr>
+                                                            </ui:repeat>
+                                                        </tbody>  
+                                                    </table>
+                                                    <p:commandButton id="ConsolButtonCa" value="Actualizar Códigos" icon="ui-icon-folder-open" action="#{bienesBean.generarI2()}" update=":formLotes:lisIngre" process="@this datIngL" />				 
+                                                    <p:commandButton id="GuarButtonCa" value="Guardar Datos" icon="ui-icon-folder-save" action="#{bienesBean.guardarI()}" update=":formLotes:lisIngre" process="@this datIngL" />				 
+
+<!--                                                    <h:commandLink value="Agregar Datos" class="btn btn-default" >
+                                                        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+                                                          <f:setPropertyActionListener value="{lote}"
+                                                            target="{bienesBean.bienIngLote}" />
+                                                           <p:ajax process="@this" update=":formLotes:adiIngre:dispIng"/>
+                                                    </h:commandLink>-->
+
+                                                    </div>
+                                            </h:panelGroup>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                        </div>
+                                    </h:form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </h:form>
+                </div>
+            </div>
+        </ui:define>
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('.paginada').dataTable(
+                            {
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
+                });
+            </script>
+
+        </ui:define>
+
+    </ui:composition>
+</html>

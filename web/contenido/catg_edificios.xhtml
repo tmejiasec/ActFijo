@@ -1,0 +1,211 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+        <ui:define name="content" >
+            <h:form id="formEdif" >
+                
+                <div class="table table-responsive table-bordered " >
+                    
+                    <table id="tedif" class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                CATALOGO DE EDIFICIOS
+                            </tr>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Dirección</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{catgeBean.edificios}" var="edif" >
+                                <tr>
+                                    <td>#{edif.CEdifId}</td>
+                                    <td>#{edif.CEdifDesc}</td>
+                                    <td>#{edif.CEdifDirec}</td>
+                                    <td>
+                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifEdi">
+                                            <f:setPropertyActionListener value="#{edif}"
+                                                                         target="#{catgeBean.edifSeleccionado}" />
+                                            <p:ajax process="@this" update=":formEdif:displayE2"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            <div class="col-md-6" align="center" >
+                              <a data-toggle="modal" href="#adicEdi" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                            </div>                              
+                        </tbody>  
+                    </table>
+                </div>
+                <div id="adicEdi" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Adición de Edificios</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayE1" columns="2" >  
+                        <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                        <h:outputText value="#{catgeBean.nuevoEdificio.CEdifId}" /> 
+                       
+                        <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoEdificio.CEdifDesc}" style="width: 99%;" required="true"/> 
+
+                        <h:outputLabel value="Dirección:   *" style="font-weight: bold"/>  
+                        <h:inputText value="#{catgeBean.nuevoEdificio.CEdifDirec}" /> 
+
+                        <h:outputLabel value="Departamento:" style="font-weight: bold"/>  
+                            <h:selectOneMenu id="deptos" value="#{catgeBean.depSeleccionado}" >
+                             <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                             <f:selectItems value="#{catgeBean.deptos}" var="Depto" itemLabel="#{Depto.CDeptoDesc}" itemValue="#{Depto.CDeptoId}"/>
+				<p:ajax  listener="#{catgeBean.municipioSeleccion}" update="municipio"/>                         
+                            </h:selectOneMenu>
+                
+                        <h:outputLabel value="Municipio:" style="font-weight: bold"/>
+                            <h:selectOneMenu id="municipio" value="#{catgeBean.munSeleccionado}" >
+                             <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                             <f:selectItems value="#{catgeBean.munic}" var="munic" itemLabel="#{munic.CMuniDesc}" itemValue="#{munic.CMuniId}"/>
+                            </h:selectOneMenu>
+                        
+                        <h:outputLabel value="Estado Legal:" style="font-weight: bold"/>  
+                        <h:selectOneMenu value="#{catgeBean.nuevoEdificio.CEdifLegal}">
+				<f:selectItem itemValue="Propio" itemLabel="Propio" />
+				<f:selectItem itemValue="Arrendamiento" itemLabel="Arrendamiento" />
+                                <f:selectItem itemValue="Comodato" itemLabel="Comodato" />
+			</h:selectOneMenu>
+                        
+                        <h:outputLabel value="Latitud:   *" style="font-weight: bold"/>  
+                        <h:inputText value="#{catgeBean.nuevoEdificio.CEdifLatitud}" style="width: 99%;" /> 
+
+                        <h:outputLabel value="Longitud:   *" style="font-weight: bold"/>  
+                        <h:inputText value="#{catgeBean.nuevoEdificio.CEdifLongitud}" style="width: 99%;" /> 
+                        
+                        <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarEd()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayE1"  oncomplete="handleRequest(xhr, status, args); ; adicEdi.hide();" />
+                        <script type="text/javascript">
+                            function handleRequest(xhr, status, args) {
+                                if (args.validationFailed) {
+                                    alert('Ha ocurrido un error. Complete los datos necesarios');
+                                }else{
+                                    alert('Datos adicionados correctamente');
+                                    adicEdi.hide();
+                                }
+                            }
+                        
+                        </script>
+                                    
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modifEdi" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Modificación de Niveles Organizativos</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayE2" columns="2" >  
+                        <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                        <h:outputText value="#{catgeBean.edifSeleccionado.CEdifId}" /> 
+                       
+                        <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.edifSeleccionado.CEdifDesc}" style="width: 99%;" required="true"/> 
+
+                        <h:outputLabel value="Dirección:   *" style="font-weight: bold"/>  
+                        <h:inputText value="#{catgeBean.edifSeleccionado.CEdifDirec}" /> 
+
+                        <h:outputLabel value="Departamento:" style="font-weight: bold"/>  
+                            <h:selectOneMenu id="deptosm" value="#{catgeBean.depSeleccionado}" >
+                             <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                             <f:selectItems value="#{catgeBean.deptos}" var="Depto" itemLabel="#{Depto.CDeptoDesc}" itemValue="#{Depto.CDeptoId}"/>
+				<p:ajax  listener="#{catgeBean.municipioSeleccion}" update="municipiom"/>                         
+                            </h:selectOneMenu>
+                
+                        <h:outputLabel value="Municipio:" style="font-weight: bold"/>
+                            <h:selectOneMenu id="municipiom" value="#{catgeBean.munSeleccionado}" >
+                             <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                             <f:selectItems value="#{catgeBean.munic}" var="munic" itemLabel="#{munic.CMuniDesc}" itemValue="#{munic.CMuniId}"/>
+                            </h:selectOneMenu>
+                        
+                        <h:outputLabel value="Estado Legal:" style="font-weight: bold"/>  
+                        <h:selectOneMenu value="#{catgeBean.edifSeleccionado.CEdifLegal}">
+				<f:selectItem itemValue="Propio" itemLabel="Propio" />
+				<f:selectItem itemValue="Arrendamiento" itemLabel="Arrendamiento" />
+                                <f:selectItem itemValue="Comodato" itemLabel="Comodato" />
+			</h:selectOneMenu>
+                     
+                        <h:outputLabel value="Latitud:   *" style="font-weight: bold"/>  
+                        <h:inputText value="#{catgeBean.edifSeleccionado.CEdifLatitud}" style="width: 99%;" /> 
+
+                        <h:outputLabel value="Longitud:   *" style="font-weight: bold"/>  
+                        <h:inputText value="#{catgeBean.edifSeleccionado.CEdifLongitud}" style="width: 99%;" /> 
+                        
+                        
+                        <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualEd()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayE2"  oncomplete="modifEdi.hide();"/>
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('#tedif').dataTable(
+                            {
+                    "oLanguage": {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                }
+                            );
+                });
+            </script>
+        </ui:define>
+
+    </ui:composition>
+</html>

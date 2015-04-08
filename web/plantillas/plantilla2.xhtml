@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1"/>-->
+<!--        <link href="{request.contextPath}/resources/css/bootstrap.min.css" type="text/css" rel="stylesheet" media="screen"/>-->
+        <link href="#{request.contextPath}/resources/css/otrotema.css" rel="stylesheet" type="text/css" media="screen"/>
+        <!--<link href="{request.contextPath}/resources/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>-->
+        <link href="#{request.contextPath}/resources/css/jquery.smartmenus.bootstrap.css" rel="stylesheet" type="text/css" media="screen"/>    
+        <link href="#{request.contextPath}/resources/js/datatables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
+        <title>Facelets Template-Bootstrap</title>      
+    </h:head>
+    <h:body>
+        <header id="top">
+            <div class="container">
+                <div class="col-md-10">
+                    <img src="../resources/imagenes/banner.jpg" class="img-responsive img-rounded" width="100%"/>
+                </div>                            
+                <div class="col-md-2"><strong>Usuario: </strong></div>
+                <div class="col-md-2">Nombre del Usuario: </div>
+                <!--<div class="col-md-2"><p></p></div>-->
+                <div class="col-md-2"><strong>Perfil: </strong></div>
+                <div class="col-md-2">Perfil del Usuario: </div>
+            </div>
+
+            <div class="container">
+            <nav class="navbar navbar-inverse" role="navigation">
+               <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>                   
+                   <a class="navbar-brand" href="#">Menú Activo Fijo</a>
+               </div>
+                
+                <div class="navbar-collapse collapse">                   
+                
+                <!-- Left nav -->
+                <ul class="nav navbar-nav">
+                <!--<ul class="nav nav-pills">-->-->
+                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Gestión Catálogos</a>
+                        <ul class="dropdown-menu" >
+                            <li><a>Catálogos Generales</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="../contenido/catg_niveles.jsf" aria-expanded="true">Niveles Organizativos</a></li>
+                                    <li><a href="../contenido/catg_depend.jsf">Dependencias</a></li>
+                                    <li><a href="../contenido/catg_jefesdep.jsf" aria-expanded="true">Jefes por Dependencia</a></li>
+                                    <li><a href="../contenido/catg_respons.jsf">Responsables</a></li>
+                                    <li><a href="../contenido/catg_edificios.jsf">Edificios</a></li>
+                                    <li><a href="../contenido/catg_areas.jsf" aria-expanded="true">Areas por Edificio</a></li>
+                                    <li><a href="../contenido/catg_ubic.jsf" aria-expanded="true">Ubicaciones por Area</a></li>
+                                    <li><a href="../contenido/catg_zonas.jsf">Zonas</a></li>
+                                    <li><a href="../contenido/catg_deptos.jsf">Departamentos</a></li>
+                                    <li><a href="../contenido/catg_munic.jsf">Municipios</a></li>
+                                </ul>
+                            </li>
+                            <li><a>Catálogos Financieros</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="../contenido/catfn_fuentes.jsf" aria-expanded="true">Fuentes de Financiamiento</a></li>
+                                    <li><a href="../contenido/catfn_formas.jsf" aria-expanded="true">Formas de Adquisición</a></li>
+                                    <li><a href="../contenido/catfn_tipdoc.jsf">Tipos de Documento</a></li>
+                                    <li><a href="../contenido/catfn_provee.jsf">Proveedores</a></li>
+                                    <li><a href="../contenido/catfn_proyec.jsf">Proyectos</a></li>
+                                    <li><a href="../contenido/catfn_marcas.jsf">Marcas de Bienes</a></li>
+                                </ul>
+                            </li>
+                            <li><a>Catálogos Bienes Muebles</a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="../contenido/catbm_rubros.jsf">Rubros</a></li>
+                                    <li><a href="../contenido/catbm_espec.jsf">Específicos</a></li>
+                                    <li><a href="../contenido/catbm_estbien.jsf">Estado Físico del Bien</a></li>
+                                    <li><a href="../contenido/catbm_conbien.jsf">Condición del Bien</a></li>
+                                    <li><a href="../contenido/catbm_estproc.jsf">Estado de Proceso</a></li>
+                                    <li><a href="../contenido/catbm_tipmov.jsf">Tipos de Movimiento</a></li>
+                                    <li><a href="../contenido/catbm_estmov.jsf">Estado del Movimiento</a></li>
+                                    <li><a href="../contenido/catbm_tipdesc.jsf">Tipos de Descargo</a></li>
+                                </ul>
+                            </li>
+                            <li class="divider"></li>
+                            <li class="dropdown-header">Seguridad</li>
+                            <li><a href="../contenido/catsg_roles.jsf">Roles</a></li>
+                            <li><a href="../contenido/catsg_usuarios.jsf">Usuarios</a></li>
+                            
+                        </ul> 
+                    </li>
+                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Bienes Muebles</a>
+                        <ul class="dropdown-menu" >
+                            <li><a href="../contenido/bm_registro.jsf">Registro de Bienes</a></li>
+                            <li><a href="#">Movimientos de Bienes</a></li>
+                            <li><a href="#">Asignaciones</a></li>
+                            <li><a href="#">Recepciones</a></li>
+                            <li><a href="#">Robo/Hurto</a></li>
+                            <li><a href="#">Sustituciones</a></li>
+                            <li><a href="#">Descargo de Bienes</a></li>
+                        </ul> 
+                    </li>
+                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes Bienes Muebles</a>
+                        <ul class="dropdown-menu" >
+                            <li><a href="#">Reportes de Bienes</a></li>
+                            <li><a href="#">Bienes por Responsable</a></li>
+                            <li><a href="#">Individual de Bienes</a></li>
+                            <li><a href="#">Para Codificación Física de Bienes</a></li>
+                            <li><a href="#">Movimientos de Bienes</a></li>
+                            <li><a href="#">Asignaciones</a></li>
+                            <li><a href="#">Recepciones</a></li>
+                            <li><a href="#">Robo/Hurtto</a></li>
+                            <li><a href="#">Sustituciones</a></li>
+                            <li><a href="#">Descargo de Bienes</a></li>
+                        </ul> 
+                    </li>
+                    <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Depreciaciones</a>
+                        <ul class="dropdown-menu" >
+                            <li><a href="#">Cálculo Depreciación</a></li>
+                            <li><a href="#">Reporte para Conciliación</a></li>
+                            <li><a href="#">Cierre Anual</a></li>
+                            <li><a href="#">Bienes Depreciados</a></li>
+                        </ul> 
+                    </li>
+                    <li><a href="#">Salir</a></li>
+                </ul>
+            </div>
+            </nav>
+            </div>
+        </header>
+
+
+        <div id="content" class="container">
+            <ui:insert name="content">Content</ui:insert>
+        </div>
+
+        <footer id="bottom" class="container" >
+            <img id="piepag" src="../resources/imagenes/piepag.jpg" class="img-rounded img-responsive" width="100%" /> 
+            <!--<h:graphicImage id="piepag" url="/resources/imagenes/piepag.jpg" class="img-rounded img-responsive" style="margin: 1px auto;" width="100%"/>--> 
+        </footer>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <h:outputScript library="primefaces" name="jquery/jquery.js"/>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="#{request.contextPath}/resources/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="#{request.contextPath}/resources/css/jquery.smartmenus.min.js" type="text/javascript"></script>
+        <script src="#{request.contextPath}/resources/css/jquery.smartmenus.bootstrap.min.js" type="text/javascript"></script>
+        <script src="#{request.contextPath}/resources/js/datatables/jquery.dataTables.min.js" type="text/javascript"></script>
+        <ui:insert name="scripts"/>
+    </h:body>
+</html>

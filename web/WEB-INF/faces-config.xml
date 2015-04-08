@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<faces-config
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+    version="2.1">
+    
+ <navigation-rule>
+  <navigation-case>
+   <from-outcome>login</from-outcome>
+   <to-view-id>/login.xhtml</to-view-id>
+  </navigation-case>
+<!--   <navigation-case>
+   <from-outcome>Clientes</from-outcome>
+   <to-view-id>/vistas/clientes2.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Proveedores</from-outcome>
+   <to-view-id>/vistas/proveedores.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Supervisores</from-outcome>
+   <to-view-id>/vistas/supervisores.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Colecturias</from-outcome>
+   <to-view-id>/vistas/colecturias.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Colectores</from-outcome>
+   <to-view-id>/vistas/colectores.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Usuarios</from-outcome>
+   <to-view-id>/vistas/usuarios.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Ventas</from-outcome>
+   <to-view-id>/vistas/gestionVentas.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Compras</from-outcome>
+   <to-view-id>/vistas/gestionCompras.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Remesas</from-outcome>
+   <to-view-id>/vistas/gestionRemesas.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Lista Proveedores</from-outcome>
+   <to-view-id>/vistas/rep_prov.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Lista Clientes</from-outcome>
+   <to-view-id>/vistas/rep_cte.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Lista Colecturías</from-outcome>
+   <to-view-id>/vistas/rep_colectu.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Lista Colectores</from-outcome>
+   <to-view-id>/vistas/rep_colecto.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>Lista Supervisores</from-outcome>
+   <to-view-id>/vistas/rep_supv.xhtml</to-view-id>
+  </navigation-case>
+     <navigation-case>
+   <from-outcome>Consumidor Final</from-outcome>
+   <to-view-id>/vistas/rep_consf_leg.xhtml</to-view-id>
+  </navigation-case>
+     <navigation-case>
+   <from-outcome>Crédito Fiscal</from-outcome>
+   <to-view-id>/vistas/rep_credf_leg.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Libro Compras</from-outcome>
+   <to-view-id>/vistas/rep_compra_leg.xhtml</to-view-id>
+  </navigation-case>-->
+  
+ </navigation-rule>
+ 
+ 
+</faces-config>
+

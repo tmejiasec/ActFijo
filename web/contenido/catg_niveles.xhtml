@@ -1,0 +1,172 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+        <ui:define name="content" >
+            <h:form id="formNiveles" >
+                <div class="table table-responsive table-bordered" >
+                    
+                    <table id="tnivel" class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                CATALOGO DE NIVELES ORGANIZATIVOS
+                            </tr>
+
+                            <tr>
+                                <th>Correlativo</th>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Jerarquía</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{catgeBean.niveles}" var="nivel" >
+                                <tr>
+                                    <td>#{nivel.CNivelId}</td>
+                                    <td>#{nivel.CNivelCodigo}</td>
+                                    <td>#{nivel.CNivelDescrip}</td>
+                                    <td>#{nivel.CNivelJerar}</td>
+                                    <td>
+                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifNiv">
+                                            <f:setPropertyActionListener value="#{nivel}"
+                                             target="#{catgeBean.nivelSeleccionado}" />
+                                            <p:ajax process="@this" update=":formNiveles:displayN2"/>
+                                        </h:commandLink>
+                                           <!--<a data-toggle="modal" href="#modifNiv" class="btn btn-link glyphicon glyphicon-edit" >Modificar</a>--> 
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            <div class="col-md-6" align="center" >
+                              <a data-toggle="modal" href="#adicNiv" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                            </div>                              
+                        </tbody>  
+                    </table>
+                </div>
+<!--                <div align="center" >
+                    <a data-toggle="modal" href="#adicNiv" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                    <a href="#" class="btn btn-primary" >Retornar</a>
+                </div>-->
+
+                <div id="adicNiv" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Adición de Niveles Organizativos</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayN1" columns="2" >  
+                                    <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nuevoNivel.CNivelId}" /> 
+
+                                    <h:outputLabel value="Código de Nivel Organizativo:   *" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catgeBean.nuevoNivel.CNivelCodigo}" required="true"/>
+
+                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoNivel.CNivelDescrip}" style="width: 99%;" required="true" /> 
+
+                                    <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catgeBean.nuevoNivel.CNivelJerar}" /> 
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarNv()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayN1"  oncomplete="handleRequest(xhr, status, args); ; adicNiv.hide();" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                                adicNiv.hide();
+                                            }
+                                        }
+                                    </script>
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modifNiv" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Modificación de Niveles Organizativos</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayN2" columns="2" >  
+                                    <h:outputLabel value="Corr. Nivel:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nivelSeleccionado.CNivelId}" />    
+
+                                    <h:outputLabel value="Código de Nivel Organizativo:" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catgeBean.nivelSeleccionado.CNivelCodigo}" />
+
+                                    <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nivelSeleccionado.CNivelDescrip}" /> 
+
+                                    <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
+                                    <h:inputText value="#{catgeBean.nivelSeleccionado.CNivelJerar}" /> 
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualNv()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayN2"  oncomplete="modifNiv.hide();"/>
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </h:form>
+
+        </ui:define>
+
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('#tnivel').dataTable(
+                            {
+                    "oLanguage": {
+                        "sProcessing": "Procesando...",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "Último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    }
+                }
+                            );
+                });
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>

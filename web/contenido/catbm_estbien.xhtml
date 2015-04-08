@@ -1,0 +1,149 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"        
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+        <ui:define name="content" >
+            <h:form id="formEstbien" >
+                <div class="table table-responsive table-bordered " >
+
+                    <table id="testbi" class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                CATALOGO DE ESTADO DE LOS BIENES
+                            </tr>
+                            <tr>
+                                <th>Código</th>
+                                <th>Descripción</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <ui:repeat value="#{catbmBean.estbiens}" var="estbi">
+                                <tr>
+                                    <td>#{estbi.CEstadbId}</td>
+                                    <td>#{estbi.CEstadbDesc}</td>
+                                    <td>
+                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifEstb">
+                                            <f:setPropertyActionListener value="#{estbi}"
+                                                                         target="#{catbmBean.estBienSeleccionado}" />
+                                            <p:ajax process="@this" update=":formEstbien:displayEb2"/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            <div class="col-md-6" align="center" >
+                                <a data-toggle="modal" href="#adicEstb" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                            </div>                              
+                        </tbody>  
+                    </table>
+                </div>
+                <div id="adicEstb" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Adición de Estado de los Bienes</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayEb1" columns="2" >  
+                                    <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catbmBean.nuevoEstbien.CEstadbId}" /> 
+
+                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.nuevoEstbien.CEstadbDesc}" style="width: 99%;" required="true"/> 
+
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catbmBean.guardarEb()}"  rendered="#{!catbmBean.edit}" update="@all" process="@this displayEb1"  oncomplete="handleRequest(xhr, status, args); ; adicEstb.hide();" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                                adicEstb.hide();
+                                            }
+                                        }
+                                    </script>
+
+                                </p:panelGrid>  
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modifEstb" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title">Modificación de Estado de los Bienes</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayEb2" columns="2" >  
+                                    <h:outputLabel value="Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catbmBean.estBienSeleccionado.CEstadbId}" />    
+
+                                    <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.estBienSeleccionado.CEstadbDesc}" /> 
+
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catbmBean.actualEb()}" rendered="#{!catbmBean.edit}" update="@all" process="@this displayEb2"  oncomplete="modifEstb.hide();"/>
+
+                                </p:panelGrid>  
+
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-default">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('#testbi').dataTable(
+                            {
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
+                });
+            </script>
+        </ui:define>
+
+    </ui:composition>
+</html>

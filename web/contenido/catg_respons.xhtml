@@ -1,0 +1,363 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"        
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+        <ui:define name="content" >
+            <h:form id="formResp" >
+                <div class="table table-responsive table-bordered" >
+                    <table id="trespon" class="table table-striped table-condensed">
+                        <thead>
+                            <tr>
+                                CATALOGO DE RESPONSABLES
+                            </tr>
+                            <tr>
+                                <th>Código</th>
+                                <th>Nombres</th>
+                                <th>Apellidos</th>
+                                <th>Cargo</th>
+                                <th>Unidad Organizativa</th>
+                                <th>Dependencia</th>
+                                <th>Opciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <ui:repeat value="#{catgeBean.respons}" var="resp" >
+                                <tr>
+                                    <td>#{resp.CRespId}</td>
+                                    <td>#{resp.CRespNom1} #{resp.CRespNom2} #{resp.CRespNom3}</td>
+                                    <td>#{resp.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec}</td>
+                                    <td>#{resp.CRespCargo}</td>
+                                    <td>#{resp.CNivelId.CNivelDescrip}</td>
+                                    <td>#{resp.CDepenId.CDepenDesc}</td>
+                                    <td>
+                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifResp" action="#{catgeBean.asignarNivelDep()}">
+                                            <f:setPropertyActionListener value="#{resp}"
+                                                                         target="#{catgeBean.respSeleccionado}" />
+                                            <p:ajax process="@this" update=":formResp:displayR2 "/>
+                                        </h:commandLink>
+                                    </td>
+                                </tr>
+                            </ui:repeat>
+                            <div class="col-md-6" align="center" >
+                                <a data-toggle="modal" href="#adicResp" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                            </div>                              
+                        </tbody>  
+                    </table>
+                </div>
+
+                <div id="adicResp" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar ×</button>
+                                <h4 class="modal-title">Adición de Responsables</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-body" id="adicR2">
+
+                                        <h:panelGroup id="displayR1"> 
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">Código</label>
+                                                <div class="col-md-2">
+                                                    <h:outputText value="#{catgeBean.nuevoResp.CRespId}" />    
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                 <div class="col-md-4">
+                                                    <label class="control-label" for="n1">1er. Nombre</label>
+                                                     <h:inputText id="n1" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoResp.CRespNom1}" style="width: 100%;" required="true" class="form-control"/>    
+                                                 </div> 
+                                                  <div class="col-md-4">
+                                                <label class="control-label" for="n2">2o. Nombre</label>
+                                                <h:inputText id="n2" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoResp.CRespNom2}" style="width: 100%;" class="form-control" />    
+                                                  </div>
+                                                <div class="col-md-4">
+                                                <label class="control-label" for="n3">3er.Nombre</label>
+                                                <h:inputText id="n3" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoResp.CRespNom3}" style="width: 100%;" class="form-control" />    
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <div class="col-md-4">
+                                                   <label class="control-label" for="a1">1er. Apellido</label>
+                                                    <h:inputText id="a1" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoResp.CRespApe1}" style="width: 100%;" required="true" class="form-control"/>    
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label" for="a2">2o. Apellido</label>
+                                                    <h:inputText id="a2" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoResp.CRespApe2}" style="width: 100%;" class="form-control" />    
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="control-label" for="ac">Apellido Casada</label>
+                                                    <h:inputText id="ac" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoResp.CRespApec}" style="width: 100%;" class="form-control"/>    
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-4 control-label">Nivel Organizativo</label>
+                                                <div class="col-md-8">
+                                                    <h:selectOneMenu id="nivela" value="#{catgeBean.nivSeleccionado}" required="true" style="width: 100%;">
+                                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                                        <f:selectItems value="#{catgeBean.niveles}" var="nivel" itemLabel="#{nivel.CNivelDescrip}" itemValue="#{nivel.CNivelId}"/>
+                                                        <p:ajax  listener="#{catgeBean.dependenciaSeleccion}" update="depen"/>                         
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                             <div class="form-group">
+                                                <label  class="col-md-4 control-label">Dependencia</label>
+                                                <div class="col-md-8">
+                                                    <h:selectOneMenu id="depen" value="#{catgeBean.depenSeleccionada}" required="true" style="width: 100%;">
+                                                        <f:selectItem itemLabel="Seleccione una..." itemValue="0"/>
+                                                        <f:selectItems value="#{catgeBean.depens}" var="depen" itemLabel="#{depen.CDepenDesc}" itemValue="#{depen.CDepenId}"/>
+                                                    </h:selectOneMenu>    
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-2 control-label">Teléfono</label>
+                                                <div class="col-md-4">
+                                                    <p:inputMask value="#{catgeBean.nuevoResp.CRespTelofi}"  mask="9999-9999" /> 
+                                                </div>
+                                                <label  class="col-md-2 control-label">Correo</label>
+                                                <div class="col-md-4">
+                                                    <h:inputText value="#{catgeBean.nuevoResp.CRespCorreo}" /> 
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-2 control-label">DUI</label>
+                                                <div class="col-md-4">
+                                                    <p:inputMask value="#{catgeBean.nuevoResp.CRespDui}" mask="99999999-9" /> 
+                                                </div>
+                                                <label  class="col-md-2 control-label">NIT</label>
+                                                <div class="col-md-4">
+                                                    <p:inputMask value="#{catgeBean.nuevoResp.CRespNit}" mask="9999-999999-999-9" /> 
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-2 control-label">Cargo</label>
+                                                <div class="col-md-4">
+                                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoResp.CRespCargo}" /> 
+                                                </div>
+                                                <label  class="col-md-2 control-label">Fecha Retiro</label>
+                                                <div class="col-md-4">
+                                                    <p:calendar id="feca"
+                                                                value="#{catgeBean.nuevoResp.CRespFechr}" locale="es"
+                                                                pattern="dd/MM/yyyy" showOn="button" 
+                                                                size="12" tabindex="2" style="width: 100%;">
+                                                        <p:ajax event="dateSelect" />
+                                                    </p:calendar>
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-2 control-label">Estado</label>
+                                                <div class="col-md-4">
+                                                    <h:selectOneMenu value="#{catgeBean.nuevoResp.CRespEstado}">
+                                                        <f:selectItem itemValue="A" itemLabel="Activo" />
+                                                        <f:selectItem itemValue="I" itemLabel="Inactivo" />
+                                                    </h:selectOneMenu>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarRp()}"  rendered="#{!catgeBean.edit}"  process="@this displayR1"  update="@all" oncomplete="handleRequest(xhr, status, args); ; adicResp.hide();" />
+                                                    <script type="text/javascript">
+                                                        function handleRequest(xhr, status, args) {
+                                                            if (args.validationFailed) {
+                                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                                            } else {
+                                                                alert('Datos adicionados correctamente');
+                                                                adicResp.hide();
+                                                            }
+                                                        }
+
+                                                    </script>
+                                                </div>                                                
+                                            </div>
+                                        </h:panelGroup>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="modifResp" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar ×</button>
+                                <h4 class="modal-title">Modificación de Responsables</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="panel panel-default">
+                                    <div class="panel-body" id="modiPy2">
+                                        <h:panelGroup id="displayR2"> 
+                                            <div class="form-group">
+                                                <label class="col-md-3 control-label">Código</label>
+                                                <div class="col-md-2">
+                                                    <h:outputText value="#{catgeBean.respSeleccionado.CRespId}" />    
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <div class="col-md-4">
+                                                <label class="control-label" for="n1m">1er. Nombre</label>
+                                                    <h:inputText id="n1m" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.respSeleccionado.CRespNom1}" style="width:  100%;" required="true" class="form-control"/>    
+                                                </div>
+                                                <div class="col-md-4" >
+                                                <label class="control-label" for="n2m">2o. Nombre</label>
+                                                    <h:inputText id="n2m" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.respSeleccionado.CRespNom2}" style="width: 100%;" class="form-control"/>    
+                                                </div>
+                                                <div class="col-md-4">
+                                                <label class="control-label" for="n3m">3er.Nombre</label>
+                                                    <h:inputText id="n3m"  onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.respSeleccionado.CRespNom3}" style="width: 100%;" class="form-control"/>    
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <div class="col-md-4">
+                                                <label class="control-label" for="ap1">1er. Apellido</label>
+                                                    <h:inputText id="ap1" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.respSeleccionado.CRespApe1}" style="width: 100%;" required="true" class="form-control"/>    
+                                                </div>
+                                                <div class="col-md-4">
+                                                <label class="control-label" for="ap2">2o. Apellido</label>
+                                                    <h:inputText id="ap2" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.respSeleccionado.CRespApe2}" style="width: 100%;" class="form-control" />    
+                                                </div>
+                                                <div class="col-md-4">
+                                                <label class="control-label" for="ac2">Apellido Casada</label>
+                                                    <h:inputText id="ac2" onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.respSeleccionado.CRespApec}" style="width: 100%;" class="form-control"/>    
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-4 control-label">Nivel Organizativo</label>
+                                                <div class="col-md-8">
+                                                    <h:selectOneMenu id="nivelm" value="#{catgeBean.nivSeleccionado}" required="true" style="width: 100%;">
+                                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                                        <f:selectItems value="#{catgeBean.niveles}" var="nivel" itemLabel="#{nivel.CNivelDescrip}" itemValue="#{nivel.CNivelId}"/>
+                                                        <p:ajax  listener="#{catgeBean.dependenciaSeleccion}" update="depenm"/>                         
+                                                    </h:selectOneMenu>
+                                                </div>
+                                            </div>
+                                             <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-4 control-label">Dependencia</label>
+                                                <div class="col-md-8">
+                                                    <h:selectOneMenu id="depenm" value="#{catgeBean.depenSeleccionada}" required="true" style="width: 100%;">
+                                                        <f:selectItem itemLabel="Seleccione una..." itemValue="0"/>
+                                                        <f:selectItems value="#{catgeBean.depens}" var="depen" itemLabel="#{depen.CDepenDesc}" itemValue="#{depen.CDepenId}"/>
+                                                    </h:selectOneMenu>    
+                                                    
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-2 control-label">Teléfono</label>
+                                                <div class="col-md-4">
+                                                    <p:inputMask value="#{catgeBean.respSeleccionado.CRespTelofi}"  mask="9999-9999" /> 
+                                                </div>
+                                                <label  class="col-md-2 control-label">Correo</label>
+                                                <div class="col-md-4">
+                                                    <h:inputText value="#{catgeBean.respSeleccionado.CRespCorreo}" /> 
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-2 control-label">DUI</label>
+                                                <div class="col-md-4">
+                                                    <p:inputMask value="#{catgeBean.respSeleccionado.CRespDui}" mask="99999999-9" /> 
+                                                </div>
+                                                <label  class="col-md-2 control-label">NIT</label>
+                                                <div class="col-md-4">
+                                                    <p:inputMask value="#{catgeBean.respSeleccionado.CRespNit}" mask="9999-999999-999-9" /> 
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-2 control-label">Cargo</label>
+                                                <div class="col-md-4">
+                                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.respSeleccionado.CRespCargo}" /> 
+                                                </div>
+                                                <label  class="col-md-2 control-label">Fecha Retiro</label>
+                                                <div class="col-md-4">
+
+                                                    <p:calendar id="fecam"
+                                                                value="#{catgeBean.respSeleccionado.CRespFechr}" locale="es"
+                                                                pattern="dd/MM/yyyy" showOn="button" 
+                                                                size="12" tabindex="2" style="width: 100%;">
+                                                        <p:ajax event="dateSelect" />
+                                                    </p:calendar>
+                                                </div>
+                                            </div>
+                                            <br></br>
+                                            <div class="form-group">
+                                                <label  class="col-md-2 control-label">Estado</label>
+                                                <div class="col-md-4">
+                                                    <h:selectOneMenu value="#{catgeBean.respSeleccionado.CRespEstado}">
+                                                        <f:selectItem itemValue="A" itemLabel="Activo" />
+                                                        <f:selectItem itemValue="I" itemLabel="Inactivo" />
+                                                    </h:selectOneMenu>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualRp()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayR2"  oncomplete="modifResp.hide();"/>
+                                                </div>                                                
+                                            </div>
+                                        </h:panelGroup>  
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </h:form>
+        </ui:define>
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('#trespon').dataTable(
+                            {
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
+                });
+            </script>
+        </ui:define>
+
+    </ui:composition>
+</html>
