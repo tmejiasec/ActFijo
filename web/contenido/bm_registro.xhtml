@@ -1158,7 +1158,7 @@
                                                     <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
                                                     <f:setPropertyActionListener value="#{lote}"
                                                                                  target="#{bienesBean.bienIngLote}" />
-                                                    <p:ajax process="@this" update=":formLotes:adiIngre:dispIng"/>
+                                                    <p:ajax process="@this" update=":formLotes:adiIngre:dispIng" />
                                                 </h:commandLink>
                                             </td>
                                         </tr>
@@ -1222,11 +1222,11 @@
                                             </h:panelGroup>
                                         </div>
                                         <div class="modal-footer">
-                                            <h:commandLink value="Proceso" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#mosIngre">
+                                            <h:commandLink value="Proceso" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#mosIngre" >
                                                 <span class="glyphicon glyphicon-plus-cog" aria-hidden="true"></span>
                                                 <f:setPropertyActionListener value="#{lote}"
-                                                                             target="#{bienesBean.bienIngLote}" />
-                                                <!--<p:ajax process="@this" update=":formLotes:mosIngre"/>-->
+                                                                             target="#{bienesBean.bienIngLote}"  />
+                                                <!--<p:ajax listener="{bienesBean.espCorrSeleccion}" />-->
                                             </h:commandLink>
 
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
@@ -1265,7 +1265,7 @@
                                                     <div class="col-md-4">
                                                         <div>
                                                             <p:commandButton id="confI" icon="ui-icon-process" class="btn btn-primary" value="Generar Lote" 
-                                                                             action="#{bienesBean.generarI()}"  update="@this :formLotes:lisIngre" process="@this" />
+                                                                             action="#{bienesBean.generarI()}"   update="@this :formLotes:lisIngre" process="@this" />
                                                         </div>
                                                     </div>
 
@@ -1337,7 +1337,7 @@
                                                         </tbody>  
                                                     </table>
                                                     <p:commandButton id="ConsolButtonCa" value="Actualizar Códigos" icon="ui-icon-folder-open" action="#{bienesBean.generarI2()}" update=":formLotes:lisIngre" process="@this datIngL" />				 
-                                                    <p:commandButton id="GuarButtonCa" value="Guardar Datos" icon="ui-icon-folder-save" action="#{bienesBean.guardarI()}" update=":formLotes:lisIngre" process="@this datIngL" />				 
+                                                    <p:commandButton id="GuarButtonCa" value="Guardar Datos" icon="ui-icon-folder-save" action="#{bienesBean.guardarI()}" update=":formLotes:lisIngre" process="@this datIngL" oncomplete="mosIngre.hide();"/>				 
 
 <!--                                                    <h:commandLink value="Agregar Datos" class="btn btn-default" >
                                                         <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>

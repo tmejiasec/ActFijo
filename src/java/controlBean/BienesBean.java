@@ -138,7 +138,10 @@ public class BienesBean implements Serializable {
     private Boolean estadoI = false;
     private Boolean estadoIn = false;
     Date fecad, fecgar, fecreg, fecdep;
-
+    private Integer iniCorr=0;
+    private Integer espec;
+    
+    private CEspecificos especSel = new CEspecificos();
     private String nomNiv, nomDep, regBien;
     private String tipref = "REG";
     private String tipo = "F";
@@ -1121,6 +1124,30 @@ public class BienesBean implements Serializable {
         this.bienIngLote = bienIngLote;
     }
 
+    public Integer getIniCorr() {
+        return iniCorr;
+    }
+
+    public void setIniCorr(Integer iniCorr) {
+        this.iniCorr = iniCorr;
+    }
+
+    public CEspecificos getEspecSel() {
+        return especSel;
+    }
+
+    public void setEspecSel(CEspecificos especSel) {
+        this.especSel = especSel;
+    }
+
+    public Integer getEspec() {
+        return espec;
+    }
+
+    public void setEspec(Integer espec) {
+        this.espec = espec;
+    }
+
     public void nivDepSeleccion() {
 //        nuevoBien.setCRespId(getDaoResp().getResp(respSeleccionado));
 //        nivSeleccionado=nuevoBien.getCRespId().getCNivelId().getCNivelId();
@@ -1179,6 +1206,12 @@ public class BienesBean implements Serializable {
         depSeleccionada = nuevoBien.getCRespId().getCDepenId().getCDepenId();
     }
 
+    public void espCorrSeleccion() {
+        espec = bienIngLote.getCEspecId().getCEspecId();
+        especSel = getDaoEspec().getEspec(espec);
+        System.out.println("espec sel: "+especSel.getCEspecCodigo());
+    }
+    
     public void buscarCod() throws NamingException {
         int resul = 0;
         String cod;
@@ -1225,6 +1258,9 @@ public class BienesBean implements Serializable {
     }
 
     public List generarI() throws NamingException {
+        espec = bienIngLote.getCEspecId().getCEspecId();
+        especSel = getDaoEspec().getEspec(espec);
+        System.out.println("espec sel: "+especSel.getCEspecCodigo());
         cod = bienIngLote.getTBienCodigo();
         datosIn = getDaoBienes().datosI(cod);
         int cant;
@@ -1233,7 +1269,7 @@ public class BienesBean implements Serializable {
 //        System.out.println(datosIn + " :datos: ");
         for (int i = 0; i < cant; i++) {
             bienesIn.add(datosIn.get(0));
-  //          System.out.println("dat " + i + " " + bienesIn.get(i));
+            //          System.out.println("dat " + i + " " + bienesIn.get(i));
         }
 //        System.out.println("total generados: " + bienesIn.size());
 
@@ -1241,28 +1277,31 @@ public class BienesBean implements Serializable {
     }
 
     public List generarI2() throws NamingException {
-        Integer iniCorr = bienIngLote.getCEspecId().getCEspecCorr();
+//        Integer idEsp=bienIngLote.getCEspecId().getCEspecId();
+//        especSel = getDaoEspec().getEspec(idEsp);
+        System.out.println("espec "+especSel.getCEspecDesc());
+        Integer iniCorrL = especSel.getCEspecCorr();
         cod = bienIngLote.getTBienCodigo();
         int cant;
         cant = bienIngLote.getTBienCantxlote();
-//        System.out.println("cod sel: " + cod);
+        System.out.println("corr ini: " + iniCorrL);
         String prefC = cod.substring(0, 8);
         String nvoCod = "";
         List copiaIn = new ArrayList<>();
         for (int i = 0; i < cant; i++) {
             // Determinando código
-            iniCorr = iniCorr + 1;
-            String nvoCorr = Integer.toString(iniCorr);
-            if (iniCorr < 10) {
+            iniCorrL = iniCorrL + 1;
+            String nvoCorr = Integer.toString(iniCorrL);
+            if (iniCorrL < 10) {
                 nvoCod = (prefC + "000" + nvoCorr);
             }
-            if (iniCorr > 9 && iniCorr < 100) {
+            if (iniCorrL > 9 && iniCorrL < 100) {
                 nvoCod = (prefC + "00" + nvoCorr);
             }
-            if (iniCorr > 99 && iniCorr < 1000) {
+            if (iniCorrL > 99 && iniCorrL < 1000) {
                 nvoCod = (prefC + "0" + nvoCorr);
             } else {
-                if (iniCorr >= 1000) {
+                if (iniCorrL >= 1000) {
                     nvoCod = (prefC + nvoCorr);
                 }
             }
@@ -1275,27 +1314,249 @@ public class BienesBean implements Serializable {
             }
 
             ingre = (Object[]) bienesIn.get(i);
-            ingre[15]=nvoCod;
-  //          System.out.println(ingre[15]+" cod act.");
-  //        pasando dato a copia de la lista
+            ingre[15] = nvoCod;
+            //          System.out.println(ingre[15]+" cod act.");
+            //        pasando dato a copia de la lista
             copiaIn.add(ingre.clone());
         }
 //        limpiando bienesIn (lista que es mostrada en pantalla)
         bienesIn.clear();
 //      pasando datos de copia a lista original
-         for (int k = 0; k < cant; k++) {
-             bienesIn.add(copiaIn.get(k));
- //            System.out.println("nuevo In"+bienesIn.get(k));
-         }
-         
+        for (int k = 0; k < cant; k++) {
+            bienesIn.add(copiaIn.get(k));
+            //            System.out.println("nuevo In"+bienesIn.get(k));
+        }
+
 //        System.out.println("total actualizados: " + bienesIn.size());
 //        System.out.println("códigos determinados");
+        iniCorr=iniCorrL;
+        System.out.println("corr fin "+iniCorr);
         return bienesIn;
 
     }
 
-    public void guardarI() {
+    public void guardarI() throws ParseException {
+        // se hizo el for tomando la lista generada bienesIn
+        System.out.println("corr final "+iniCorr);
+       // this.iniCorr=iniCorr;
+        Integer espec=bienIngLote.getCEspecId().getCEspecId();
+        Integer idCod=bienIngLote.getTBienId();
+        String codini=bienIngLote.getTBienCodinilot();
+        String codfin=bienIngLote.getTBienCodfinlot();
+        Date fecha = new Date();
+        nuevoBien = new TBienes();
+        Integer i_fuentes = null, i_resp = null, i_tipd = null, i_tipdesc = null;
+        Integer i_estadb = null, i_estpro = null, i_prov = null, i_marca = null;
+        Integer i_proy = null, i_formad = null, i_ubic = null, i_espec = null;
+        Integer i_condb = null, i_proceso = null, i_uscrea = null, i_usmod = null;
+        Integer i_fecad = null, i_fvgar = null, i_freg = null, i_finid = null;
+        Integer i_area = null, i_edif = null, i_rubro = null, i_nivel = null, i_depen = null;
+        Date i_fechind = null, i_fechreg = null;
 
+        for (int i = 0; i < bienesIn.size(); i++) {
+            ingre = (Object[]) bienesIn.get(i);
+            System.out.println(bienesIn.get(i));
+//            // pasando a variables
+            i_fuentes = Integer.parseInt(ingre[1].toString());
+            i_resp = Integer.parseInt(ingre[2].toString());
+            if (ingre[3] == null){
+            }
+            else{
+                i_tipdesc = Integer.parseInt(ingre[3].toString());}
+            if (ingre[4] == null){
+            }
+            else{
+            i_tipd = Integer.parseInt(ingre[4].toString());}
+            if (ingre[5] == null){}
+            else{
+            i_estadb = Integer.parseInt(ingre[5].toString());}
+            if (ingre[6] == null){}
+            else{
+            i_estpro = Integer.parseInt(ingre[6].toString());}
+            if (ingre[7] == null){}
+            else{
+            i_prov = Integer.parseInt(ingre[7].toString());}
+            if (ingre[8] == null){}
+            else{
+            i_marca = Integer.parseInt(ingre[8].toString());}
+            if (ingre[9] == null){}
+            else{
+            i_proy = Integer.parseInt(ingre[9].toString());}
+            if (ingre[10] == null){}
+            else{
+            i_formad = Integer.parseInt(ingre[10].toString());}
+//            //     int i_cestpro = Integer.parseInt(ingre[11].toString()); este no es necesario
+            if (ingre[12] == null){}
+            else{
+            i_ubic = Integer.parseInt(ingre[12].toString());}
+            if (ingre[13] == null){}
+            else{
+            i_espec = Integer.parseInt(ingre[13].toString());}
+            if (ingre[14] == null){}
+            else{
+            i_condb = Integer.parseInt(ingre[14].toString());}
+            String i_codigob = ingre[15].toString();
+            String i_desc = ingre[16].toString();
+            String i_modelo = ingre[17].toString();
+            String i_serie = ingre[18].toString();
+            String i_tipinv = ingre[19].toString();
+            Date i_fecha = ParseFecha(ingre[20].toString());
+            double i_valorad = Double.parseDouble(ingre[21].toString());
+            Date i_fechgar = ParseFecha(ingre[22].toString());
+            String i_numdoc = ingre[23].toString();
+            if (ingre[24] == null){}
+            else{
+            i_fechreg = ParseFecha(ingre[24].toString());}
+            String i_partida = ingre[25].toString();
+            boolean i_deprec = Boolean.parseBoolean(ingre[26].toString());
+            if (ingre[27] == null){}
+            else{
+            i_fechind = ParseFecha(ingre[27].toString());}
+            boolean i_buso = Boolean.parseBoolean(ingre[28].toString());
+//            //String i_inglote = ingre[29].toString();                
+//            String i_codagru = ingre[30].toString();
+//            boolean i_foto = Boolean.parseBoolean(ingre[31].toString());
+//            boolean i_docing = Boolean.parseBoolean(ingre[32].toString());
+            if (ingre[33] == null){}
+            else{
+            i_proceso = Integer.parseInt(ingre[33].toString());}
+            if (ingre[34] == null){}
+            else{
+            i_uscrea = Integer.parseInt(ingre[34].toString());}
+            //Date i_fechcrea = ParseFecha(ingre[35].toString());
+            if (ingre[36] == null){}
+            else{
+            i_usmod = Integer.parseInt(ingre[36].toString());}
+            //Date i_fechmod = ParseFecha(ingre[37].toString());
+            if (ingre[38] == null){}
+            else{
+            i_fecad = Integer.parseInt(ingre[38].toString());}
+            if (ingre[39] == null){}
+            else{            
+            i_fvgar = Integer.parseInt(ingre[39].toString());}
+            if (ingre[40] == null){}
+            else{
+            i_freg = Integer.parseInt(ingre[40].toString());}
+            if (ingre[41] == null){}
+            else{
+            i_finid = Integer.parseInt(ingre[41].toString());}
+            if (ingre[42] == null){}
+            else{
+            i_area = Integer.parseInt(ingre[42].toString());}
+            if (ingre[43] == null){}
+            else{
+            i_edif = Integer.parseInt(ingre[43].toString());}
+            if (ingre[44] == null){}
+            else{
+            i_rubro = Integer.parseInt(ingre[44].toString());}
+            if (ingre[45] == null){}
+            else{
+            i_nivel = Integer.parseInt(ingre[45].toString());}
+            if (ingre[46] == null){}
+            else{
+            i_depen = Integer.parseInt(ingre[46].toString());}
+            //int i_cantlote = Integer.parseInt(ingre[47].toString());
+            // asignando a campos a nuevoBien
+            if (i_fuentes == null){}
+            else{
+            nuevoBien.setCFuentesId(getDaoFuentes().getFuentef(i_fuentes));}
+            if (i_resp == null){}
+            else{
+            nuevoBien.setCRespId(getDaoResp().getResp(i_resp));}
+            if (i_tipdesc == null){}
+            else{
+            nuevoBien.setCTipdescId(getDaoTipDesc().getTipd(i_tipdesc));}
+            if (i_tipd == null){}
+            else{            
+            nuevoBien.setCTipdId(getDaoTipdoc().getTipdoc(i_tipd));}
+            if (i_estadb == null){}
+            else{
+            nuevoBien.setCEstadbId(getDaoEstBien().getEstBien(i_estadb));}
+            if (i_estpro == null){}
+            else{
+            nuevoBien.setCEstproId(getDaoEstProc().getEstpro(i_estpro));}
+            if (i_prov == null){}
+            else{
+            nuevoBien.setCProvId(getDaoProvee().getProv(i_prov));}
+            if (i_marca == null){}
+            else{
+            nuevoBien.setCMarcaId(getDaoMarcas().getMarca(i_marca));}
+            if (i_proy == null){}
+            else{
+            nuevoBien.setCProyId(getDaoProyec().getProy(i_proy));}
+            if (i_formad == null){}
+            else{
+            nuevoBien.setCFormadId(getDaoFormas().getFormad(i_formad));}
+//            // aqui va el otro c_estpro..lo dejaré null
+            if (i_ubic == null){}
+            else{
+            nuevoBien.setCUbicId(getDaoUbic().getUbic(i_ubic));}
+            if (i_espec == null){}
+            else{
+            nuevoBien.setCEspecId(getDaoEspec().getEspec(i_espec));}
+            if (i_condb == null){}
+            else{
+            nuevoBien.setCCondbId(getDaoConBien().getCondb(i_condb));}
+            nuevoBien.setTBienCodigo(i_codigob);
+            nuevoBien.setTBienDesc(i_desc);
+            nuevoBien.setTBienModelo(i_modelo);
+            nuevoBien.setTBienSerie(i_serie);
+            nuevoBien.setTBienTipinv(i_tipinv);
+            nuevoBien.setTBienFechadq(i_fecha);
+            nuevoBien.setTBienValoradq(i_valorad);
+            nuevoBien.setTBienFechvgar(i_fechgar);
+            nuevoBien.setTBienNumdoc(i_numdoc);
+            nuevoBien.setTBienFechregb(i_fechreg);
+            nuevoBien.setTBienPartida(i_partida);
+            nuevoBien.setTBienDepreciable(i_deprec);
+            nuevoBien.setTBienFechinidep(i_fechind);
+            nuevoBien.setTBienUso(i_buso);
+//            //nuevoBien.setTBienInglote(i_inglote); Este no....
+//            nuevoBien.setTBienCodagrup(i_codagru);
+//            nuevoBien.setTBienFoto(i_foto);
+//            nuevoBien.setTBienDocing(i_docing);
+            nuevoBien.setTBienProceso(i_proceso);
+            nuevoBien.setTBienUscrea(i_uscrea);
+            nuevoBien.setTBienFechcrea(fecha);
+            nuevoBien.setTBienUsmodif(i_usmod);
+//            nuevoBien.setTBienFechmod(i_fechmod);
+            nuevoBien.setTBienFecadId(i_fecad);
+            nuevoBien.setTBienFvgarId(i_fvgar);
+            nuevoBien.setTBienFregId(i_freg);
+            nuevoBien.setTBienFinidId(i_finid);
+            if (i_area == null){}
+            else{
+            nuevoBien.setCAreaId(getDaoArea().getArea(i_area));}
+            if (i_edif == null){}
+            else{
+            nuevoBien.setCEdifId(getDaoEdif().getEdif(i_edif));}
+            if (i_rubro == null){}
+            else{
+            nuevoBien.setCRubroId(getDaoRubro().getRubro(i_rubro));}
+            if (i_nivel == null){}
+            else{
+            nuevoBien.setCNivelId(getDaoNivel().getNivel(i_nivel));}
+            if (i_depen == null){}
+            else{
+            nuevoBien.setCDepenId(getDaoDepen().getDepend(i_depen));}
+//            nuevoBien.setTBienCantxlote(i_cantlote); este tampoco
+            nuevoBien.setTBienHoracrea(formatoHora.parse(formatoHora.format(fecha)));
+            nuevoBien.setTBienFecinglote(fecha);
+            // guardando registro en t_bienes
+            getDaoBienes().create(nuevoBien);
+            // creando nuevoBien
+            nuevoBien = new TBienes();
+        }
+        // actualizando correlativos en especificos 
+            getDaoEspec().updateC(espec, iniCorr);
+//			System.out.println("actualizado consol en movVtae");
+        // actualizando datos de código base del lote en t_bienes
+            getDaoBienes().updateL(idCod, fecha, codini, codfin);
+
+        FacesContext.getCurrentInstance().addMessage(null,
+                new FacesMessage("Datos Adicionados"));
+
+        //	return null;
     }
 
     public Date ParseFecha(String fecha) {

@@ -6,6 +6,7 @@
 package dao;
 
 import entidades.TBienes;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -35,6 +36,8 @@ public interface TBienesFacadeLocal {
     public List busqueda(String desc);
     
     public List datosI(String cod);
+    
+    public Integer updateL(Integer idcod,Date fecinl,String codini,String codfin);    
 
     TBienes find(Object id);
 

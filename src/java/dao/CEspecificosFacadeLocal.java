@@ -29,6 +29,8 @@ public interface CEspecificosFacadeLocal {
     public List busqueda(String desc);
     
     public CEspecificos getEspec(Integer espec);
+    
+    public Integer updateC(Integer espec,Integer corr);    
 
     CEspecificos find(Object id);
 

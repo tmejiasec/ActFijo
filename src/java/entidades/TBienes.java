@@ -45,7 +45,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TBienes.findByTBienDepreciable", query = "SELECT t FROM TBienes t WHERE t.tBienDepreciable = :tBienDepreciable"),
     @NamedQuery(name = "TBienes.findByTBienFechinidep", query = "SELECT t FROM TBienes t WHERE t.tBienFechinidep = :tBienFechinidep"),
     @NamedQuery(name = "TBienes.findByTBienUso", query = "SELECT t FROM TBienes t WHERE t.tBienUso = :tBienUso"),
-    @NamedQuery(name = "TBienes.findByTBienInglote", query = "SELECT t FROM TBienes t WHERE t.tBienInglote = :tBienInglote"),
+    @NamedQuery(name = "TBienes.findByTBienInglote", query = "SELECT t FROM TBienes t WHERE t.tBienInglote = :tBienInglote AND t.tBienLoteingre = :tBienLoteingre"),
     @NamedQuery(name = "TBienes.findByTBienCodagrup", query = "SELECT t FROM TBienes t WHERE t.tBienCodagrup = :tBienCodagrup"),
     @NamedQuery(name = "TBienes.findByTBienFoto", query = "SELECT t FROM TBienes t WHERE t.tBienFoto = :tBienFoto"),
     @NamedQuery(name = "TBienes.findByTBienDocing", query = "SELECT t FROM TBienes t WHERE t.tBienDocing = :tBienDocing"),
@@ -78,7 +78,7 @@ import javax.validation.constraints.Size;
     @Column(name = "t_bien_serie")
     private String tBienSerie;
     @Column(name = "t_bien_tipinv")
-    private Character tBienTipinv;
+    private String tBienTipinv;
     @Column(name = "t_bien_fechadq")
     @Temporal(TemporalType.DATE)
     private Date tBienFechadq;
@@ -153,7 +153,8 @@ import javax.validation.constraints.Size;
     private Integer tBienUsmodif;
     @Column(name = "t_bien_cantxlote")
     private Integer tBienCantxlote;
-
+    @Column(name = "t_bien_loteingre")
+    private Boolean tBienLoteingre;
      
     @Column(name = "t_bien_fecad_id")
     private Integer tBienFecadId;
@@ -262,11 +263,11 @@ import javax.validation.constraints.Size;
         this.tBienSerie = tBienSerie;
     }
 
-    public Character getTBienTipinv() {
+    public String getTBienTipinv() {
         return tBienTipinv;
     }
 
-    public void setTBienTipinv(Character tBienTipinv) {
+    public void setTBienTipinv(String tBienTipinv) {
         this.tBienTipinv = tBienTipinv;
     }
 
@@ -654,7 +655,16 @@ import javax.validation.constraints.Size;
     public void setTBienCodfinlot(String tBienCodfinlot) {
         this.tBienCodfinlot = tBienCodfinlot;
     }
+
+    public Boolean getTBienLoteingre() {
+        return tBienLoteingre;
+    }
+
+    public void setTBienLoteingre(Boolean tBienLoteingre) {
+        this.tBienLoteingre = tBienLoteingre;
+    }
     
+
     @Override
     public int hashCode() {
         int hash = 0;

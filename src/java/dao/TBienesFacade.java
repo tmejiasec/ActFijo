@@ -6,6 +6,7 @@
 package dao;
 
 import entidades.TBienes;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -37,7 +38,7 @@ public class TBienesFacade extends AbstractFacade<TBienes> implements TBienesFac
     
     @Override
     public List getListL() {			
-	return em.createNamedQuery("TBienes.findByTBienInglote").setParameter("tBienInglote",true).getResultList();
+	return em.createNamedQuery("TBienes.findByTBienInglote").setParameter("tBienInglote",true).setParameter("tBienLoteingre", false).getResultList();
     }
     
     
@@ -96,4 +97,11 @@ public class TBienesFacade extends AbstractFacade<TBienes> implements TBienesFac
 	 return ingresos;
         }
     
+@Override
+    public Integer updateL(Integer idcod,Date fecinl,String codini,String codfin){
+    	String actualiz = "UPDATE t_bienes SET t_bien_fecinglote = ?2, t_bien_codinilot = ?3, t_bien_codfinlot = ?4, t_bien_loteingre = ?5 WHERE t_bien_id= ?1";
+        Query qactual = em.createNativeQuery(actualiz).setParameter(1,idcod).setParameter(2,fecinl).setParameter(3,codini).setParameter(4,codfin).setParameter(5, true);
+        int resultado = qactual.executeUpdate(); 
+        return resultado;
+    }        
 }

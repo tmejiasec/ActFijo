@@ -64,6 +64,15 @@ public class CEspecificosFacade extends AbstractFacade<CEspecificos> implements 
 	public CEspecificos getEspec(Integer espec){		
 		return (CEspecificos) em.createNamedQuery("CEspecificos.findByCEspecId").setParameter("cEspecId",espec).getSingleResult();
 	}
+        
+@Override
+    public Integer updateC(Integer espec, Integer corr){
+    	
+    	String actualiz = "UPDATE c_especificos SET c_espec_corr= ?2 WHERE c_espec_id= ?1";
+        Query qactual = em.createNativeQuery(actualiz).setParameter(1,espec).setParameter(2,corr);
+        int resultado = qactual.executeUpdate(); 
+        return resultado;
+    }
     
     
 }
