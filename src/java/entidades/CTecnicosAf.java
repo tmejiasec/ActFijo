@@ -50,6 +50,12 @@ public class CTecnicosAf implements Serializable {
     private String cTecafTelefono;
     @Column(name = "c_tecaf_estado")
     private Character cTecafEstado;
+    @Size(max = 100)
+    @Column(name = "c_tecaf_correo")
+    private String cTecafCorreo;
+    @Size(max = 50)
+    @Column(name = "c_tecaf_profesion")
+    private String cTecafProfesion;
     @JoinColumn(name = "c_jefesd_id", referencedColumnName = "c_jefesd_id")
     @ManyToOne
     private CJefesDep cJefesdId;
@@ -102,6 +108,22 @@ public class CTecnicosAf implements Serializable {
 
     public void setCTecafEstado(Character cTecafEstado) {
         this.cTecafEstado = cTecafEstado;
+    }
+
+    public String getCTecafProfesion() {
+        return cTecafProfesion;
+    }
+
+    public void setCTecafProfesion(String cTecafProfesion) {
+        this.cTecafProfesion = cTecafProfesion;
+    }
+
+    public String getCTecafCorreo() {
+        return cTecafCorreo;
+    }
+
+    public void setCTecafCorreo(String cTecafCorreo) {
+        this.cTecafCorreo = cTecafCorreo;
     }
 
     public CJefesDep getCJefesdId() {

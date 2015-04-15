@@ -12,7 +12,9 @@ import dao.CDependenciasFacadeLocal;
 import entidades.CDependencias;
 import dao.CJefesDepFacadeLocal;
 import entidades.CJefesDep;
-import dao.CEdificiosFacadeLocal;
+import dao.CJefesDepFacadeLocal;
+import entidades.CTecnicosAf;
+import dao.CTecnicosAfFacadeLocal;
 import entidades.CEdificios;
 import dao.CAreasFacadeLocal;
 import entidades.CAreas;
@@ -23,6 +25,7 @@ import entidades.CResponsables;
 import dao.CZonasFacadeLocal;
 import entidades.CZonas;
 import dao.CDeptosFacadeLocal;
+import dao.CEdificiosFacadeLocal;
 import entidades.CDeptos;
 import dao.CMunicFacadeLocal;
 import entidades.CMunic;
@@ -59,11 +62,18 @@ public class CatgeBean implements Serializable {
     private Integer nivSeleccionado;
     private CDependencias nuevaDep = new CDependencias();
     private CDependencias depSeleccionada = new CDependencias();
+    private Integer depenSeleccionada;
     private List<CJefesDep> jefes = new ArrayList<>();
     private CJefesDep jefe;
-    private Integer depenSeleccionada;
     private CJefesDep nuevoJefe = new CJefesDep();
     private CJefesDep jefeSeleccionado = new CJefesDep();
+    private Integer jefSeleccionado;
+    private List<CTecnicosAf> tecnicos = new ArrayList<>();
+    private CTecnicosAf tecnico;
+    private CTecnicosAf nuevoTec = new CTecnicosAf();
+    private CTecnicosAf tecSeleccionado = new CTecnicosAf();
+    private Integer tecniSeleccionado;
+    
     private List<CEdificios> edificios = new ArrayList<>();
     private CEdificios edificio;
     private String descrip;
@@ -113,7 +123,7 @@ public class CatgeBean implements Serializable {
         ubics = getDaoUbic().getList();
         respons = getDaoResp().getList();
         zonas = getDaoZona().getList();
-
+        tecnicos = getDaoTecaf().getList();     
     }
 
     public String buscarNv() throws NamingException {
@@ -208,6 +218,42 @@ public class CatgeBean implements Serializable {
         return null;
     }
 
+    public String buscarTaf() throws NamingException {
+
+        jefes = getDaoTecaf().busqueda(nombre);
+
+        return null;
+    }
+
+    public String guardarTaf() throws NamingException {
+        System.out.println("id jef "+jefSeleccionado);
+        nuevoTec.setCDepenId(getDaoDepen().getDepend(depenSeleccionada));
+        nuevoTec.setCJefesdId(getDaoJefes().getJefeDep(jefSeleccionado));
+        getDaoTecaf().create(nuevoTec);
+        FacesUtil.addMensaje("Técnico Activo Fijo Guardado");
+        nuevoTec = new CTecnicosAf();
+        tecnicos = getDaoTecaf().getList();
+        return null;
+    }
+
+    public String actualTaf() throws NamingException {
+        tecSeleccionado.setCDepenId(getDaoDepen().getDepend(depenSeleccionada));
+        tecSeleccionado.setCJefesdId(getDaoJefes().getJefeDep(jefSeleccionado));
+        getDaoTecaf().edit(tecSeleccionado);
+        FacesUtil.addMensaje("Técnico Activo Fijo Actualizado");
+        return null;
+    }
+
+    public String borrarTaf() throws NamingException {
+        return null;
+    }
+
+    public String limpiarTaf() {
+        tecnico = new CTecnicosAf();
+        return null;
+    }
+    
+    
     public String buscarEd() throws NamingException {
 
         edificios = getDaoEdif().busqueda(descrip);
@@ -456,6 +502,10 @@ public class CatgeBean implements Serializable {
     private CEdificiosFacadeLocal getDaoEdif() {
         return (CEdificiosFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CEdificiosFacade!dao.CEdificiosFacadeLocal");
     }
+    
+    private CTecnicosAfFacadeLocal getDaoTecaf() {
+        return (CTecnicosAfFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CTecnicosAfFacade!dao.CTecnicosAfFacadeLocal");
+    }
 
     private CDeptosFacadeLocal getDaoDeptos() {
         return (CDeptosFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CDeptosFacade!dao.CDeptosFacadeLocal");
@@ -627,6 +677,54 @@ public class CatgeBean implements Serializable {
 
     public void setJefeSeleccionado(CJefesDep jefeSeleccionado) {
         this.jefeSeleccionado = jefeSeleccionado;
+    }
+
+    public Integer getJefSeleccionado() {
+        return jefSeleccionado;
+    }
+
+    public void setJefSeleccionado(Integer jefSeleccionado) {
+        this.jefSeleccionado = jefSeleccionado;
+    }
+
+    public List<CTecnicosAf> getTecnicos() {
+        return tecnicos;
+    }
+
+    public void setTecnicos(List<CTecnicosAf> tecnicos) {
+        this.tecnicos = tecnicos;
+    }
+
+    public CTecnicosAf getTecnico() {
+        return tecnico;
+    }
+
+    public void setTecnico(CTecnicosAf tecnico) {
+        this.tecnico = tecnico;
+    }
+
+    public CTecnicosAf getNuevoTec() {
+        return nuevoTec;
+    }
+
+    public void setNuevoTec(CTecnicosAf nuevoTec) {
+        this.nuevoTec = nuevoTec;
+    }
+
+    public CTecnicosAf getTecSeleccionado() {
+        return tecSeleccionado;
+    }
+
+    public void setTecSeleccionado(CTecnicosAf tecSeleccionado) {
+        this.tecSeleccionado = tecSeleccionado;
+    }
+
+    public Integer getTecniSeleccionado() {
+        return tecniSeleccionado;
+    }
+
+    public void setTecniSeleccionado(Integer tecniSeleccionado) {
+        this.tecniSeleccionado = tecniSeleccionado;
     }
 
     public List<CEdificios> getEdificios() {
@@ -917,6 +1015,11 @@ public class CatgeBean implements Serializable {
         depenSeleccionada = jefeSeleccionado.getCDepenId().getCDepenId();
     }
 
+    public void asignarDepenT() {
+        depenSeleccionada = tecSeleccionado.getCDepenId().getCDepenId();
+        jefSeleccionado = tecSeleccionado.getCJefesdId().getCJefesdId();
+    }
+    
     public void asignarEdif() {
         ediSeleccionado = areaSeleccionada.getCEdifId().getCEdifId();
     }
