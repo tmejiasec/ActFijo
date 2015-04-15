@@ -6,6 +6,8 @@
 package dao;
 
 import entidades.TBienes;
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -38,7 +40,7 @@ public class TBienesFacade extends AbstractFacade<TBienes> implements TBienesFac
     
     @Override
     public List getListL() {			
-	return em.createNamedQuery("TBienes.findByTBienInglote").setParameter("tBienInglote",true).setParameter("tBienLoteingre", false).getResultList();
+	return em.createNamedQuery("TBienes.findByTBienInglote").setParameter("tBienInglote",TRUE).setParameter("tBienLoteingre", FALSE).getResultList();
     }
     
     

@@ -218,6 +218,9 @@ public class BienesBean implements Serializable {
         }
         nuevoBien.setTBienHoracrea(formatoHora.parse(formatoHora.format(fecha)));
         // creando registro y guardando datos
+        if (nuevoBien.getTBienCantxlote()==0){}
+        else{nuevoBien.setTBienLoteingre(ingLote);
+        }
         getDaoBienes().create(nuevoBien);
         //        FacesUtil.addMensaje("Bien Guardado");
         bienes = getDaoBienes().getList();
@@ -256,6 +259,9 @@ public class BienesBean implements Serializable {
         //actualizando cambios en la tabla
         bienSeleccionado.setTBienFechmod(fecha);
         bienSeleccionado.setTBienHoramod(formatoHora.parse(formatoHora.format(fecha)));
+        if (bienSeleccionado.getTBienCantxlote()==0){}
+        else{bienSeleccionado.setTBienLoteingre(ingLote);
+        }
         getDaoBienes().edit(bienSeleccionado);
         //generando tabla de nuevo
         bienes = getDaoBienes().getList();
@@ -1352,13 +1358,19 @@ public class BienesBean implements Serializable {
         Integer i_fecad = null, i_fvgar = null, i_freg = null, i_finid = null;
         Integer i_area = null, i_edif = null, i_rubro = null, i_nivel = null, i_depen = null;
         Date i_fechind = null, i_fechreg = null;
+        Date i_fecha = null, i_fechgar = null;
+        Double i_valorad = null;
 
         for (int i = 0; i < bienesIn.size(); i++) {
             ingre = (Object[]) bienesIn.get(i);
             System.out.println(bienesIn.get(i));
 //            // pasando a variables
-            i_fuentes = Integer.parseInt(ingre[1].toString());
-            i_resp = Integer.parseInt(ingre[2].toString());
+            if (ingre[1] == null){}
+            else{
+            i_fuentes = Integer.parseInt(ingre[1].toString());}
+            if (ingre[2] == null){}
+            else{
+            i_resp = Integer.parseInt(ingre[2].toString());}
             if (ingre[3] == null){
             }
             else{
@@ -1400,9 +1412,15 @@ public class BienesBean implements Serializable {
             String i_modelo = ingre[17].toString();
             String i_serie = ingre[18].toString();
             String i_tipinv = ingre[19].toString();
-            Date i_fecha = ParseFecha(ingre[20].toString());
-            double i_valorad = Double.parseDouble(ingre[21].toString());
-            Date i_fechgar = ParseFecha(ingre[22].toString());
+            if (ingre[20] == null){}
+            else{
+             i_fecha = ParseFecha(ingre[20].toString());}
+            if (ingre[21] == null){}
+            else{
+             i_valorad = Double.parseDouble(ingre[21].toString());}
+            if (ingre[22] == null){}
+            else{
+            i_fechgar = ParseFecha(ingre[22].toString());}
             String i_numdoc = ingre[23].toString();
             if (ingre[24] == null){}
             else{

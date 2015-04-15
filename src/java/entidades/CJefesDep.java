@@ -40,6 +40,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CJefesDep.findByCJefesdAutoriz", query = "SELECT c FROM CJefesDep c WHERE c.cJefesdAutoriz = :cJefesdAutoriz"),
     @NamedQuery(name = "CJefesDep.findByCJefesdEstado", query = "SELECT c FROM CJefesDep c WHERE c.cJefesdEstado = :cJefesdEstado")})
 public class CJefesDep implements Serializable {
+    @OneToMany(mappedBy = "cJefesdId")
+    private List<CTecnicosAf> cTecnicosAfList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -238,6 +240,14 @@ public class CJefesDep implements Serializable {
     @Override
     public String toString() {
         return "entidades.CJefesDep[ cJefesdId=" + cJefesdId + " ]";
+    }
+
+    public List<CTecnicosAf> getCTecnicosAfList() {
+        return cTecnicosAfList;
+    }
+
+    public void setCTecnicosAfList(List<CTecnicosAf> cTecnicosAfList) {
+        this.cTecnicosAfList = cTecnicosAfList;
     }
     
 }

@@ -38,6 +38,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CDependencias.findByCDepenJerar", query = "SELECT c FROM CDependencias c WHERE c.cDepenJerar = :cDepenJerar")})
 public class CDependencias implements Serializable {
     @OneToMany(mappedBy = "cDepenId")
+    private List<CTecnicosAf> cTecnicosAfList;
+    @OneToMany(mappedBy = "cDepenId")
     private List<CProyectos> cProyectosList;
     @OneToMany(mappedBy = "cDepenId")
     private List<TBienes> tBienesList;
@@ -225,6 +227,14 @@ public class CDependencias implements Serializable {
 
     public void setTBienesList(List<TBienes> tBienesList) {
         this.tBienesList = tBienesList;
+    }
+
+    public List<CTecnicosAf> getCTecnicosAfList() {
+        return cTecnicosAfList;
+    }
+
+    public void setCTecnicosAfList(List<CTecnicosAf> cTecnicosAfList) {
+        this.cTecnicosAfList = cTecnicosAfList;
     }
     
 }
