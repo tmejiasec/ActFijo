@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <!-- 
+                    Replace path to template, title, header and body
+                    with actual data.
+    -->
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+        <ui:define name="content">
+
+            <h:form style="width: 73%;">
+                <center>
+                    <p:panel> <h3>Reporte de Dependencias por Nivel</h3></p:panel>
+                </center>    
+                <p:panelGrid columns="2">
+
+<!--                    <h:outputLabel value="Proveedor" />
+                    <h:selectOneMenu id="proveedor"
+                                     value="{reporteBean.prov}">
+                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0" />
+                        <f:selectItems value="{reporteBean.provee}" var="prov"
+                                       itemLabel="{prov.provRegistro} {prov.provNombre}" itemValue="{prov.provId}" />
+                    </h:selectOneMenu>-->
+
+<!--                    <h:outputLabel value="Desde:" style="font-weight: bold"/>  
+                    <p:calendar value="{reporteBean.fechD}"
+                                locale="es" pattern="dd/MM/yyyy" showOn="button"
+                                style="width: 40%;" size="12" />
+
+                    <h:outputLabel value="Hasta:" style="font-weight: bold"/>
+                    <p:calendar value="{reporteBean.fechH}"
+                                locale="es" pattern="dd/MM/yyyy" showOn="button"
+                                style="width: 40%;" size="12" />-->
+
+
+                    <p:commandLink action="#{reporteBean.repor()}" oncomplete="window.open('../servlets/report/PDF','_blank')"  target="_blank" >
+                        <h:graphicImage alt="Vista Previa" />                        
+                        <f:setPropertyActionListener   value="rpt_depen"  target="#{reporteBean.nombArch}" />
+                    </p:commandLink>
+
+                    <p:commandButton id="Retornar" value="Retornar" icon="ui-icon-exit" action="Retornar" process="@this"/> 
+                </p:panelGrid>
+            </h:form>
+
+
+        </ui:define>
+    </ui:composition>
+
+</html>

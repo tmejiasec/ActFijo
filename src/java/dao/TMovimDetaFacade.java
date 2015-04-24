@@ -6,6 +6,7 @@
 package dao;
 
 import entidades.TMovimDeta;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,5 +28,21 @@ public class TMovimDetaFacade extends AbstractFacade<TMovimDeta> implements TMov
     public TMovimDetaFacade() {
         super(TMovimDeta.class);
     }
+    
+    @Override
+    public List getList() {			
+	return em.createNamedQuery("TMovimDeta.findAll").getResultList();
+    }
+    
+    @Override
+    public List getListM(Integer move) {			
+	return em.createNamedQuery("TMovimDeta.findByT<TMoveId").setParameter("tMoveId",move).getResultList();
+    }
+    
+    @Override
+	public TMovimDeta getMoved(Integer moved){		
+		return (TMovimDeta) em.createNamedQuery("TMovimDeta.findByTMovdId").setParameter("tMovdId",moved).getSingleResult();
+	}
+    
     
 }

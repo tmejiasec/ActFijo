@@ -30,4 +30,11 @@ public interface TMovimEncaFacadeLocal {
 
     int count();
     
+    public List getList();
+       
+    public List<TMovimEnca> getListM(Short correl, Short anio);
+    
+    public TMovimEnca getMove(Integer move);
+
+    
 }

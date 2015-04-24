@@ -27,6 +27,8 @@ public interface CUsuariosFacadeLocal {
     public List busqueda(String desc);
    
     public CUsuarios getUsuario(Integer usuario);
+    
+    public CUsuarios traeUsuarioLogeado(String usuario);
 
     CUsuarios find(Object id);
 

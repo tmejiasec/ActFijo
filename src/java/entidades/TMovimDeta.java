@@ -28,6 +28,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "TMovimDeta.findAll", query = "SELECT t FROM TMovimDeta t"),
     @NamedQuery(name = "TMovimDeta.findByTMovdId", query = "SELECT t FROM TMovimDeta t WHERE t.tMovdId = :tMovdId"),
+    @NamedQuery(name = "TMovimDeta.findByTMoveId", query = "SELECT t FROM TMovimDeta t WHERE t.tMoveId = :tMoveId"),
     @NamedQuery(name = "TMovimDeta.findByTMovdCodigo", query = "SELECT t FROM TMovimDeta t WHERE t.tMovdCodigo = :tMovdCodigo")})
 public class TMovimDeta implements Serializable {
     private static final long serialVersionUID = 1L;

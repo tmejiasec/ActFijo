@@ -5,6 +5,7 @@ package util;
  * and open the template in the editor.
  */
 
+import contex.AppContext;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -68,6 +69,11 @@ public class FacesUtil {
         }
         return instance;
 	}
+        
+        public static Object getSpringBean(String springBean){
+		return AppContext.getBeanSpring(springBean);
+	}
+	
 	
 	
 

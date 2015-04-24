@@ -34,7 +34,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TMovimEnca.findAll", query = "SELECT t FROM TMovimEnca t"),
     @NamedQuery(name = "TMovimEnca.findByTMoveId", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveId = :tMoveId"),
     @NamedQuery(name = "TMovimEnca.findByTMoveTipt", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveTipt = :tMoveTipt"),
-    @NamedQuery(name = "TMovimEnca.findByTMoveCorr", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveCorr = :tMoveCorr"),
+    @NamedQuery(name = "TMovimEnca.findByTMoveCorr", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveCorr = :tMoveCorr AND t.tMoveAnio = :tMoveAnio"),
     @NamedQuery(name = "TMovimEnca.findByTMoveAnio", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveAnio = :tMoveAnio"),
     @NamedQuery(name = "TMovimEnca.findByTMoveDeps", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveDeps = :tMoveDeps"),
     @NamedQuery(name = "TMovimEnca.findByTMovePers", query = "SELECT t FROM TMovimEnca t WHERE t.tMovePers = :tMovePers"),

@@ -59,4 +59,18 @@ public class CUsuariosFacade extends AbstractFacade<CUsuarios> implements CUsuar
 		return (CUsuarios) em.createNamedQuery("CUsuarios.findByCUsuarioId").setParameter("cUsuarioId",usuario).getSingleResult();
 	}
     
+        public CUsuarios traeUsuarioLogeado(String nombre){
+	        CUsuarios usuarioC=new CUsuarios();
+	        try {
+	            Query q=this.em.createNamedQuery("CUsuarios.findByCUserLogin");
+	            q.setParameter("cUserLogin", nombre);
+	            usuarioC=(CUsuarios) q.getSingleResult();
+	            System.out.println("seleccionando usuario después de query");
+	            System.out.println("nombre para prueba: "+usuarioC.getCUserNombre());
+	            return usuarioC;
+	            }catch (Exception e) {
+	            return usuarioC;
+	        }
+	    }
+	
 }

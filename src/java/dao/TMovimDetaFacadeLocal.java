@@ -6,6 +6,7 @@
 package dao;
 
 import entidades.TMovimDeta;
+import entidades.TMovimEnca;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -29,5 +30,12 @@ public interface TMovimDetaFacadeLocal {
     List<TMovimDeta> findRange(int[] range);
 
     int count();
+    
+   public List getList();
+       
+   public List<TMovimDeta> getListM(Integer move);
+    
+   public TMovimDeta getMoved(Integer moved);
+    
     
 }

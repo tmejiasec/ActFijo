@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="./../resources/css/bootstrap.css" rel="stylesheet" type="text/css" />
+        <link href="./../resources/css/otrotema.css" rel="stylesheet" type="text/css" />
+        <title>Sistema de Activos Fijos</title>
+    </h:head>
+    <h:body class="center_content">
+        <center>
+            <div id="ppal" >
+                <p:panel style="width: 55%" > 
+                    <h:graphicImage style="width: 100%" value="#{resource['imagenes:banner.jpg']}"/>
+                    <h2>Ingreso al Sistema</h2>   
+
+                    <h:form >
+                        <h:panelGrid columns="2" style="width: 55%" >
+                            <h:outputText value="usuario"/>
+                            <p:inputText value="#{usuarioBean.usuario}" style="width: 55%" />
+                            <h:outputText value="password"  />
+                            <p:password value="#{usuarioBean.password}" style="width: 55%"/>
+                        </h:panelGrid>
+
+                        <p:commandButton  action="#{usuarioBean.logiAction}" value="Iniciar Sesión" update="mensaje" >
+                        </p:commandButton>
+                        <h:messages id="mensaje"></h:messages>
+                    </h:form>
+                </p:panel>
+            </div>
+        </center>
+    </h:body>
+</html>
+

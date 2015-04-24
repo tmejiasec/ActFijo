@@ -49,7 +49,7 @@ public class CUsuarios implements Serializable {
     @Column(name = "c_user_pass")
     private String cUserPass;
     @Column(name = "c_user_estado")
-    private Character cUserEstado;
+    private Integer cUserEstado;
     @JoinColumn(name = "c_rol_id", referencedColumnName = "c_rol_id")
     @ManyToOne(optional = false)
     private CRoles cRolId;
@@ -96,13 +96,15 @@ public class CUsuarios implements Serializable {
         this.cUserPass = cUserPass;
     }
 
-    public Character getCUserEstado() {
+    public Integer getCUserEstado() {
         return cUserEstado;
     }
 
-    public void setCUserEstado(Character cUserEstado) {
+    public void setCUserEstado(Integer cUserEstado) {
         this.cUserEstado = cUserEstado;
     }
+
+   
 
     public CRoles getCRolId() {
         return cRolId;
