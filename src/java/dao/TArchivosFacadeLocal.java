@@ -26,6 +26,8 @@ public interface TArchivosFacadeLocal {
        
     public List<TArchivos> getListM(String codbien);
     
+    public List<TArchivos> getListT(String tipar);
+    
     public TArchivos getArch(Integer arch);
 
     public List busqueda(String desc);

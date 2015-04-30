@@ -40,9 +40,14 @@ public class TMovimDeta implements Serializable {
     @Size(max = 12)
     @Column(name = "t_movd_codigo")
     private String tMovdCodigo;
+    
     @JoinColumn(name = "t_move_id", referencedColumnName = "t_move_id")
     @ManyToOne
     private TMovimEnca tMoveId;
+    
+    @JoinColumn(name = "t_bien_id", referencedColumnName = "t_bien_id")
+    @ManyToOne
+    private TBienes tBienId;
 
     public TMovimDeta() {
     }
@@ -73,6 +78,14 @@ public class TMovimDeta implements Serializable {
 
     public void setTMoveId(TMovimEnca tMoveId) {
         this.tMoveId = tMoveId;
+    }
+
+    public TBienes getTBienId() {
+        return tBienId;
+    }
+
+    public void setTBienId(TBienes tBienId) {
+        this.tBienId = tBienId;
     }
 
     @Override

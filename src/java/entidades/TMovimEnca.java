@@ -73,17 +73,21 @@ public class TMovimEnca implements Serializable {
     @Column(name = "t_move_tipt")
     private Character tMoveTipt;
     @Column(name = "t_move_corr")
-    private Short tMoveCorr;
+    private Integer tMoveCorr;
     @Column(name = "t_move_anio")
-    private Short tMoveAnio;
+    private Integer tMoveAnio;
+    @Column(name = "t_move_nivs")
+    private Integer tMoveNivs;
     @Column(name = "t_move_deps")
-    private Short tMoveDeps;
+    private Integer tMoveDeps;
     @Column(name = "t_move_pers")
-    private Short tMovePers;
+    private Integer tMovePers;
+    @Column(name = "t_move_nive")
+    private Integer tMoveNive;
     @Column(name = "t_move_depe")
-    private Short tMoveDepe;
+    private Integer tMoveDepe;
     @Column(name = "t_move_pere")
-    private Short tMovePere;
+    private Integer tMovePere;
     @Column(name = "t_move_docp")
     private Boolean tMoveDocp;
     @Column(name = "t_move_fecsal")
@@ -106,24 +110,24 @@ public class TMovimEnca implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date tMoveFechc;
     @Column(name = "t_move_usec")
-    private Short tMoveUsec;
+    private Integer tMoveUsec;
     @Column(name = "t_move_fechm")
     @Temporal(TemporalType.DATE)
     private Date tMoveFechm;
     @Column(name = "t_move_usem")
-    private Short tMoveUsem;
+    private Integer tMoveUsem;
     @Column(name = "t_move_jefaut")
-    private Short tMoveJefaut;
+    private Integer tMoveJefaut;
     @Column(name = "t_move_fechaut")
     @Temporal(TemporalType.DATE)
     private Date tMoveFechaut;
     @Column(name = "t_move_confirec")
-    private Short tMoveConfirec;
+    private Integer tMoveConfirec;
     @Column(name = "t_move_fechcr")
     @Temporal(TemporalType.DATE)
     private Date tMoveFechcr;
     @Column(name = "t_move_confaf")
-    private Short tMoveConfaf;
+    private Integer tMoveConfaf;
     @Column(name = "t_move_fechcaf")
     @Temporal(TemporalType.DATE)
     private Date tMoveFechcaf;
@@ -181,52 +185,68 @@ public class TMovimEnca implements Serializable {
         this.tMoveTipt = tMoveTipt;
     }
 
-    public Short getTMoveCorr() {
+    public Integer getTMoveCorr() {
         return tMoveCorr;
     }
 
-    public void setTMoveCorr(Short tMoveCorr) {
+    public void setTMoveCorr(Integer tMoveCorr) {
         this.tMoveCorr = tMoveCorr;
     }
 
-    public Short getTMoveAnio() {
+    public Integer getTMoveAnio() {
         return tMoveAnio;
     }
 
-    public void setTMoveAnio(Short tMoveAnio) {
+    public void setTMoveAnio(Integer tMoveAnio) {
         this.tMoveAnio = tMoveAnio;
     }
 
-    public Short getTMoveDeps() {
+    public Integer getTMoveDeps() {
         return tMoveDeps;
     }
 
-    public void setTMoveDeps(Short tMoveDeps) {
+    public void setTMoveDeps(Integer tMoveDeps) {
         this.tMoveDeps = tMoveDeps;
     }
 
-    public Short getTMovePers() {
+    public Integer getTMovePers() {
         return tMovePers;
     }
 
-    public void setTMovePers(Short tMovePers) {
+    public void setTMovePers(Integer tMovePers) {
         this.tMovePers = tMovePers;
     }
 
-    public Short getTMoveDepe() {
+    public Integer getTMoveDepe() {
         return tMoveDepe;
     }
 
-    public void setTMoveDepe(Short tMoveDepe) {
+    public void setTMoveDepe(Integer tMoveDepe) {
         this.tMoveDepe = tMoveDepe;
     }
 
-    public Short getTMovePere() {
+    public Integer getTMovePere() {
         return tMovePere;
     }
 
-    public void setTMovePere(Short tMovePere) {
+    public void setTMovePere(Integer tMovePere) {
         this.tMovePere = tMovePere;
+    }
+
+    public Integer getTMoveNivs() {
+        return tMoveNivs;
+    }
+
+    public void setTMoveNivs(Integer tMoveNivs) {
+        this.tMoveNivs = tMoveNivs;
+    }
+
+    public Integer getTMoveNive() {
+        return tMoveNive;
+    }
+
+    public void setTMoveNive(Integer tMoveNive) {
+        this.tMoveNive = tMoveNive;
     }
 
     public Boolean getTMoveDocp() {
@@ -293,11 +313,11 @@ public class TMovimEnca implements Serializable {
         this.tMoveFechc = tMoveFechc;
     }
 
-    public Short getTMoveUsec() {
+    public Integer getTMoveUsec() {
         return tMoveUsec;
     }
 
-    public void setTMoveUsec(Short tMoveUsec) {
+    public void setTMoveUsec(Integer tMoveUsec) {
         this.tMoveUsec = tMoveUsec;
     }
 
@@ -309,19 +329,19 @@ public class TMovimEnca implements Serializable {
         this.tMoveFechm = tMoveFechm;
     }
 
-    public Short getTMoveUsem() {
+    public Integer getTMoveUsem() {
         return tMoveUsem;
     }
 
-    public void setTMoveUsem(Short tMoveUsem) {
+    public void setTMoveUsem(Integer tMoveUsem) {
         this.tMoveUsem = tMoveUsem;
     }
 
-    public Short getTMoveJefaut() {
+    public Integer getTMoveJefaut() {
         return tMoveJefaut;
     }
 
-    public void setTMoveJefaut(Short tMoveJefaut) {
+    public void setTMoveJefaut(Integer tMoveJefaut) {
         this.tMoveJefaut = tMoveJefaut;
     }
 
@@ -333,11 +353,11 @@ public class TMovimEnca implements Serializable {
         this.tMoveFechaut = tMoveFechaut;
     }
 
-    public Short getTMoveConfirec() {
+    public Integer getTMoveConfirec() {
         return tMoveConfirec;
     }
 
-    public void setTMoveConfirec(Short tMoveConfirec) {
+    public void setTMoveConfirec(Integer tMoveConfirec) {
         this.tMoveConfirec = tMoveConfirec;
     }
 
@@ -349,11 +369,11 @@ public class TMovimEnca implements Serializable {
         this.tMoveFechcr = tMoveFechcr;
     }
 
-    public Short getTMoveConfaf() {
+    public Integer getTMoveConfaf() {
         return tMoveConfaf;
     }
 
-    public void setTMoveConfaf(Short tMoveConfaf) {
+    public void setTMoveConfaf(Integer tMoveConfaf) {
         this.tMoveConfaf = tMoveConfaf;
     }
 

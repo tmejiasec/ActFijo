@@ -41,6 +41,12 @@ public class TArchivosFacade extends AbstractFacade<TArchivos> implements TArchi
     }
     
     @Override
+    public List getListT(String tipar) {			
+	return em.createNamedQuery("TArchivos.findByTArchTipref").setParameter("tArchTipref",tipar).getResultList();
+    }
+    
+    
+    @Override
     public List busqueda(String desc) {
 			
 		String jpql = "SELECT m FROM TArchivos m where 1=1";

@@ -21,10 +21,10 @@
                     <img src="../resources/imagenes/banner.jpg" class="img-responsive img-rounded" width="100%"/>
                 </div>                            
                 <div class="col-md-2"><strong>Usuario: </strong></div>
-                <div class="col-md-2">Nombre del Usuario: </div>
+                <div class="col-md-2"><h:outputText value="#{appSession.usuario.CUserNombre}" /></div>
                 <!--<div class="col-md-2"><p></p></div>-->
                 <div class="col-md-2"><strong>Perfil: </strong></div>
-                <div class="col-md-2">Perfil del Usuario: </div>
+                <div class="col-md-2"><h:outputText value="#{appSession.usuario.CRolId.CRolNombre}"/></div>
             </div>
 
             <div class="container">
@@ -123,7 +123,7 @@
                             <li><a href="#">Bienes Depreciados</a></li>
                         </ul> 
                     </li>
-                    <li><a href="#">Salir</a></li>
+                <li><a href="../j_spring_security_logout" onclick="if (!confirm('Esta seguro que desea salir #{appSession.usuario.CUserNombre}?')) return false;">Salir</a></li>
                 </ul>
             </div>
             </nav>

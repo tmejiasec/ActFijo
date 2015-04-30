@@ -69,11 +69,11 @@ public class UsuarioBean implements Serializable {
 
     public String logiAction() {
         String accion = null;
-        System.out.println("usuario: "+usuario);
-        System.out.println("pass: "+password);
+//        System.out.println("usuario: "+usuario);
+//        System.out.println("pass: "+password);
         try {
             Authentication request = new UsernamePasswordAuthenticationToken(usuario, password);
-            System.out.println("req "+request);
+//            System.out.println("req "+request);
             Authentication result = getAuthenticationManager().authenticate(request);
             SecurityContextHolder.getContext().setAuthentication(result);
             String rol = postLogin();
@@ -112,18 +112,18 @@ public class UsuarioBean implements Serializable {
      //guardar el nombre de la session del usuario
         try {
             CUsuarios usuarioL = getDaoUsuario().traeUsuarioLogeado(name);
-            System.out.println("new us "+usuarioL);
+//            System.out.println("new us "+usuarioL);
             appSession.setUsuario(usuarioL);
-            System.out.println("nombre: "+usuarioL.getCUserNombre());
-            System.out.println("nombre: "+name);
-            System.out.println("nombre app: "+appSession.getUsuario().getCUserNombre());
+//            System.out.println("nombre: "+usuarioL.getCUserNombre());
+//            System.out.println("nombre: "+name);
+//            System.out.println("nombre app: "+appSession.getUsuario().getCUserNombre());
 //    appSession.setUsuario(usuario);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
         if (appSession.getUsuario().getCUserId() != null) {
             rol = appSession.getUsuario().getCRolId().getCRolNombre();
-     System.out.println("rol:"+rol);
+//     System.out.println("rol:"+rol);
 //     System.out.println("rol app:"+appSession.getUsuario().getRol().getRolNombre());
         }
         usuarios = getDaoUsuario().getList();

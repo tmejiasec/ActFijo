@@ -32,99 +32,107 @@
                             <div class="form-group">
                                 <div class="col-md-3">
                                     <label >Tipo de Movimiento</label>
-                                    <h:selectOneMenu id="tipmo" value="#{movBienesBean.nuevoEnca.CTipmId}" style="width: 100%;" >
-                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{movBienesBean.tiposm}" var="tipm" itemLabel="#{tipm.CTipmDesc}" itemValue="#{tipm.CTipmId}" />
-                                            <!--<p:ajax  listener="{bienesBean.depSeleccionA()}" update="depen"/>-->                         
-                                        </h:selectOneMenu>                                    
+                                    <h:selectOneMenu id="tipmov" value="#{movBienesBean.tipmSeleccionado}" style="width: 100%;" >
+                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                        <f:selectItems value="#{movBienesBean.tiposm}" var="tipm" itemLabel="#{tipm.CTipmDesc}" itemValue="#{tipm.CTipmId}" />
+                                        <p:ajax  listener="#{movBienesBean.tipSelec()}" update="tipmov"/>                    
+                                    </h:selectOneMenu>                                    
                                 </div>
                                 <div class="col-md-3">
                                     <label for="anio" >Año</label>
                                     <div>
                                         <p:inputText id="anio" value="#{movBienesBean.nuevoEnca.TMoveAnio}"> 
-                                            <p:ajax listener="#{movBienesBean.buscarCorr}" update="@this :adiMBien:growl :adiMBien:guard"/>
+                                            <p:ajax listener="#{movBienesBean.buscarCorr}" update="@this :adiMBien:growl :adiMBien:corr"/>
                                         </p:inputText>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="corr">Correlativo</label>
+                                    <label >Correlativo</label>
                                     <div>
                                         <h:outputText id="corr" value="#{movBienesBean.nuevoEnca.TMoveCorr}"/>
                                     </div>
                                 </div>
-                                 <div class="col-md-3">
-                                    <label >Tipo de Préstamo/Reparación</label>
-                                    <h:selectOneMenu value="#{bienesBean.nuevoBien.TBienTipinv}">
-                                        <f:selectItem itemValue="I" itemLabel="Interno" />
-                                        <f:selectItem itemValue="E" itemLabel="Externo" />
+                                <div class="col-md-3">
+                                    <label >Estado del Movimiento</label>
+                                    <h:selectOneMenu value="#{movBienesBean.estmoSeleccionado}">
+                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                        <f:selectItems value="#{movBienesBean.estmovs}" var="estmo" itemLabel="#{estmo.CEstmovDesc}" itemValue="#{estmo.CEstmovId}" />
+                                        <!--<p:ajax  listener="{movBienesBean.tipSelec()}" update="tipmo"/>-->                    
                                     </h:selectOneMenu>                                        
                                 </div>                                
                             </div>
                             <div class="form-group">
                                 <div class="col-md-3">
-                                    <label >Nivel Organizativo</label>
+                                    <label >Nivel Organizativo Solicitante</label>
                                     <div >
-                                        <h:selectOneMenu id="nivels" value="#{bienesBean.nuevoBien.CNivelId}" style="width: 100%;" converter="#{nivConverter}">
+                                        <h:selectOneMenu id="nivels" value="#{movBienesBean.nuevoEnca.TMoveNivs}" style="width: 100%;" >
                                             <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{bienesBean.niveles}" var="niv" itemLabel="#{niv.CNivelDescrip}" itemValue="#{niv}" />
-                                            <p:ajax  listener="#{bienesBean.depSeleccionA()}" update="depen"/>                         
+                                            <f:selectItems value="#{movBienesBean.niveles}" var="niv" itemLabel="#{niv.CNivelDescrip}" itemValue="#{niv.CNivelId}" />
+                                            <p:ajax  listener="#{movBienesBean.depSeleccionA()}" update="depen"/>                         
                                         </h:selectOneMenu>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label >Dependencia Solicitante</label>
                                     <div >
-                                        <h:selectOneMenu id="depens" value="#{movBienesBean.nuevoEnca.TMoveDepe}" style="width: 100%" converter="#{depeConverter}">
+                                        <h:selectOneMenu id="depen" value="#{movBienesBean.nuevoEnca.TMoveDeps}" style="width: 100%" >
                                             <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{movBienesBean.depens}" var="depe" itemLabel="#{depe.CDepenDesc}" itemValue="#{depe}"/>
+                                            <f:selectItems value="#{movBienesBean.depens}" var="depe" itemLabel="#{depe.CDepenDesc}" itemValue="#{depe.CDepenId}"/>
                                         </h:selectOneMenu>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="respos" >Persona Solicitante</label>
-                                    <h:selectOneMenu id="respos" value="#{movBienesBean.nuevoEnca.TMovePers}" style="width: 100%" converter="#{respConverter}">
+                                    <h:selectOneMenu id="respos" value="#{movBienesBean.nuevoEnca.TMovePers}" style="width: 100%" >
                                         <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                        <f:selectItems value="#{movBienesBean.respons}" var="resp" itemLabel="#{resp.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec} #{resp.CRespNom1} #{resp.CRespNom2}" itemValue="#{resp}"/>
+                                        <f:selectItems value="#{movBienesBean.respons}" var="resp" itemLabel="#{resp.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec} #{resp.CRespNom1} #{resp.CRespNom2}" itemValue="#{resp.CRespId}"/>
                                     </h:selectOneMenu>  
                                 </div>
-                                 <div class="col-md-3">
+                                <div class="col-md-3">
                                     <label for="cargos" >Cargo de Persona Solicitante</label>
                                     <h:outputText id="cargos" value="#{resp.CRespCargo}"/>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="col-md-3">
-                                    <label >Nivel Organizativo</label>
+                                    <label >Nivel Organizativo Responsable</label>
                                     <div >
-                                        <h:selectOneMenu id="nivel" value="#{bienesBean.nuevoBien.CNivelId}" style="width: 100%;" converter="#{nivConverter}">
+                                        <h:selectOneMenu id="nivel" value="#{movBienesBean.nuevoEnca.TMoveNive}" style="width: 100%;" >
                                             <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{bienesBean.niveles}" var="niv" itemLabel="#{niv.CNivelDescrip}" itemValue="#{niv}" />
-                                            <p:ajax  listener="#{bienesBean.depSeleccionA()}" update="depen"/>                         
+                                            <f:selectItems value="#{movBienesBean.niveles}" var="nive" itemLabel="#{nive.CNivelDescrip}" itemValue="#{nive.CNivelId}" />
+                                            <p:ajax  listener="#{movBienesBean.depSeleccionE()}" update="depene"/>                         
                                         </h:selectOneMenu>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <label >Dependencia Responsable</label>
                                     <div >
-                                        <h:selectOneMenu id="depen" value="#{bienesBean.nuevoBien.CDepenId}" style="width: 100%" converter="#{depeConverter}">
+                                        <h:selectOneMenu id="depene" value="#{movBienesBean.nuevoEnca.TMoveDepe}" style="width: 100%" >
                                             <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{bienesBean.depens}" var="depe" itemLabel="#{depe.CDepenDesc}" itemValue="#{depe}"/>
+                                            <f:selectItems value="#{movBienesBean.depense}" var="deper" itemLabel="#{deper.CDepenDesc}" itemValue="#{deper.CDepenId}"/>
                                         </h:selectOneMenu>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="respo" >Responsable del Bien</label>
-                                    <h:selectOneMenu id="respo" value="#{bienesBean.nuevoBien.CRespId}" style="width: 100%" converter="#{respConverter}">
+                                    <label for="respoe" >Persona Responsable del Bien</label>
+                                    <h:selectOneMenu id="respo" value="#{movBienesBean.nuevoEnca.TMovePere}" style="width: 100%" >
                                         <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                        <f:selectItems value="#{bienesBean.respons}" var="resp" itemLabel="#{resp.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec} #{resp.CRespNom1} #{resp.CRespNom2}" itemValue="#{resp}"/>
+                                        <f:selectItems value="#{movBienesBean.respons}" var="respe" itemLabel="#{respe.CRespApe1} #{respe.CRespApe2} #{respe.CRespApec} #{respe.CRespNom1} #{respe.CRespNom2}" itemValue="#{respe.CRespId}"/>
                                     </h:selectOneMenu>  
                                 </div>
-                                     <div class="col-md-3">
+                                <div class="col-md-3">
                                     <label for="cargor" >Cargo de Persona Responsable</label>
-                                    <h:outputText id="cargor" value="#{resp.CRespCargo}"/>
+                                    <h:outputText id="cargor" value="#{respe.CRespCargo}"/>
                                 </div>
                             </div>
                             <div class="form-group">
+                                <div class="col-md-3">
+                                    <label >Tipo de Préstamo/Reparación</label>
+                                    <h:selectOneMenu value="#{movBienesBean.nuevoEnca.TMoveTipt}">
+                                        <f:selectItem itemValue="I" itemLabel="Interno" />
+                                        <f:selectItem itemValue="E" itemLabel="Externo" />
+                                    </h:selectOneMenu>                                        
+                                </div>             
                                 <div class="col-md-3">
                                     <label for="fecs">Fecha de Salida del Bien</label>
                                     <div>
@@ -137,7 +145,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-3">
-                                     <label for="fecr">Fecha de Retorno del Bien</label>
+                                    <label for="fecr">Fecha de Retorno del Bien</label>
                                     <div>
                                         <p:calendar id="fecr"
                                                     value="#{movBienesBean.nuevoEnca.TMoveFecret}" locale="es"
@@ -155,13 +163,13 @@
                                 </div> 
                             </div>
                             <div class="form-group">
-				<h:outputLabel value="Observaciones: " />
+                                <h:outputLabel value="Observaciones: " />
                                 <p:inputTextarea value="#{movBienesBean.nuevoEnca.TMoveObser}"
-				rows="3" style="width: 98%;" autoResize="false" tabindex="9"/>
+                                                 rows="3" style="width: 98%;" autoResize="false" tabindex="9"/>
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-10 col-lg-offset-8">
-                                    <p:commandButton id="guard" class="btn btn-primary" value="Guardar Bien"  action="#{movBienesBean.guardarE()}"  rendered="#{!movBienesBean.edit}" disabled="#{movBienesBean.estado}" update="@all" process="@this adiMBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                    <p:commandButton id="guard" class="btn btn-primary" value="Guardar Encabezado"  action="#{movBienesBean.guardarE()}"  rendered="#{!movBienesBean.edit}" disabled="#{movBienesBean.estado}" update="@all" process="@this adiMBien"  oncomplete="handleRequest(xhr, status, args);" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -172,26 +180,74 @@
                                         }
                                     </script>
 
-                                    <!--aqui agregar boton ingreso por lote-->
+                                    <!--copiar siguiente bloque en agregar otro mov despues de grabar detalle-->
 
-                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
-                                                     action="#{bienesBean.limpiarB()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
-                                        <script type="text/javascript">
-                                            function refrescar(xhr, status, args) {
-                                                if (args.validationFailed) {
-                                                    alert('Ha ocurrido un error');
-                                                } else {
-                                                    alert('nuevo');
-                                                    location.reload(true);
-                                                }
-                                            }
-                                        </script>
-
-
-                                    </p:commandButton>
+                                    <!--                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                                                                                         action="{movBienesBean.limpiarE()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                                                            <script type="text/javascript">
+                                                                                function refrescar(xhr, status, args) {
+                                                                                    if (args.validationFailed) {
+                                                                                        alert('Ha ocurrido un error');
+                                                                                    } else {
+                                                                                        location.reload(true);
+                                                                                    }
+                                                                                }
+                                                                            </script>
+                                    
+                                    
+                                                                        </p:commandButton>-->
                                 </div>
                             </div>
-                            <!--aqui agregar dialogo ingreso por lote-->
+                            <!--aqui agregar tabla de detalle de movimientos-->
+                            <div class="table table-responsive table-bordered" >
+                                <table id="detmov" class="table table-striped table-condensed paginada" >
+                                    <thead>
+                                        <tr align="center">
+                                            DETALLE DE BIENES MUEBLES
+                                        </tr>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Descripción</th>
+                                            <th>Marca</th>
+                                            <th>Modelo</th>
+                                            <th>Serie</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ui:repeat value="#{movBienesBean.movdeta}" var="dbien" >
+                                            <tr>
+                                                <td>#{dbien.TMovdCodigo}</td>
+                                                <td>#{dbien.TBienId.TBienDesc}</td>
+                                                <td>#{dbien.TBienId.CMarcaId.CMarcaDesc}</td>
+                                                <td>#{dbien.TBienId.TBienModelo}</td>
+                                                <td>#{dbien.TBienId.TBienSerie}</td>
+                                            </tr>
+                                        </ui:repeat>
+                                        <div class="col-md-6" align="center" >
+                                            <a data-toggle="modal" href="#adicDetmov" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar Bienes</a>
+                                        </div>                              
+
+                                    </tbody>  
+                                </table>
+                            </div>
+                            <!--// probar aqui-->
+                            <div id="adicDetmov" class="modal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Seleccionar Bienes a Agregar a Movimiento</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!--// aqui poner datatable para seleccion multiple-->
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-default">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </h:form>
                     </div>
                 </div>
@@ -244,6 +300,7 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-body" id="modiPy2">
                                                     <h:panelGroup id="displayB2"> 
+
                                                     </h:panelGroup>  
                                                 </div>
                                             </div>
@@ -267,7 +324,7 @@
                                 <thead>
 
                                     <tr align="center">
-                                        CONSULTA DE IMAGENES Y DOCUMENTOS DE BIENES
+                                        CONSULTA DE IMAGENES Y DOCUMENTOS DE MOVIMIENTOS DE BIENES
                                     </tr>
                                     <tr>
                                         <th>Correlativo</th>
@@ -281,7 +338,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ui:repeat value="#{bienesBean.docums}" var="docs" >
+                                    <ui:repeat value="#{movBienesBean.docums}" var="docs" >
                                         <tr>
                                             <td>#{docs.TArchId}</td>
                                             <td>#{docs.TArchCodref}</td>
@@ -292,7 +349,7 @@
                                                 <h:commandLink value="Editar" class="btn btn-default" pt:data-toggle="modal" pt:data-target="#modifDoc">
                                                     <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
                                                     <f:setPropertyActionListener value="#{docs}"
-                                                                                 target="#{bienesBean.archSeleccionado}" />
+                                                                                 target="#{movBienesBean.archSeleccionado}" />
                                                     <p:ajax process="@this" update=":formImag:modImag:dispDoc2"/>
                                                 </h:commandLink>
                                             </td>
@@ -300,7 +357,7 @@
                                                 <h:commandLink value="Descargar" class="btn btn-default" pt:data-toggle="modal" pt:data-target="#viewDoc">
                                                     <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                                                     <f:setPropertyActionListener value="#{docs}"
-                                                                                 target="#{bienesBean.archSeleccionado}" />
+                                                                                 target="#{movBienesBean.archSeleccionado}" />
                                                     <p:ajax process="@this" update=":formImag:verDoc:dispDocD"/>
                                                 </h:commandLink>
                                             </td>
@@ -308,7 +365,7 @@
                                                 <h:commandLink value="Eliminar" class="btn btn-default" pt:data-toggle="modal" pt:data-target="#elimDoc">
                                                     <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span>                                                    
                                                     <f:setPropertyActionListener value="#{docs}"
-                                                                                 target="#{bienesBean.archSeleccionado}" />
+                                                                                 target="#{movBienesBean.archSeleccionado}" />
                                                     <p:ajax process="@this" update=":formImag:elimImag:dispDoc3"/>
                                                 </h:commandLink>
                                             </td>
@@ -334,20 +391,20 @@
                                                 <div class="col-md-3">
                                                     <label for="codi" >Código</label>
                                                     <div>
-                                                        <p:inputMask id="codi" value="#{bienesBean.nuevoArch.TArchCodref}" mask="99-9999-9999" style="width: 100%;"> 
-                                                            <p:ajax listener="#{bienesBean.buscarCodI}" update="@this :formImag:growl :formImag:formDoc:guardI"/>
+                                                        <p:inputMask id="codi" value="#{movBienesBean.nuevoArch.TArchCodref}" mask="99-9999-9999" style="width: 100%;"> 
+                                                            <p:ajax listener="#{movBienesBean.buscarCodI}" update="@this :formImag:growl :formImag:formDoc:guardI"/>
                                                         </p:inputMask>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-5">
                                                     <label for="descm" >Descripción</label>
                                                     <div>
-                                                        <h:inputText id="descm" value="#{bienesBean.nuevoArch.TArchDesc}" required="true" style="width: 100%;"/> 
+                                                        <h:inputText id="descm" value="#{movBienesBean.nuevoArch.TArchDesc}" required="true" style="width: 100%;"/> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label >Tipo de Archivo</label>
-                                                    <h:selectOneMenu value="#{bienesBean.nuevoArch.TArchTipo}">
+                                                    <h:selectOneMenu value="#{movBienesBean.nuevoArch.TArchTipo}">
                                                         <f:selectItem itemValue="F" itemLabel="Foto" />
                                                         <f:selectItem itemValue="D" itemLabel="Documento" />
                                                     </h:selectOneMenu>                                        
@@ -357,11 +414,10 @@
                                             <br></br>
                                             <div class="col-md-12">
                                                 <p:panelGrid id="doc1" columns="2" >
-                                                    <p:fileUpload id="doc" fileUploadListener="#{bienesBean.handleFileUpload(event)}" value="#{bienesBean.picture}" mode="simple" required="true" sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="mesaj" >
+                                                    <p:fileUpload id="doc" fileUploadListener="#{movBienesBean.handleFileUpload(event)}" value="#{movBienesBean.picture}" mode="simple" required="true" sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="mesaj" >
                                                         <p:growl id="mesaj" showDetail="true" />
                                                     </p:fileUpload>
-                                                    <p:commandButton id="guardI" value="Guardar" ajax="false" disabled="#{bienesBean.estadoI}"
-                                                                     action="#{bienesBean.guardarImagen()}" />
+                                                    <p:commandButton id="guardI" value="Guardar" ajax="false" disabled="#{movBienesBean.estadoI}" action="#{movBienesBean.guardarImagen()}" />
                                                 </p:panelGrid>  
                                             </div>
                                             <br></br>
@@ -387,33 +443,33 @@
                                                 <div class="form-group">
                                                     <div class="col-md-3">
                                                         <label for="ida" class="control-label">Corr Img</label>
-                                                        <h:outputText id="ida" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
+                                                        <h:outputText id="ida" value="#{movBienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label for="codia" class="control-label">Código</label>
-                                                        <h:outputText id="codia" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
+                                                        <h:outputText id="codia" value="#{movBienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="noma" class="control-label">Nombre del Archivo</label>
-                                                        <h:outputText id="noma" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
+                                                        <h:outputText id="noma" value="#{movBienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
                                                     </div>                                      
                                                 </div> 
                                                 <br></br>
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label for="desci" class="control-label">Descripción</label>
-                                                        <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
+                                                        <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{movBienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
                                                     </div>        
                                                     <div class="col-md-3">
                                                         <label for="tipar" class="control-label">Archivo Tipo</label>
-                                                        <h:selectOneMenu id="tipar" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
+                                                        <h:selectOneMenu id="tipar" value="#{movBienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
                                                             <f:selectItem itemValue="F" itemLabel="Foto" />
                                                             <f:selectItem itemValue="D" itemLabel="Documento" />
                                                         </h:selectOneMenu>                                                
                                                     </div>                             
                                                     <div class="col-md-3">
                                                         <label for="ref" class="control-label">Referencia</label>
-                                                        <h:outputText id="ref" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                        <h:outputText id="ref" value="#{movBienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
                                                     </div>
                                                 </div>
                                                 <br></br>
@@ -421,7 +477,7 @@
                                                     <div class="col-md-6">
                                                     </div>                                                 
                                                     <div class="col-md-6">
-                                                        <p:commandButton id="actuaI" icon="ui-icon-pencil" class="btn btn-primary" value="Actualizar"  action="#{bienesBean.actualA()}"  rendered="#{!bienesBean.edit}" update="@all" process="@this :formImag:modImag:dispDoc2"  oncomplete="refrescarI(xhr, status, args); ;modifDoc.hide();" />
+                                                        <p:commandButton id="actuaI" icon="ui-icon-pencil" class="btn btn-primary" value="Actualizar"  action="#{movBienesBean.actualA()}"  rendered="#{!movBienesBean.edit}" update="@all" process="@this :formImag:modImag:dispDoc2"  oncomplete="refrescarI(xhr, status, args); ;modifDoc.hide();" />
                                                         <script type="text/javascript">
                                                             function refrescarI(xhr, status, args) {
                                                                 if (args.validationFailed) {
@@ -458,42 +514,6 @@
                                         </div>
                                         <div class="modal-body">
                                             <h:panelGroup id="dispDocD"  >  
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label for="ida" class="control-label">Corr Img</label>
-                                                        <h:outputText id="ida" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="codia" class="control-label">Código</label>
-                                                        <h:outputText id="codia" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="noma" class="control-label">Nombre del Archivo</label>
-                                                        <h:outputText id="noma" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
-                                                    </div>                                      
-                                                </div> 
-                                                <br></br>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label for="desci" class="control-label">Descripción</label>
-                                                        <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
-                                                    </div>        
-                                                    <div class="col-md-3">
-                                                        <label for="tipar" class="control-label">Archivo Tipo</label>
-                                                        <h:selectOneMenu id="tipar" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
-                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
-                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
-                                                        </h:selectOneMenu>                                                
-                                                    </div>                             
-                                                    <div class="col-md-3">
-                                                        <label for="ref" class="control-label">Referencia</label>
-                                                        <h:outputText id="ref" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
-                                                    </div>
-                                                </div>
-                                                <br></br>
-
-                                                <h:commandLink value="">Descargar</h:commandLink>
-
                                             </h:panelGroup>  
                                         </div>
                                         <div class="modal-footer">
@@ -517,39 +537,39 @@
                                                 <div class="form-group">
                                                     <div class="col-md-3">
                                                         <label for="idae" class="control-label">Corr Img</label>
-                                                        <h:outputText id="idae" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
+                                                        <h:outputText id="idae" value="#{movBienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label for="codiae" class="control-label">Código</label>
-                                                        <h:outputText id="codiae" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
+                                                        <h:outputText id="codiae" value="#{movBienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label for="nomae" class="control-label">Nombre del Archivo</label>
-                                                        <h:outputText id="nomae" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
+                                                        <h:outputText id="nomae" value="#{movBienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
                                                     </div>                                      
                                                 </div> 
                                                 <br></br>
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label for="descie" class="control-label">Descripción</label>
-                                                        <h:inputText id="descie" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
+                                                        <h:inputText id="descie" onkeyup="this.value = this.value.toUpperCase();" value="#{movBienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
                                                     </div>        
                                                     <div class="col-md-3">
                                                         <label for="tipare" class="control-label">Archivo Tipo</label>
-                                                        <h:selectOneMenu id="tipare" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
+                                                        <h:selectOneMenu id="tipare" value="#{movBienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
                                                             <f:selectItem itemValue="F" itemLabel="Foto" />
                                                             <f:selectItem itemValue="D" itemLabel="Documento" />
                                                         </h:selectOneMenu>                                                
                                                     </div>                             
                                                     <div class="col-md-3">
                                                         <label for="refe" class="control-label">Referencia</label>
-                                                        <h:outputText id="refe" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                        <h:outputText id="refe" value="#{movBienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
                                                     </div>
                                                 </div>
                                                 <br></br>
                                                 <div class="form-group">
                                                     <div class="col-md-10">
-                                                        <p:commandButton id="elimI" icon="ui-icon-delete" class="btn btn-primary" value="Confirmar Eliminación Imagen"  action="#{bienesBean.borrarA()}"  update="@this :formImag" process="@this :formImag:elimImag:dispDoc3"  oncomplete="refrescarIe(xhr, status, args); ;elimDoc.hide();" />
+                                                        <p:commandButton id="elimI" icon="ui-icon-delete" class="btn btn-primary" value="Confirmar Eliminación Imagen"  action="#{movBienesBean.borrarA()}"  update="@this :formImag" process="@this :formImag:elimImag:dispDoc3"  oncomplete="refrescarIe(xhr, status, args); ;elimDoc.hide();" />
                                                         <script type="text/javascript">
                                                             function refrescarIe(xhr, status, args) {
                                                                 if (args.validationFailed) {

@@ -30,4 +30,12 @@ public interface TCorrMovFacadeLocal {
 
     int count();
     
+    public List getList();
+   
+    public List busqueda(String desc);
+    
+    public TCorrMov getCorrel(Integer tipm,Integer anio);
+    
+    public Integer updateC(Integer tipm,Integer anio,Integer corr);
+    
 }

@@ -27,7 +27,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "TCorrMov.findAll", query = "SELECT t FROM TCorrMov t"),
     @NamedQuery(name = "TCorrMov.findByTCorrId", query = "SELECT t FROM TCorrMov t WHERE t.tCorrId = :tCorrId"),
-    @NamedQuery(name = "TCorrMov.findByTCorrAnio", query = "SELECT t FROM TCorrMov t WHERE t.tCorrAnio = :tCorrAnio"),
+    @NamedQuery(name = "TCorrMov.findByTCorrAnio", query = "SELECT t FROM TCorrMov t WHERE t.cTipmId.cTipmId = :cTipmId AND t.tCorrAnio = :tCorrAnio"),
     @NamedQuery(name = "TCorrMov.findByTCorrCorrel", query = "SELECT t FROM TCorrMov t WHERE t.tCorrCorrel = :tCorrCorrel")})
 public class TCorrMov implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -37,7 +37,7 @@ public class TCorrMov implements Serializable {
     @Column(name = "t_corr_id")
     private Integer tCorrId;
     @Column(name = "t_corr_anio")
-    private Short tCorrAnio;
+    private Integer tCorrAnio;
     @Column(name = "t_corr_correl")
     private Integer tCorrCorrel;
     @JoinColumn(name = "c_tipm_id", referencedColumnName = "c_tipm_id")
@@ -59,11 +59,11 @@ public class TCorrMov implements Serializable {
         this.tCorrId = tCorrId;
     }
 
-    public Short getTCorrAnio() {
+    public Integer getTCorrAnio() {
         return tCorrAnio;
     }
 
-    public void setTCorrAnio(Short tCorrAnio) {
+    public void setTCorrAnio(Integer tCorrAnio) {
         this.tCorrAnio = tCorrAnio;
     }
 

@@ -186,7 +186,7 @@ public class BienesBean implements Serializable {
         marcas = getDaoMarcas().getList();
         bienes = getDaoBienes().getList();
         lotes = getDaoBienes().getListL();
-        docums = getDaoArchiv().getList();
+        docums = getDaoArchiv().getListT(tipref);
     }
 
     public String guardarB() throws NamingException, ParseException {
@@ -300,13 +300,13 @@ public class BienesBean implements Serializable {
         System.out.println("nom: " + archSeleccionado.getTArchNombre());
         getDaoArchiv().edit(archSeleccionado);
         FacesUtil.addMensaje("Datos Actualizados");
-        docums = getDaoArchiv().getList();
+        docums = getDaoArchiv().getListT(tipref);
         return null;
     }
 
     public String borrarA() throws NamingException {
         getDaoArchiv().remove(archSeleccionado);
-        docums = getDaoArchiv().getList();
+        docums = getDaoArchiv().getListT(tipref);
         return null;
     }
 
@@ -1620,7 +1620,7 @@ public class BienesBean implements Serializable {
             getDaoArchiv().create(nuevoArch);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Archivo cargado"));
             nuevoArch = new TArchivos();
-            docums = getDaoArchiv().getList();
+            docums = getDaoArchiv().getListT(tipref);
 
         } catch (IOException e) {
             System.out.println(e);
