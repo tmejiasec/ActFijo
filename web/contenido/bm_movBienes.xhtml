@@ -17,6 +17,7 @@
                 <li class="active"><a aria-expanded="false" href="#consulta" data-toggle="tab">Consulta</a></li>
                 <li class=""><a aria-expanded="false" href="#seguimiento" data-toggle="tab">Seguimiento</a></li>
                 <li class=""><a aria-expanded="false" href="#imagenes" data-toggle="tab">Imágenes</a></li>
+                <li class=""><a aria-expanded="false" href="#codigo" data-toggle="tab">Código</a></li>
             </ul>
             <div id="myTabContent" class="tab-content">
                 <div class="tab-pane fade" id="adicion">
@@ -168,8 +169,8 @@
                                                  rows="3" style="width: 98%;" autoResize="false" tabindex="9"/>
                             </div>
                             <div class="form-group">
-                                <div class="col-lg-10 col-lg-offset-8">
-                                    <p:commandButton id="guard" class="btn btn-primary" value="Guardar Encabezado"  action="#{movBienesBean.guardarE()}"  rendered="#{!movBienesBean.edit}" disabled="#{movBienesBean.estado}" update="@all" process="@this adiMBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                <div class="col-lg-8 col-lg-offset-6">
+                                    <p:commandButton id="guard"  value="Guardar Encabezado"  action="#{movBienesBean.guardarE()}"  rendered="#{!movBienesBean.edit}" disabled="#{movBienesBean.estado}" update="@all" process="@this adiMBien"  oncomplete="handleRequest(xhr, status, args);" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -179,25 +180,23 @@
                                             }
                                         }
                                     </script>
+                                    <h:commandButton id="adiComP" value="Préstamo Externo"  pt:data-toggle="modal" pt:data-target="#adComP" >
+                                        <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.encSeleccionado}" />
+                                        <p:ajax process="@this" update=":adiMBien:displayPt2"/>
+                                    </h:commandButton>
+
+                                    <h:commandButton id="adiComR" value="Reparación Externa"  pt:data-toggle="modal" pt:data-target="#adComR" >
+                                        <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.encSeleccionado}" />
+                                        <p:ajax process="@this" update=":adiMBien:displayRe2"/>
+                                    </h:commandButton>
 
                                     <!--copiar siguiente bloque en agregar otro mov despues de grabar detalle-->
 
-                                    <!--                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
-                                                                                         action="{movBienesBean.limpiarE()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
-                                                                            <script type="text/javascript">
-                                                                                function refrescar(xhr, status, args) {
-                                                                                    if (args.validationFailed) {
-                                                                                        alert('Ha ocurrido un error');
-                                                                                    } else {
-                                                                                        location.reload(true);
-                                                                                    }
-                                                                                }
-                                                                            </script>
-                                    
-                                    
-                                                                        </p:commandButton>-->
                                 </div>
+
                             </div>
+                            <!--aqui agregar dialogo para adicionar datos complementarios-->
+
                             <!--aqui agregar tabla de detalle de movimientos-->
                             <div class="table table-responsive table-bordered" >
                                 <table id="detmov" class="table table-striped table-condensed paginada" >
@@ -231,6 +230,7 @@
                                 </table>
                             </div>
                             <!--// probar aqui-->
+
                             <div id="adicDetmov" class="modal">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
@@ -248,7 +248,123 @@
                                 </div>
                             </div>
 
+                            <div id="adComP" class="modal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Datos para Préstamo Externo</h4>
+                                        </div>
+                                        <div class="modal-body" id="adiPt2">
+                                            <h:panelGroup id="displayPt2"> 
+                                                <div class="form-group">
+                                                    <div class="col-md-5">
+                                                        <label >No. de Préstamo Externo</label>
+                                                        <h:outputText value="#{movBienesBean.nuevoPrest.TPrestId}" />
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <label >Nombre de la Institución</label>
+                                                        <h:inputText value="#{movBienesBean.nuevoPrest.TPrestInst}" style="width: 100%" required="true"/> 
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <label >Persona Solicitante</label>
+                                                        <h:inputText value="#{movBienesBean.nuevoPrest.TPrestSolic}" style="width: 100%" required="true" /> 
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label >Cargo</label>
+                                                        <h:inputText value="#{movBienesBean.nuevoPrest.TPrestCargo}" style="width: 100%" /> 
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label >Teléfono</label>
+                                                        <h:inputText value="#{movBienesBean.nuevoPrest.TPrestTelef}" style="width: 100%" /> 
+                                                    </div>
+                                                </div>
+                                                <!--<p:commandButton value="Guardar Préstamo" icon="ui-icon-disk" action="{movBienesBean.guardarP()}" process="@this displayPT2" update="@all" oncomplete="handleRequest(xhr, status, args); adComP.hide();"/>-->
+
+                                            </h:panelGroup>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-default">Cancelar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="adComR" class="modal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Datos para Reparación Externa</h4>
+                                        </div>
+                                        <div class="modal-body" id="adiPt2">
+                                            <h:panelGroup id="displayRe2"> 
+                                                <div class="form-group">
+                                                    <div class="col-md-5">
+                                                        <label >No. de Reparación Externa</label>
+                                                        <h:outputText value="#{movBienesBean.nuevaRepar.TReparId}" />
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <label >Nombre del Taller</label>
+                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparTaller}" style="width: 100%" required="true"/> 
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <label >Dirección</label>
+                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparDirec}" style="width: 100%" required="true" /> 
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label >Contacto</label>
+                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparContacto}" style="width: 100%" /> 
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-6">
+                                                        <label >Persona que retira</label>
+                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparPret}" style="width: 100%" /> 
+                                                    </div>
+
+                                                    <div class="col-md-3">
+                                                        <label >Cargo</label>
+                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparPretCargo}" style="width: 100%" /> 
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <label >Teléfono</label>
+                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparTelef}" style="width: 100%" /> 
+                                                    </div>
+                                                </div>
+                                                <!--<p:commandButton value="Guardar Préstamo" icon="ui-icon-disk" action="{movBienesBean.guardarP()}" process="@this displayPT2" update="@all" oncomplete="handleRequest(xhr, status, args); adComP.hide();"/>-->
+
+                                            </h:panelGroup>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-default">Cancelar</button>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
                         </h:form>
+                        <!--                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                                                     action="{movBienesBean.limpiarE()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                        <script type="text/javascript">
+                                            function refrescar(xhr, status, args) {
+                                                if (args.validationFailed) {
+                                                    alert('Ha ocurrido un error');
+                                                } else {
+                                                    location.reload(true);
+                                                }
+                                            }
+                                        </script>
+
+
+                                    </p:commandButton>-->
+
                     </div>
                 </div>
                 <div class="tab-pane fade  active in" id="consulta">
@@ -597,6 +713,54 @@
 
                     </h:form>
 
+                </div>
+                <div class="tab-pane fade" id="codigo">
+                    <div class="well bs-component">
+
+                        <h:form id="formCod" enctype="multipart/form-data" >
+                            <p:growl id="growl" />
+                            <legend>
+                                <div class="form-header">
+                                    <button type="button" class="close"  aria-hidden="true">Cancelar ×</button>
+                                    <h4 class="modal-title">Consultar Datos de un Bien</h4>
+                                </div>
+                            </legend>
+                            <div class="form-group">
+                                <div class="col-md-3">
+                                    <label for="codi" >Código</label>
+                                    <div>
+                                        <p:inputMask id="codi" value="#{movBienesBean.cod}" mask="99-9999-9999" style="width: 100%;"> 
+                                            <p:ajax listener="#{movBienesBean.datosCodigo()}" update="@this descm marca modelo serie"/>
+                                        </p:inputMask>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <label for="descm" >Descripción</label>
+                                    <div>
+                                        <h:outputText id="descm" value="#{movBienesBean.codSeleccionado.TBienDesc}"  style="width: 100%;"/> 
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="marca">Marca</label>
+                                    <h:outputText id="marca" value="#{movBienesBean.codSeleccionado.CMarcaId.CMarcaDesc}"  style="width: 100%;"/> 
+                                </div> 
+                            </div> 
+                            <div class="form-group">
+                                 <div class="col-md-4">
+                                    <label for="modelo" >Modelo</label>
+                                    <h:outputText id="modelo" value="#{movBienesBean.codSeleccionado.TBienModelo}"  style="width: 100%;"/> 
+                                    <div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="serie" >Serie</label>
+                                    <div>
+                                        <h:outputText id="serie" value="#{movBienesBean.codSeleccionado.TBienSerie}"  style="width: 100%;"/> 
+                                    </div>
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
                 </div>
             </div>
         </ui:define>

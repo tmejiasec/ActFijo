@@ -18,6 +18,8 @@ import dao.TMovimDetaFacadeLocal;
 import dao.TMovimEncaFacadeLocal;
 import dao.TTiempoFacadeLocal;
 import dao.TCorrMovFacadeLocal;
+import dao.TPrestFacadeLocal;
+import dao.TReparFacadeLocal;
 import entidades.CEstadoMov;
 import entidades.CNiveles;
 import entidades.CResponsables;
@@ -27,6 +29,8 @@ import entidades.TBienes;
 import entidades.TMovimEnca;
 import entidades.TMovimDeta;
 import entidades.TCorrMov;
+import entidades.TPrest;
+import entidades.TRepar;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
@@ -87,9 +91,12 @@ public class MovBienesBean implements Serializable {
 
     private Boolean estado = false;
     private Boolean estadoI = false;
+    private Boolean estadoC = false;
+    private Boolean estadoR = false;
+    
     Date fecs, fecr, feci, feca;
     private Integer iniCorr=0;
-    private Integer espec;
+    private Integer espec,m_id;
     private String tipref = "MOV";
     private String tipo = "D";
 
@@ -107,17 +114,27 @@ public class MovBienesBean implements Serializable {
     private TMovimDeta deta;
     private TMovimDeta nuevoDeta = new TMovimDeta();
     private TMovimDeta detaSeleccionado = new TMovimDeta();
-    private Integer detSeleccionao;
+    private Integer detSeleccionado;
     private List<TMovimDeta> movdeta;
+    private TPrest nuevoPrest = new TPrest();
+    private TPrest prestSeleccionado = new TPrest();
+    private Integer prestSelec;
+    private List<TPrest> prestamos;
+    private TRepar nuevaRepar = new TRepar();
+    private TRepar reparSeleccionada = new TRepar();
+    private Integer reparSelec, codSelec, marca;
+    private List<TRepar> repars;
+    
     private List<CTiposMov> tiposm;    
                                                                                                           
     private List datosIn;
     private List bienesIn = new ArrayList<>();
+    private TBienes codSeleccionado = new TBienes();
     //   private List bienesIn;
     private Object[] ingre;
 
     protected Boolean edit = false;
-    private String desc, cod;
+    private String desc, cod, modelo, serie;
     private UploadedFile picture;
     private static final int BUFFER_SIZE = 1000000;
     private DefaultStreamedContent download;
@@ -178,7 +195,19 @@ public class MovBienesBean implements Serializable {
 	int nvoCorr=nuevoEnca.getTMoveCorr();
         nvoCorr=nvoCorr+1;
         getDaoCorrel().updateC(tipmo,anio,nvoCorr);
-        
+        // habilitando para datos complementarios si aplica.
+        String tiper;
+        tiper=nuevoEnca.getTMoveTipt();
+        if (tiper.equals("E") && tipmo == '2'){
+            m_id=nuevoEnca.getTMoveId();
+            encSeleccionado=m_id;
+            estadoC = false;
+        }
+        if (tiper.equals("E") && tipmo == '3'){
+            m_id=nuevoEnca.getTMoveId();
+            encSeleccionado=m_id;
+            estadoR = false;
+        }
         //        FacesUtil.addMensaje("Bien Guardado");
         bienes = getDaoBienes().getList();
         movenca = getDaoEnca().getList();
@@ -314,11 +343,19 @@ public class MovBienesBean implements Serializable {
         return (TCorrMovFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TCorrMovFacade!dao.TCorrMovFacadeLocal");
     }    
     
-      private CEstadoMovFacadeLocal getDaoEstmo() {
+    private CEstadoMovFacadeLocal getDaoEstmo() {
         return (CEstadoMovFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CEstadoMovFacade!dao.CEstadoMovFacadeLocal");
     }
 
+    private TPrestFacadeLocal getDaoPrest() {
+        return (TPrestFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TPrestFacade!dao.TPrestFacadeLocal");
+    }
 
+    private TReparFacadeLocal getDaoRepar() {
+        return (TReparFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TReparFacade!dao.TReparFacadeLocal");
+    }
+
+    
     public Boolean getEdit() {
         return edit;
     }
@@ -489,8 +526,6 @@ public class MovBienesBean implements Serializable {
         this.tipmSeleccionado = tipmSeleccionado;
     }
 
-    
-
 
     public Integer getTiempoSeleccionado() {
         return tiempoSeleccionado;
@@ -548,6 +583,23 @@ public class MovBienesBean implements Serializable {
         this.estadoI = estadoI;
     }
 
+    public Boolean getEstadoC() {
+        return estadoC;
+    }
+
+    public void setEstadoC(Boolean estadoC) {
+        this.estadoC = estadoC;
+    }
+
+    public Boolean getEstadoR() {
+        return estadoR;
+    }
+
+    public void setEstadoR(Boolean estadoR) {
+        this.estadoR = estadoR;
+    }
+
+    
     public Integer getIdFecc() {
         return idFecc;
     }
@@ -676,12 +728,12 @@ public class MovBienesBean implements Serializable {
         this.detaSeleccionado = detaSeleccionado;
     }
 
-    public Integer getDetSeleccionao() {
-        return detSeleccionao;
+    public Integer getDetSeleccionado() {
+        return detSeleccionado;
     }
 
-    public void setDetSeleccionao(Integer detSeleccionao) {
-        this.detSeleccionao = detSeleccionao;
+    public void setDetSeleccionado(Integer detSeleccionado) {
+        this.detSeleccionado = detSeleccionado;
     }
 
 
@@ -767,6 +819,102 @@ public class MovBienesBean implements Serializable {
         this.espec = espec;
     }
 
+    public TPrest getNuevoPrest() {
+        return nuevoPrest;
+    }
+
+    public void setNuevoPrest(TPrest nuevoPrest) {
+        this.nuevoPrest = nuevoPrest;
+    }
+
+    public TPrest getPrestSeleccionado() {
+        return prestSeleccionado;
+    }
+
+    public void setPrestSeleccionado(TPrest prestSeleccionado) {
+        this.prestSeleccionado = prestSeleccionado;
+    }
+
+    public Integer getPrestSelec() {
+        return prestSelec;
+    }
+
+    public void setPrestSelec(Integer prestSelec) {
+        this.prestSelec = prestSelec;
+    }
+
+    public List<TPrest> getPrestamos() {
+        return prestamos;
+    }
+
+    public void setPrestamos(List<TPrest> prestamos) {
+        this.prestamos = prestamos;
+    }
+
+    public TRepar getNuevaRepar() {
+        return nuevaRepar;
+    }
+
+    public void setNuevaRepar(TRepar nuevaRepar) {
+        this.nuevaRepar = nuevaRepar;
+    }
+
+    public TRepar getReparSeleccionada() {
+        return reparSeleccionada;
+    }
+
+    public void setReparSeleccionada(TRepar reparSeleccionada) {
+        this.reparSeleccionada = reparSeleccionada;
+    }
+
+    public Integer getReparSelec() {
+        return reparSelec;
+    }
+
+    public void setReparSelec(Integer reparSelec) {
+        this.reparSelec = reparSelec;
+    }
+
+    public List<TRepar> getRepars() {
+        return repars;
+    }
+
+    public void setRepars(List<TRepar> repars) {
+        this.repars = repars;
+    }
+
+    public TBienes getCodSeleccionado() {
+        return codSeleccionado;
+    }
+
+    public void setCodSeleccionado(TBienes codSeleccionado) {
+        this.codSeleccionado = codSeleccionado;
+    }
+
+    public Integer getCodSelec() {
+        return codSelec;
+    }
+
+    public void setCodSelec(Integer codSelec) {
+        this.codSelec = codSelec;
+    }
+
+    public Integer getMarca() {
+        return marca;
+    }
+
+    public void setMarca(Integer marca) {
+        this.marca = marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
     
     public void depSeleccionA() {
         nivSeleccionado = nuevoEnca.getTMoveNivs();
@@ -850,23 +998,21 @@ public class MovBienesBean implements Serializable {
             estado = false;
         }
     }
+    
+    public TBienes datosCodigo() throws NamingException {
+        this.cod=cod;
+        System.out.println("cod dig: "+cod);
+//        cod = detaSeleccionado.getTMovdCodigo();
+    	codSeleccionado = getDaoBienes().getCodBien(cod);
+        System.out.println("despues de query"+codSeleccionado);
+        desc=codSeleccionado.getTBienDesc();
+	modelo=codSeleccionado.getTBienModelo();
+	marca=codSeleccionado.getCMarcaId().getCMarcaId();
+	serie=codSeleccionado.getTBienSerie();
+	return codSeleccionado;
+		}
 
-    public void buscarCodIn() throws NamingException {
-        int resul = 0;
-//        String cod;
-        cod = detaSeleccionado.getTMovdCodigo();
-        System.out.println("código: " + cod);
-        resul = getDaoBienes().busCod(cod);
-        if (resul == 0) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Código no Existe....verifique"));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok.Datos encontrados"));
-            datosIn = getDaoBienes().datosI(cod);
-            System.out.println("lista generada:");
-        }
-
-    }
-  
+    
     public Date ParseFecha(String fecha) {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         Date fechaDate = null;

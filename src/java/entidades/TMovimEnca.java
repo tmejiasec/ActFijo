@@ -71,7 +71,7 @@ public class TMovimEnca implements Serializable {
     @Column(name = "t_move_id")
     private Integer tMoveId;
     @Column(name = "t_move_tipt")
-    private Character tMoveTipt;
+    private String tMoveTipt;
     @Column(name = "t_move_corr")
     private Integer tMoveCorr;
     @Column(name = "t_move_anio")
@@ -100,7 +100,7 @@ public class TMovimEnca implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date tMoveFecretr;
     @Column(name = "t_move_diag")
-    private Character tMoveDiag;
+    private String tMoveDiag;
     @Column(name = "t_move_docd")
     private Boolean tMoveDocd;
     @Size(max = 2147483647)
@@ -177,11 +177,11 @@ public class TMovimEnca implements Serializable {
         this.tMoveId = tMoveId;
     }
 
-    public Character getTMoveTipt() {
+    public String getTMoveTipt() {
         return tMoveTipt;
     }
 
-    public void setTMoveTipt(Character tMoveTipt) {
+    public void setTMoveTipt(String tMoveTipt) {
         this.tMoveTipt = tMoveTipt;
     }
 
@@ -281,11 +281,11 @@ public class TMovimEnca implements Serializable {
         this.tMoveFecretr = tMoveFecretr;
     }
 
-    public Character getTMoveDiag() {
+    public String getTMoveDiag() {
         return tMoveDiag;
     }
 
-    public void setTMoveDiag(Character tMoveDiag) {
+    public void setTMoveDiag(String tMoveDiag) {
         this.tMoveDiag = tMoveDiag;
     }
 

@@ -32,6 +32,8 @@ public interface TBienesFacadeLocal {
     public Integer busCod(String cod);
 	
     public TBienes getBien(Integer bien);
+    
+    public TBienes getCodBien(String cod);
 
     public List busqueda(String desc);
     

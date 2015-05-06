@@ -113,6 +113,12 @@ public class TSustit implements Serializable {
     @Column(name = "t_sust_fechm")
     @Temporal(TemporalType.DATE)
     private Date tSustFechm;
+    private Integer tFechdicId;
+    @Column(name = "t_fechdic_id")
+    private Integer tFechsustId;
+    @Column(name = "t_fechsust_id")
+    private Integer tFechresId;
+    @Column(name = "t_fechres_id")
     @JoinColumn(name = "t_tm_id", referencedColumnName = "t_tm_id")
     @ManyToOne(optional = false)
     private TTiempo tTmId;
@@ -372,6 +378,30 @@ public class TSustit implements Serializable {
 
     public void setCAreaId(CAreas cAreaId) {
         this.cAreaId = cAreaId;
+    }
+
+    public Integer getTFechdicId() {
+        return tFechdicId;
+    }
+
+    public Integer getTFechsustId() {
+        return tFechsustId;
+    }
+
+    public Integer getTFechresId() {
+        return tFechresId;
+    }
+
+    public void setTFechdicId(Integer tFechdicId) {
+        this.tFechdicId = tFechdicId;
+    }
+
+    public void setTFechsustId(Integer tFechsustId) {
+        this.tFechsustId = tFechsustId;
+    }
+
+    public void setTFechresId(Integer tFechresId) {
+        this.tFechresId = tFechresId;
     }
 
     @Override

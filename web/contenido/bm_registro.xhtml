@@ -409,7 +409,7 @@
                                             <td>#{bien.TBienDesc}</td>
                                             <td>
                                                 <h:commandLink value="Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifBien" >
-                                                    <f:setPropertyActionListener value="#{bien}"
+                                                    <f:setPropertyActionListener value="#{bienesBean.bien}"
                                                                                  target="#{bienesBean.bienSeleccionado}" />
                                                     <p:ajax process="@this" update=":formBien:modiBien:displayB2"/>
                                                 </h:commandLink>
