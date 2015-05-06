@@ -53,6 +53,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TSustit.findByTSustUsem", query = "SELECT t FROM TSustit t WHERE t.tSustUsem = :tSustUsem"),
     @NamedQuery(name = "TSustit.findByTSustFechm", query = "SELECT t FROM TSustit t WHERE t.tSustFechm = :tSustFechm")})
 public class TSustit implements Serializable {
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -113,12 +114,16 @@ public class TSustit implements Serializable {
     @Column(name = "t_sust_fechm")
     @Temporal(TemporalType.DATE)
     private Date tSustFechm;
-    private Integer tFechdicId;
+    
+  
     @Column(name = "t_fechdic_id")
-    private Integer tFechsustId;
+    private Integer tFechdicId;
     @Column(name = "t_fechsust_id")
+    private Integer tFechsustId;
+    @Column(name = "t_fechres_id")   
     private Integer tFechresId;
-    @Column(name = "t_fechres_id")
+    
+    
     @JoinColumn(name = "t_tm_id", referencedColumnName = "t_tm_id")
     @ManyToOne(optional = false)
     private TTiempo tTmId;
@@ -324,7 +329,7 @@ public class TSustit implements Serializable {
         this.tSustFechm = tSustFechm;
     }
 
-    public TTiempo getTTmId() {
+  public TTiempo getTTmId() {
         return tTmId;
     }
 
@@ -428,5 +433,9 @@ public class TSustit implements Serializable {
     public String toString() {
         return "entidades.TSustit[ tSustId=" + tSustId + " ]";
     }
+
+    
+
+   
     
 }
