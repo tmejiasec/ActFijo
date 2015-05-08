@@ -16,74 +16,128 @@ and open the template in the editor.
    <from-outcome>login</from-outcome>
    <to-view-id>/login.xhtml</to-view-id>
   </navigation-case>
-<!--   <navigation-case>
-   <from-outcome>Clientes</from-outcome>
-   <to-view-id>/vistas/clientes2.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Proveedores</from-outcome>
-   <to-view-id>/vistas/proveedores.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Supervisores</from-outcome>
-   <to-view-id>/vistas/supervisores.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Colecturias</from-outcome>
-   <to-view-id>/vistas/colecturias.xhtml</to-view-id>
-  </navigation-case>
-  <navigation-case>
-   <from-outcome>Colectores</from-outcome>
-   <to-view-id>/vistas/colectores.xhtml</to-view-id>
+   <navigation-case>
+   <from-outcome>Roles</from-outcome>
+   <to-view-id>/contenido/catsg_roles.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
    <from-outcome>Usuarios</from-outcome>
-   <to-view-id>/vistas/usuarios.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Ventas</from-outcome>
-   <to-view-id>/vistas/gestionVentas.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Compras</from-outcome>
-   <to-view-id>/vistas/gestionCompras.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Remesas</from-outcome>
-   <to-view-id>/vistas/gestionRemesas.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Lista Proveedores</from-outcome>
-   <to-view-id>/vistas/rep_prov.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Lista Clientes</from-outcome>
-   <to-view-id>/vistas/rep_cte.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Lista Colecturías</from-outcome>
-   <to-view-id>/vistas/rep_colectu.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Lista Colectores</from-outcome>
-   <to-view-id>/vistas/rep_colecto.xhtml</to-view-id>
-  </navigation-case>
-    <navigation-case>
-   <from-outcome>Lista Supervisores</from-outcome>
-   <to-view-id>/vistas/rep_supv.xhtml</to-view-id>
-  </navigation-case>
-     <navigation-case>
-   <from-outcome>Consumidor Final</from-outcome>
-   <to-view-id>/vistas/rep_consf_leg.xhtml</to-view-id>
-  </navigation-case>
-     <navigation-case>
-   <from-outcome>Crédito Fiscal</from-outcome>
-   <to-view-id>/vistas/rep_credf_leg.xhtml</to-view-id>
+   <to-view-id>/contenido/catsg_usuarios.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
-   <from-outcome>Libro Compras</from-outcome>
-   <to-view-id>/vistas/rep_compra_leg.xhtml</to-view-id>
-  </navigation-case>-->
+   <from-outcome>Niveles</from-outcome>
+   <to-view-id>/contenido/catg_niveles.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Dependencias</from-outcome>
+   <to-view-id>/contenido/catg_depend.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Jefes</from-outcome>
+   <to-view-id>/contenido/catg_jefesdep.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Responsables</from-outcome>
+   <to-view-id>/contenido/catg_respons.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Tecnicos</from-outcome>
+   <to-view-id>/contenido/catg_tecnicos.xhtml</to-view-id>
+</navigation-case>   
+<navigation-case>
+   <from-outcome>Edificios</from-outcome>
+   <to-view-id>/contenido/catg_edificios.xhtml</to-view-id>
+  </navigation-case>
+<navigation-case>
+   <from-outcome>Areas</from-outcome>
+   <to-view-id>/contenido/catg_areas.xhtml</to-view-id>
+  </navigation-case>
+<navigation-case>
+   <from-outcome>Ubicaciones</from-outcome>
+   <to-view-id>/contenido/catg_ubic.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Zonas</from-outcome>
+   <to-view-id>/contenido/catg_zonas.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Deptos</from-outcome>
+   <to-view-id>/contenido/catg_deptos.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Munic</from-outcome>
+   <to-view-id>/contenido/catg_munic.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Fuentes</from-outcome>
+   <to-view-id>/contenido/catfn_fuentes.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Formas</from-outcome>
+   <to-view-id>/contenido/catfn_formas.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>TipDoc</from-outcome>
+   <to-view-id>/contenido/catfn_tipdoc.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Proveedores</from-outcome>
+   <to-view-id>/contenido/catfn_provee.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Proyectos</from-outcome>
+   <to-view-id>/contenido/catfn_proyec.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Marcas</from-outcome>
+   <to-view-id>/contenido/catfn_marcas.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Rubros</from-outcome>
+   <to-view-id>/contenido/catbm_rubros.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Especificos</from-outcome>
+   <to-view-id>/contenido/catbm_espec.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>EstFis</from-outcome>
+   <to-view-id>/contenido/catbm_estbien.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>CondBien</from-outcome>
+   <to-view-id>/contenido/catbm_conbien.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>EstProc</from-outcome>
+   <to-view-id>/contenido/catbm_estproc.xhtml</to-view-id>
+  </navigation-case>
+    <navigation-case>
+   <from-outcome>TipMov</from-outcome>
+   <to-view-id>/contenido/catbm_tipmov.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>EstMov</from-outcome>
+   <to-view-id>/contenido/catbm_estmov.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>TipDesc</from-outcome>
+   <to-view-id>/contenido/catbm_tipdesc.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>Bienes</from-outcome>
+   <to-view-id>/contenido/bm_registro.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>MovBienes</from-outcome>
+   <to-view-id>/contenido/bm_movBienes.xhtml</to-view-id>
+  </navigation-case>
+  <navigation-case>
+   <from-outcome>RepBienes</from-outcome>
+   <to-view-id>/contenido/rep_depen.xhtml</to-view-id>
+  </navigation-case>
+
+
   
  </navigation-rule>
  

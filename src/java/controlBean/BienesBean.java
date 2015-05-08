@@ -1592,12 +1592,16 @@ public class BienesBean implements Serializable {
         FacesContext ctx = FacesContext.getCurrentInstance();
         String picture_directory = ctx.getExternalContext().getInitParameter("pictures_directory_path");
         //If directory exists ? do nothing : make directory
+        System.out.println("directorio: "+picture_directory);
         File storage_folder = new File(picture_directory + nuevoArch.getTArchCodref());
+        System.out.println("folder: "+storage_folder);
         if (!storage_folder.exists()) {
             storage_folder.mkdir();
         }
 
         String nomAr = picture.getFileName();
+        System.out.println("nombre arch: "+nomAr);
+        System.out.println("codigo: "+nuevoArch.getTArchCodref());
         File archivoImagen = new File(picture_directory + nuevoArch.getTArchCodref() + "/" + nomAr);
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(archivoImagen);

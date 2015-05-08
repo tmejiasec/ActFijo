@@ -345,7 +345,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-10 col-lg-offset-8">
-                                    <p:commandButton id="guard" class="btn btn-primary" value="Guardar Bien"  action="#{bienesBean.guardarB()}"  rendered="#{!bienesBean.edit}" disabled="#{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                    <p:commandButton id="guard" styleClass="btn btn-primary" value="Guardar Bien"  action="#{bienesBean.guardarB()}"  rendered="#{!bienesBean.edit}" disabled="#{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -358,7 +358,7 @@
 
                                     <!--aqui agregar boton ingreso por lote-->
 
-                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                                    <p:commandButton id="Nuevo" value="Agregar Otro" styleClass="btn btn-primary"
                                                      action="#{bienesBean.limpiarB()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
                                         <script type="text/javascript">
                                             function refrescar(xhr, status, args) {
@@ -771,7 +771,7 @@
                                                         </div>
                                                         <br></br>
                                                         <div class="col-lg-10 col-lg-offset-8">                                                               
-                                                            <p:commandButton id="actua" icon="ui-icon-pencil" class="btn btn-primary" value="Actualizar"  action="#{bienesBean.actualB()}"  rendered="#{!bienesBean.edit}" update="@all" process="@this :formBien:modiBien:displayB2"  oncomplete="refrescar(xhr, status, args); ;modifBien.hide();" />
+                                                            <p:commandButton id="actua" icon="ui-icon-pencil" styleClass="btn btn-primary" value="Actualizar"  action="#{bienesBean.actualB()}"  rendered="#{!bienesBean.edit}" update="@all" process="@this :formBien:modiBien:displayB2"  oncomplete="refrescar(xhr, status, args); ;modifBien.hide();" />
                                                             <script type="text/javascript">
                                                                 function refrescar(xhr, status, args) {
                                                                     if (args.validationFailed) {
@@ -957,7 +957,7 @@
                                                     <div class="col-md-6">
                                                     </div>                                                 
                                                     <div class="col-md-6">
-                                                        <p:commandButton id="actuaI" icon="ui-icon-pencil" class="btn btn-primary" value="Actualizar"  action="#{bienesBean.actualA()}"  rendered="#{!bienesBean.edit}" update="@all" process="@this :formImag:modImag:dispDoc2"  oncomplete="refrescarI(xhr, status, args); ;modifDoc.hide();" />
+                                                        <p:commandButton id="actuaI" icon="ui-icon-pencil" styleClass="btn btn-primary" value="Actualizar"  action="#{bienesBean.actualA()}"  rendered="#{!bienesBean.edit}" update="@all" process="@this :formImag:modImag:dispDoc2"  oncomplete="refrescarI(xhr, status, args); ;modifDoc.hide();" />
                                                         <script type="text/javascript">
                                                             function refrescarI(xhr, status, args) {
                                                                 if (args.validationFailed) {
@@ -1085,7 +1085,7 @@
                                                 <br></br>
                                                 <div class="form-group">
                                                     <div class="col-md-10">
-                                                        <p:commandButton id="elimI" icon="ui-icon-delete" class="btn btn-primary" value="Confirmar Eliminación Imagen"  action="#{bienesBean.borrarA()}"  update="@this :formImag" process="@this :formImag:elimImag:dispDoc3"  oncomplete="refrescarIe(xhr, status, args); ;elimDoc.hide();" />
+                                                        <p:commandButton id="elimI" icon="ui-icon-delete" styleClass="btn btn-primary" value="Confirmar Eliminación Imagen"  action="#{bienesBean.borrarA()}"  update="@this :formImag" process="@this :formImag:elimImag:dispDoc3"  oncomplete="refrescarIe(xhr, status, args); ;elimDoc.hide();" />
                                                         <script type="text/javascript">
                                                             function refrescarIe(xhr, status, args) {
                                                                 if (args.validationFailed) {
@@ -1252,7 +1252,7 @@
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div>
-                                                            <p:commandButton id="confI" icon="ui-icon-process" class="btn btn-primary" value="Generar Lote" 
+                                                            <p:commandButton id="confI" icon="ui-icon-process" styleClass="btn btn-primary" value="Generar Lote" 
                                                                              action="#{bienesBean.generarI()}"   update="@this :formLotes:lisIngre" process="@this" />
                                                         </div>
                                                     </div>
