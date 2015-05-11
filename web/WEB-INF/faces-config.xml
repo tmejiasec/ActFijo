@@ -133,6 +133,11 @@ and open the template in the editor.
    <to-view-id>/contenido/bm_movBienes.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
+   <from-outcome>Sustituciones</from-outcome>
+   <to-view-id>/contenido/bm_sustitucbienes.xhtml</to-view-id>
+  </navigation-case>
+
+  <navigation-case>
    <from-outcome>RepBienes</from-outcome>
    <to-view-id>/contenido/rep_depen.xhtml</to-view-id>
   </navigation-case>

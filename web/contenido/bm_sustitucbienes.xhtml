@@ -1,0 +1,464 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"        
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+
+        <ui:define name="content">
+            <ul class="nav nav-tabs">
+                <li class="active"><a aria-expanded="true" href="#adicion" data-toggle="tab">Adición</a></li>
+                <li class=""><a aria-expanded="false" href="#consulta" data-toggle="tab">Consulta</a></li>
+            </ul>
+
+
+            <div id="myTabContent" class="tab-content">
+
+                <div class="tab-pane fade active in" id="adicion">
+                    <div class="well bs-component">
+                        <h:form id="adiSBien" class="form-horizontal" enctype="multipart/form-data" >
+                            <p:growl id="growl" />
+                            <legend>
+                                <div class="form-header">
+                                    <button type="button" class="close"  aria-hidden="true">Cancelar ×</button>
+                                    <h4 class="modal-title">Adicion de ficha de Sustitucion de Bienes</h4>
+                                </div>
+                            </legend>
+
+
+                            <!-- Fila 1 -->
+                            <div class="form-group">
+
+                                <div class="col-md-6">
+                                    <label>Correlativo</label>
+                                    <div>
+                                        <h:outputText value="#{sustitucionBienesBean.nuevaSustit.TSustCorr}"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="using">Elaborado por</label>
+                                    <div>
+                                        <h:outputText id="using" value="#{sustitucionBienesBean.nuevaSustit.TSustUsec}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fin Fila 1 -->
+
+                            <!-- Fila 2 -->
+                            <div class="form-group">
+
+
+                                <div class="col-md-6">
+                                    <label for="cod" >Codigo del Bien a sustituir</label>
+                                    <div>
+                                        <p:inputMask id="cod" value="#{sustitucionBienesBean.cod}" mask="99-9999-9999"> 
+                                            <p:ajax listener="#{sustitucionBienesBean.datosCodigo()}" update="@this rubro espec descm marcaant modelant seriant"/>
+                                        </p:inputMask>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label >Tipo de Sustitución</label>
+                                    <div >
+                                        <h:selectOneRadio value="#{sustitucionBienesBean.nuevaSustit.TSustTipo}" required="true">
+                                                <f:selectItem itemValue="1" itemLabel=" Extravío "/>
+                                                <f:selectItem itemValue="2" itemLabel=" Garantía "/>
+                                        </h:selectOneRadio>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Fin Fila 2 -->
+
+                            <!-- Fila 3 -->
+                            <div class="form-group">
+
+                                <div class="col-md-6">
+                                    <label>Rubro</label>
+                                    <div>
+                                        <h:outputText id="rubro" value="#{sustitucionBienesBean.codSeleccionado.CRubroId.CRubroDesc}"/>
+                                    </div>
+                                </div>    
+
+                                <div class="col-md-6">
+                                    <label >Especifico</label>
+                                    <div>
+                                        <h:outputText id="espec" value="#{sustitucionBienesBean.codSeleccionado.CEspecId.CEspecDesc}"/>
+                                    </div>
+                                </div> 
+
+                            </div>
+                            <!-- Fin Fila 3 -->
+
+                            <!-- Fila 4 -->
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label for="descm" >Descripción</label>
+                                    <div>
+                                        <h:outputText id="descm" value="#{sustitucionBienesBean.codSeleccionado.TBienDesc}"  style="width: 100%;"/> 
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-6">
+                                    <label for="marcaant">Marca anterior</label>
+                                    <div>
+                                        <h:outputText id="marcaant" value="#{sustitucionBienesBean.codSeleccionado.CMarcaId.CMarcaDesc}"/>
+                                    </div>
+                                </div> 
+
+                            </div>
+                            <!-- Fin Fila 4 -->
+
+                            <!-- Fila 5 -->
+                            <div class="form-group">
+
+                                <div class="col-md-6">
+                                    <label for="modelant">Modelo anterior</label>
+                                    <div>
+                                        <h:outputText id="modelant" value="#{sustitucionBienesBean.codSeleccionado.TBienModelo}"/>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-6">
+                                    <label for="seriant">Serie anterior</label>
+                                    <div>
+                                        <h:outputText id="seriant" value="#{sustitucionBienesBean.codSeleccionado.TBienSerie}"/>
+                                    </div>
+                                </div> 
+
+                            </div>
+                            <!-- Fin Fila 5 -->
+
+
+                            <!-- Fila 5 -->
+                            <div class="form-group">
+
+                                <div class="col-md-6">
+                                    <label for="respob">Responsable del Bien</label>
+                                    <div>
+                                        <h:outputText id="respob" value="#{sustitucionBienesBean.codSeleccionado.CRespId.CRespNom1 }"/>
+                                    </div>
+                                </div> 
+
+                                <div class="col-md-6">
+                                    <label >Fecha de adquisicion</label>
+                                    <div>
+                                        <!--<h:outputText value="{bienesBean.nuevoBien.TBienUscrea}"/>-->
+                                    </div>
+                                </div> 
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <div class="col-md-6">
+                                    <label for="valorsustit">Valor del Bien</label>
+                                    <div>
+                                        <!--<h:outputText id="valorsustit" value="{bienesBean.nuevoBien.TBienUscrea}"/>-->
+                                    </div>
+                                </div> 
+
+
+
+                            </div>
+                            <!-- Fin Fila 5 -->
+
+                            <div class="form-group">
+
+                                <div class="col-md-6">
+                                    <label for="fecadm">Fecha de Resolucion</label>
+                                    <div>
+<!--                                        <p:calendar id="fecrs"
+                                                    value="{bienesBean.bienSeleccionado.TBienFechadq}" locale="es"
+                                                    pattern="dd/MM/yyyy" showOn="button" 
+                                                    size="12" tabindex="2" style="width: 100%;">
+                                            <p:ajax event="dateSelect" />
+                                        </p:calendar>-->
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="docin" >Copia de Resolucion</label>
+                                    <div>
+                                        <p:commandButton id="guard" class="btn btn-default" value="Examinar"  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="@all" process="@this adiSBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                        <script type="text/javascript">
+                                            function handleRequest(xhr, status, args) {
+                                                if (args.validationFailed) {
+                                                    alert('Ha ocurrido un error durante la carga del documento');
+                                                } else {
+                                                    alert('Documento adicionado correctamente');
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <!-- Fin Fila 6 -->
+
+
+                            <div class="form-group">
+
+                                <div class="col-md-6">
+                                    <label for="fecidt">Fecha de Dictamen Tecnico</label>
+                                    <div>
+<!--                                        <p:calendar id="fecidt"
+                                                    value="{bienesBean.bienSeleccionado.TBienFechadq}" locale="es"
+                                                    pattern="dd/MM/yyyy" showOn="button" 
+                                                    size="12" tabindex="2" style="width: 100%;">
+                                            <p:ajax event="dateSelect" />
+                                        </p:calendar>-->
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label for="docin" >Copia de Dictamen</label>
+                                    <div>
+<!--                                        <p:commandButton id="guard" class="btn btn-default" value="Examinar"  action="{bienesBean.guardarB()}"  rendered="{!bienesBean.edit}" disabled="{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                        <script type="text/javascript">
+                                            function handleRequest(xhr, status, args) {
+                                                if (args.validationFailed) {
+                                                    alert('Ha ocurrido un error durante la carga del documento');
+                                                } else {
+                                                    alert('Documento adicionado correctamente');
+                                                }
+                                            }
+                                        </script>
+                                    </div>-->
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label for="nvadesc" >Nueva Descripcion</label>
+<!--                                    <div>
+                                        <h:inputText id="nvadesc" value="{bienesBean.nuevoBien.TBienModelo}" style="width: 100%;"/> 
+                                    </div>-->
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="nvomod" >Nuevo Modelo</label>
+                                    <div>
+<!--                                        <p:inputMask id="nvomod" value="#" mask="99-9999-9999"> 
+                                            <p:ajax listener="{bienesBean.buscarCod}" update="@this :adiBien:growl :adiBien:guard"/>
+                                        </p:inputMask>-->
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label for="nvaser" >Nueva Serie</label>
+                                    <div>
+                                        <p:inputMask id="nvaser" value="#" mask="99-9999-9999"> 
+                                            <!--<p:ajax listener="{bienesBean.buscarCod}" update="@this :adiBien:growl :adiBien:guard"/>-->
+                                        </p:inputMask>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Tabla-->
+                            <div class="table table-responsive table-bordered" >
+                                <table id="tbienes" class="table table-striped table-condensed paginada" >
+                                    <thead>
+                                        <tr align="center">
+                                            Detalle Bien a Asignar
+                                        </tr>
+                                        <tr>
+                                            <th>N°</th>
+                                            <th>Codigo</th>
+                                            <th>Descripcion</th>
+                                            <th>Marca</th>
+                                            <th >Modelo</th>
+                                            <th >Serie</th>
+                                            <th >Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ui:repeat value="#{AsignacionBienesBean.asigDet}" var="asdet" >
+                                            <tr>
+                                                <td>#{asdet.tAsigdId}</td>
+                                                <td>#{asdet.CRespNom1} #{resp.CRespNom2} #{resp.CRespNom3}</td>
+                                                <td>#{asdet.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec}</td>
+                                                <td>#{asdet.CRespCargo}</td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                </td>
+                                                <td>
+                                                    <input name="j_idt6:j_idt10" id="j_idt6:j_idt10:0" value="1" type="checkbox" />
+                                                </td>
+                                            </tr>
+                                        </ui:repeat>
+                                    </tbody>  
+                                </table>
+                            </div>
+
+                            <!--Fin Tabla-->
+
+                            <!-- Botones -->
+                            <div class="form-group">
+                                <div class="col-lg-10 col-lg-offset-8">
+
+<!--                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                                                     action="{bienesBean.limpiarB()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                        <script type="text/javascript">
+                                            function refrescar(xhr, status, args) {
+                                                if (args.validationFailed) {
+                                                    alert('Ha ocurrido un error');
+                                                } else {
+                                                    alert('nuevo');
+                                                    location.reload(true);
+                                                }
+                                            }
+                                        </script>
+
+
+                                    </p:commandButton>-->
+
+<!--                                    <p:commandButton id="guard" class="btn btn-primary" value="Guardar "  action="{bienesBean.guardarB()}"  rendered="{!bienesBean.edit}" disabled="{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                            }
+                                        }
+                                    </script>-->
+<!--
+                                    <p:commandButton id="guard" class="btn btn-primary" value="Cancelar "  action="{bienesBean.guardarB()}"  rendered="{!bienesBean.edit}" disabled="{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+
+                                        }
+                                    </script>-->
+
+                                    <!--aqui agregar boton ingreso por lote-->
+
+
+                                </div>
+                            </div>
+                            <!-- Botones -->
+
+                            </div>
+
+                            <!--aqui agregar dialogo ingreso por lote-->
+                        </h:form>
+                    </div>
+                </div>
+
+
+                <div class="tab-pane fade" id="consulta">
+                    <h:head></h:head>                    
+                    <h:form id="formSustitucion" >
+                        <div class="table table-responsive table-bordered" >
+                            <table id="tbienes" class="table table-striped table-condensed paginada" >
+                                <thead>
+                                    <tr align="center">
+                                        CONSULTA DE SUSTITUCION DE BIENES MUEBLES
+                                    </tr>
+                                    <tr>
+                                        <th>Correlativo</th>
+                                        <th>Asignado a</th>
+                                        <th>Dependencia</th>
+                                        <th>Fecha</th>
+                                        <th >Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{AsignacionBienesBean.asigDet}" var="asdet" >
+                                        <tr>
+                                            <td>#{asdet.tAsigdId}</td>
+                                            <td>#{asdet.CRespNom1} #{resp.CRespNom2} #{resp.CRespNom3}</td>
+                                            <td>#{asdet.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec}</td>
+                                            <td>#{asdet.CRespCargo}</td>
+                                            <td>
+                                                <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifArea" action="#{catgeBean.asignarEdif()}">
+                                                    <f:setPropertyActionListener value="#{asdet}"
+                                                                                 target="#{AsignacionBienesBean.asigDetaSeleccionado}"  />
+                                                    <p:ajax process="@this" update=":formAreas:displayA2"/>
+                                                </h:commandLink>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>  
+                            </table>
+                        </div>
+                        <div id="modifBien" class="modal">
+                            <div class="modal-dialog">
+                                <h:head></h:head>
+                                <h:form id="modiBien" > 
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar ×</button>
+                                            <h4 class="modal-title">Modificación de Bienes Muebles</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body" id="modiPy2">
+                                                    <h:panelGroup id="displayB2"> 
+                                                    
+                                                    </h:panelGroup>  
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </h:form>
+                            </div>
+                        </div>
+                    </h:form>
+                </div>
+
+
+                <!-- HASTA AQUI -->
+
+            </div>
+        </ui:define>
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('.paginada').dataTable(
+                            {
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
+                });
+            </script>
+
+        </ui:define>
+
+    </ui:composition>
+</html>
+

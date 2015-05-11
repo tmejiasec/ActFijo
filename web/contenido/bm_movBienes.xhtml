@@ -170,7 +170,7 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-8 col-lg-offset-6">
-                                    <p:commandButton id="guard"  value="Guardar Encabezado"  action="#{movBienesBean.guardarE()}"  rendered="#{!movBienesBean.edit}" disabled="#{movBienesBean.estado}" update="@all" process="@this adiMBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                    <p:commandButton id="guard"  value="Guardar Encabezado"  action="#{movBienesBean.guardarE()}"  rendered="#{!movBienesBean.edit}" disabled="#{movBienesBean.estado}" update="@this guard adiComP adiComR" process="@this adiMBien"  oncomplete="handleRequest(xhr, status, args);" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -180,12 +180,12 @@
                                             }
                                         }
                                     </script>
-                                    <h:commandButton id="adiComP" value="Préstamo Externo"  pt:data-toggle="modal" pt:data-target="#adComP" >
+                                    <h:commandButton id="adiComP" value="Préstamo Externo"  pt:data-toggle="modal" pt:data-target="#adComP" disabled="#{movBienesBean.estadoC}" >
                                         <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.encSeleccionado}" />
                                         <p:ajax process="@this" update=":adiMBien:displayPt2"/>
                                     </h:commandButton>
 
-                                    <h:commandButton id="adiComR" value="Reparación Externa"  pt:data-toggle="modal" pt:data-target="#adComR" >
+                                    <h:commandButton id="adiComR" value="Reparación Externa"  pt:data-toggle="modal" pt:data-target="#adComR" disabled="#{movBienesBean.estadoR}">
                                         <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.encSeleccionado}" />
                                         <p:ajax process="@this" update=":adiMBien:displayRe2"/>
                                     </h:commandButton>

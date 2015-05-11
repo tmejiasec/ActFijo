@@ -91,8 +91,8 @@ public class MovBienesBean implements Serializable {
 
     private Boolean estado = false;
     private Boolean estadoI = false;
-    private Boolean estadoC = false;
-    private Boolean estadoR = false;
+    private Boolean estadoC = true;
+    private Boolean estadoR = true;
     
     Date fecs, fecr, feci, feca;
     private Integer iniCorr=0;

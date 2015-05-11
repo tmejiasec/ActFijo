@@ -57,6 +57,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TBienes.findByTBienFecadId", query = "SELECT t FROM TBienes t WHERE t.tBienFecadId = :tBienFecadId"),
     @NamedQuery(name = "TBienes.findByTBienFvgarId", query = "SELECT t FROM TBienes t WHERE t.tBienFvgarId = :tBienFvgarId"),
     @NamedQuery(name = "TBienes.findByTBienFregId", query = "SELECT t FROM TBienes t WHERE t.tBienFregId = :tBienFregId"),
+    @NamedQuery(name = "TBienes.findByResponsable", query = "SELECT t FROM TBienes t WHERE t.cRespId.cRespId = :cRespId"),
     @NamedQuery(name = "TBienes.findByTBienFinidId", query = "SELECT t FROM TBienes t WHERE t.tBienFinidId = :tBienFinidId")})
     public class TBienes implements Serializable {
     private static final long serialVersionUID = 1L;

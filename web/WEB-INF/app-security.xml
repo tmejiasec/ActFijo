@@ -22,8 +22,6 @@
         <intercept-url pattern="/contenido/catg_munic.xhtml" access="hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/catg_zonas.xhtml" access="hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/catg_deptos.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/bm_registro.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/bm_movBienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/catg_niveles.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/catg_depend.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/catg_jefesdep.xhtml" access="hasRole('ADMINISTRADOR')" />
@@ -48,6 +46,9 @@
         <intercept-url pattern="/contenido/catbm_estmov.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/catbm_estbien.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/catbm_tipdesc.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
+        <intercept-url pattern="/contenido/bm_registro.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
+        <intercept-url pattern="/contenido/bm_movBienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
+        <intercept-url pattern="/contenido/bm_sustitucbienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
 
             
         <!-- Disable web URI authorization, as we're using <global-method-security> and have @Secured the services layer instead

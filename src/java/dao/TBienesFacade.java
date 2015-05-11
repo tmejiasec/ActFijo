@@ -46,7 +46,7 @@ public class TBienesFacade extends AbstractFacade<TBienes> implements TBienesFac
 
     @Override
     public List getListM(Integer respo) {
-        return em.createNamedQuery("TBienes.findByCRespId").setParameter("cRespId", respo).getResultList();
+        return em.createNamedQuery("TBienes.findByResponsable").setParameter("cRespId", respo).getResultList();
     }
 
     @Override
