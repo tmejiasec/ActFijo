@@ -142,10 +142,15 @@ public class TSustit implements Serializable {
     @JoinColumn(name = "c_depen_id", referencedColumnName = "c_depen_id")
     @ManyToOne(optional = false)
     private CDependencias cDepenId;
+    
     @JoinColumn(name = "c_area_id", referencedColumnName = "c_area_id")
     @ManyToOne
     private CAreas cAreaId;
 
+    @JoinColumn(name = "t_bien_id", referencedColumnName = "t_bien_id")
+    @ManyToOne
+    private TBienes tBienId;
+    
     public TSustit() {
     }
 
@@ -407,6 +412,14 @@ public class TSustit implements Serializable {
 
     public void setTFechresId(Integer tFechresId) {
         this.tFechresId = tFechresId;
+    }
+
+    public TBienes getTBienId() {
+        return tBienId;
+    }
+
+    public void setTBienId(TBienes tBienId) {
+        this.tBienId = tBienId;
     }
 
     @Override

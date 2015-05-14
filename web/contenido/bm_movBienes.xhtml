@@ -30,6 +30,8 @@
                                     <h4 class="modal-title">Adición de Movimientos de Bienes Muebles</h4>
                                 </div>
                             </legend>
+                            <h:panelGroup id="adicMov"> 
+
                             <div class="form-group">
                                 <div class="col-md-3">
                                     <label >Tipo de Movimiento</label>
@@ -130,6 +132,7 @@
                                 <div class="col-md-3">
                                     <label >Tipo de Préstamo/Reparación</label>
                                     <h:selectOneMenu value="#{movBienesBean.nuevoEnca.TMoveTipt}">
+                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=" "/>                                        
                                         <f:selectItem itemValue="I" itemLabel="Interno" />
                                         <f:selectItem itemValue="E" itemLabel="Externo" />
                                     </h:selectOneMenu>                                        
@@ -157,8 +160,8 @@
                                     </div>
                                 </div>  
                                 <div class="col-md-3">
-                                    <label for="depre" >Hay Documento que respalda el Préstamo?</label>
-                                    <h:selectOneRadio value="#{movBienesBean.nuevoEnca.TMoveDocp}" required="true">
+                                    <label for="depre" >Hay Documento que respalda el Movimiento?</label>
+                                    <h:selectOneRadio value="#{movBienesBean.nuevoEnca.TMoveDocp}" >
                                         <f:selectItem itemValue="TRUE" itemLabel="Si"/>
                                         <f:selectItem itemValue="FALSE" itemLabel="No"/></h:selectOneRadio>
                                 </div> 
@@ -170,7 +173,9 @@
                             </div>
                             <div class="form-group">
                                 <div class="col-lg-8 col-lg-offset-6">
-                                    <p:commandButton id="guard"  value="Guardar Encabezado"  action="#{movBienesBean.guardarE()}"  rendered="#{!movBienesBean.edit}" disabled="#{movBienesBean.estado}" update="@this guard adiComP adiComR" process="@this adiMBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                    <p:commandButton id="guard" value="Guardar Encabezado" process="@this :adiMBien:adicMov" action="#{movBienesBean.guardarE()}" rendered="#{!movBienesBean.edit}" disabled="#{movBienesBean.estado}" update=":adiMBien:adicMov growl guard adiComP adiComR" style="margin-top: 10px;"/>
+<!--                                    
+                                    <p:commandButton id="guard"  value="Guardar Encabezado"  action="{movBienesBean.guardarE()}"  rendered="{!movBienesBean.edit}" disabled="{movBienesBean.estado}" update="@this :adiMBien:adicMov growl guard adiComP adiComR" process="@this :adiMBien:adicMov"  oncomplete="handleRequest(xhr, status, args);" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -179,7 +184,7 @@
                                                 alert('Datos adicionados correctamente');
                                             }
                                         }
-                                    </script>
+                                    </script>-->
                                     <h:commandButton id="adiComP" value="Préstamo Externo"  pt:data-toggle="modal" pt:data-target="#adComP" disabled="#{movBienesBean.estadoC}" >
                                         <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.encSeleccionado}" />
                                         <p:ajax process="@this" update=":adiMBien:displayPt2"/>
@@ -195,6 +200,7 @@
                                 </div>
 
                             </div>
+                            </h:panelGroup>
                             <!--aqui agregar dialogo para adicionar datos complementarios-->
 
                             <!--aqui agregar tabla de detalle de movimientos-->
@@ -229,7 +235,7 @@
                                     </tbody>  
                                 </table>
                             </div>
-                            <!--// probar aqui-->
+                            <!--// probar aqui los botones -->
 
                             <div id="adicDetmov" class="modal">
                                 <div class="modal-dialog">
@@ -239,7 +245,27 @@
                                             <h4 class="modal-title">Seleccionar Bienes a Agregar a Movimiento</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <!--// aqui poner datatable para seleccion multiple-->
+                                            <div class="table table-responsive table-bordered" >
+                                                <p:dataTable id="table_seleccionar_bienes" var="bienR" value="#{movBienesBean.bienes}" selection="#{movBienesBean.selectedBienes}" rowKey="#{bienR.TBienId}" paginator="true"  paginatorPosition="top" rows="5" emptyMessage="No hay códigos para agregar">
+                                                    <p:column selectionMode="multiple" style="width:40px;"/>
+                                                    <p:column headerText="Codigo" filterBy="#{bienR.TBienCodigo}" filterMatchMode="contains" style="width:125px;" >
+                                                        #{bienR.TBienCodigo}
+                                                    </p:column>
+                                                    <p:column headerText="Descripción" >
+                                                        #{bienR.TBienDesc}
+                                                    </p:column>
+                                                    <p:column headerText="Marca">
+                                                        #{bienR.CMarcaId.CMarcaDesc}
+                                                    </p:column>
+                                                    <p:column headerText="Modelo">
+                                                        #{bienR.TBienModelo}
+                                                    </p:column>   
+                                                    <p:column headerText="Serie">
+                                                        #{bienR.TBienSerie}
+                                                    </p:column>                                                    
+                                                </p:dataTable>
+                                                <p:commandButton icon="ui-icon-plusthick" value="Agregar" process="@this table_seleccionar_bienes" action="#{movBienesBean.updateDetalle()}" update=":adiMBien table_seleccionar_bienes" oncomplete="adicDetmov.hide();" style="margin-top: 10px;"/>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button class="btn btn-default">Cancelar</button>
@@ -264,13 +290,13 @@
                                                     </div>
                                                     <div class="col-md-7">
                                                         <label >Nombre de la Institución</label>
-                                                        <h:inputText value="#{movBienesBean.nuevoPrest.TPrestInst}" style="width: 100%" required="true"/> 
+                                                        <h:inputText value="#{movBienesBean.nuevoPrest.TPrestInst}" style="width: 100%" /> 
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label >Persona Solicitante</label>
-                                                        <h:inputText value="#{movBienesBean.nuevoPrest.TPrestSolic}" style="width: 100%" required="true" /> 
+                                                        <h:inputText value="#{movBienesBean.nuevoPrest.TPrestSolic}" style="width: 100%" /> 
                                                     </div>
                                                     <div class="col-md-3">
                                                         <label >Cargo</label>
@@ -305,13 +331,13 @@
                                                     </div>
                                                     <div class="col-md-7">
                                                         <label >Nombre del Taller</label>
-                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparTaller}" style="width: 100%" required="true"/> 
+                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparTaller}" style="width: 100%" /> 
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="col-md-6">
                                                         <label >Dirección</label>
-                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparDirec}" style="width: 100%" required="true" /> 
+                                                        <h:inputText value="#{movBienesBean.nuevaRepar.TReparDirec}" style="width: 100%"  /> 
                                                     </div>
                                                     <div class="col-md-6">
                                                         <label >Contacto</label>
@@ -335,30 +361,30 @@
                                                 </div>
                                                 <p:commandButton value="Guardar Datos" icon="ui-icon-disk" action="{movBienesBean.guardarR()}" process="@this displayRe2" update="@all" oncomplete="handleRequest(xhr, status, args); adComR.hide();"/>
 
-                                                
+
                                             </h:panelGroup>
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
+                            <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                                             action="#{movBienesBean.limpiarE()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                <script type="text/javascript">
+                                    function refrescar(xhr, status, args) {
+                                        if (args.validationFailed) {
+                                            alert('Ha ocurrido un error');
+                                        } else {
+                                            location.reload(true);
+                                        }
+                                    }
+                                </script>
+
+
+                            </p:commandButton>
 
 
                         </h:form>
-                        <!--                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
-                                                     action="{movBienesBean.limpiarE()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
-                                        <script type="text/javascript">
-                                            function refrescar(xhr, status, args) {
-                                                if (args.validationFailed) {
-                                                    alert('Ha ocurrido un error');
-                                                } else {
-                                                    location.reload(true);
-                                                }
-                                            }
-                                        </script>
-
-
-                                    </p:commandButton>-->
 
                     </div>
                 </div>
@@ -510,7 +536,7 @@
                                                 <div class="col-md-5">
                                                     <label for="descm" >Descripción</label>
                                                     <div>
-                                                        <h:inputText id="descm" value="#{movBienesBean.nuevoArch.TArchDesc}" required="true" style="width: 100%;"/> 
+                                                        <h:inputText id="descm" value="#{movBienesBean.nuevoArch.TArchDesc}" style="width: 100%;"/> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -741,7 +767,7 @@
                                 </div> 
                             </div> 
                             <div class="form-group">
-                                 <div class="col-md-4">
+                                <div class="col-md-4">
                                     <label for="modelo" >Modelo</label>
                                     <h:outputText id="modelo" value="#{movBienesBean.codSeleccionado.TBienModelo}"  style="width: 100%;"/> 
                                     <div>

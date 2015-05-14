@@ -36,7 +36,7 @@ public class TMovimDetaFacade extends AbstractFacade<TMovimDeta> implements TMov
     
     @Override
     public List getListM(Integer move) {			
-	return em.createNamedQuery("TMovimDeta.findByT<TMoveId").setParameter("tMoveId",move).getResultList();
+	return em.createNamedQuery("TMovimDeta.findByTMoveId").setParameter("tMoveId",move).getResultList();
     }
     
     @Override

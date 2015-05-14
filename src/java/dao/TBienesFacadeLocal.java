@@ -30,7 +30,9 @@ public interface TBienesFacadeLocal {
     public List<TBienes> getListL();
     
     public Integer busCod(String cod);
-	
+    
+    public TBienes getIdCod(Integer cod);
+    
     public TBienes getBien(Integer bien);
     
     public TBienes getCodBien(String cod);

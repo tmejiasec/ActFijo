@@ -30,7 +30,9 @@ public interface CEspecificosFacadeLocal {
     
     public CEspecificos getEspec(Integer espec);
     
-    public Integer updateC(Integer espec,Integer corr);    
+    public Integer updateC(Integer espec,Integer corr);   
+
+    public Integer busCodE(String cod);
 
     CEspecificos find(Object id);
 

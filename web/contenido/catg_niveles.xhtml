@@ -13,6 +13,7 @@
 
         <ui:define name="content" >
             <h:form id="formNiveles" >
+                <p:growl id="growl" />
                 <div class="table table-responsive table-bordered" >
                     
                     <table id="tnivel" class="table table-striped table-condensed">
@@ -70,14 +71,16 @@
                                     <h:outputText value="#{catgeBean.nuevoNivel.CNivelId}" /> 
 
                                     <h:outputLabel value="Código de Nivel Organizativo:   *" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catgeBean.nuevoNivel.CNivelCodigo}" required="true"/>
+                                    <h:inputText value="#{catgeBean.nuevoNivel.CNivelCodigo}" required="true">
+                                    <p:ajax listener="#{catgeBean.buscarCodN}" update="@this :formNiveles:growl :formNiveles:guardn"/>
+                                    </h:inputText>
 
-                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoNivel.CNivelDescrip}" style="width: 99%;" required="true" /> 
+                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold" />  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoNivel.CNivelDescrip}"  size="80"  required="true" /> 
 
                                     <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
                                     <h:inputText value="#{catgeBean.nuevoNivel.CNivelJerar}" /> 
-                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarNv()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayN1"  oncomplete="handleRequest(xhr, status, args); ; adicNiv.hide();" />
+                                    <p:commandButton value="Guardar" id="guardn" icon="ui-icon-disk" action="#{catgeBean.guardarNv()}"  rendered="#{!catgeBean.edit}" disabled="#{catgeBean.estado}" update="@all" process="@this displayN1"  oncomplete="handleRequest(xhr, status, args); ; adicNiv.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -112,9 +115,9 @@
 
                                     <h:outputLabel value="Código de Nivel Organizativo:" style="font-weight: bold"/>  
                                     <h:inputText value="#{catgeBean.nivelSeleccionado.CNivelCodigo}" />
-
+                                   
                                     <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nivelSeleccionado.CNivelDescrip}" /> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nivelSeleccionado.CNivelDescrip}" size="80"/> 
 
                                     <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
                                     <h:inputText value="#{catgeBean.nivelSeleccionado.CNivelJerar}" /> 

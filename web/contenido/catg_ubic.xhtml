@@ -125,7 +125,7 @@
                                     </h:selectOneMenu>
 
                                     <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.ubicSeleccionada.CUbicDesc}" /> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.ubicSeleccionada.CUbicDesc}" style="width: 99%;"/> 
 
                                     <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualUb()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayU2"  oncomplete="modifUbic.hide();"/>
 

@@ -26,8 +26,10 @@ import entidades.CTipDescarg;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 import util.FacesUtil;
 
@@ -51,6 +53,8 @@ public class CatbmBean implements Serializable {
     private List<CEstadoBien> estbiens = new ArrayList<>();
     private CEstadoBien estbien;
     protected Boolean edit = false;
+    protected Boolean estado = false;
+    protected Boolean estadoE = false;
     private String desc;	
     private CEstadoBien nuevoEstbien = new CEstadoBien();
     private CEstadoBien estBienSeleccionado = new CEstadoBien();
@@ -618,11 +622,56 @@ public class CatbmBean implements Serializable {
         this.estMovSeleccionado = estMovSeleccionado;
     }
 
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    public Boolean getEstadoE() {
+        return estadoE;
+    }
+
+    public void setEstadoE(Boolean estadoE) {
+        this.estadoE = estadoE;
+    }
+
     
     
     public void asignarRubro(){
         rubSeleccionado=especSeleccionado.getCRubroId().getCRubroId();
     }    
+    
+    public void buscarCodR() throws NamingException {
+        int resul = 0;
+        String cod;
+        cod = nuevoRubro.getCRubroCodigo();
+        resul = getDaoRubro().busCodR(cod);
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok"));
+            estado = false;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Código ya existe. No puede adicionarlo: "));
+            estado = true;
+        }
+    }    
+    
+        public void buscarCodE() throws NamingException {
+        int resul = 0;
+        String cod;
+        cod = nuevoEspec.getCEspecCodigo();
+        resul = getDaoEspec().busCodE(cod);
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok"));
+            estadoE = false;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Código ya existe. No puede adicionarlo: "));
+            estadoE = true;
+        }
+    }        
+ 
     
 }
 

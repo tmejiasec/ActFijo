@@ -61,20 +61,20 @@
                         <h:outputText value="#{catgeBean.nuevoEdificio.CEdifId}" /> 
                        
                         <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoEdificio.CEdifDesc}" style="width: 99%;" required="true"/> 
+                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoEdificio.CEdifDesc}" size="80" required="true"/> 
 
                         <h:outputLabel value="Dirección:   *" style="font-weight: bold"/>  
-                        <h:inputText value="#{catgeBean.nuevoEdificio.CEdifDirec}" /> 
+                        <h:inputText value="#{catgeBean.nuevoEdificio.CEdifDirec}" size="80"/> 
 
                         <h:outputLabel value="Departamento:" style="font-weight: bold"/>  
-                            <h:selectOneMenu id="deptos" value="#{catgeBean.depSeleccionado}" >
+                            <h:selectOneMenu id="deptos" value="#{catgeBean.depSeleccionado}"  style="width: 55%;">
                              <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                              <f:selectItems value="#{catgeBean.deptos}" var="Depto" itemLabel="#{Depto.CDeptoDesc}" itemValue="#{Depto.CDeptoId}"/>
 				<p:ajax  listener="#{catgeBean.municipioSeleccion}" update="municipio"/>                         
                             </h:selectOneMenu>
                 
                         <h:outputLabel value="Municipio:" style="font-weight: bold"/>
-                            <h:selectOneMenu id="municipio" value="#{catgeBean.munSeleccionado}" >
+                            <h:selectOneMenu id="municipio" value="#{catgeBean.munSeleccionado}" style="width: 55%;" >
                              <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                              <f:selectItems value="#{catgeBean.munic}" var="munic" itemLabel="#{munic.CMuniDesc}" itemValue="#{munic.CMuniId}"/>
                             </h:selectOneMenu>
@@ -87,10 +87,10 @@
 			</h:selectOneMenu>
                         
                         <h:outputLabel value="Latitud:   *" style="font-weight: bold"/>  
-                        <h:inputText value="#{catgeBean.nuevoEdificio.CEdifLatitud}" style="width: 99%;" /> 
+                        <h:inputText value="#{catgeBean.nuevoEdificio.CEdifLatitud}" style="width: 25%;" /> 
 
                         <h:outputLabel value="Longitud:   *" style="font-weight: bold"/>  
-                        <h:inputText value="#{catgeBean.nuevoEdificio.CEdifLongitud}" style="width: 99%;" /> 
+                        <h:inputText value="#{catgeBean.nuevoEdificio.CEdifLongitud}" style="width: 25%;" /> 
                         
                         <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarEd()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayE1"  oncomplete="handleRequest(xhr, status, args); ; adicEdi.hide();" />
                         <script type="text/javascript">
@@ -128,20 +128,20 @@
                         <h:outputText value="#{catgeBean.edifSeleccionado.CEdifId}" /> 
                        
                         <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.edifSeleccionado.CEdifDesc}" style="width: 99%;" required="true"/> 
+                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.edifSeleccionado.CEdifDesc}" size="80" required="true"/> 
 
                         <h:outputLabel value="Dirección:   *" style="font-weight: bold"/>  
-                        <h:inputText value="#{catgeBean.edifSeleccionado.CEdifDirec}" /> 
+                        <h:inputText value="#{catgeBean.edifSeleccionado.CEdifDirec}" size="80" /> 
 
                         <h:outputLabel value="Departamento:" style="font-weight: bold"/>  
-                            <h:selectOneMenu id="deptosm" value="#{catgeBean.depSeleccionado}" >
+                            <h:selectOneMenu id="deptosm" value="#{catgeBean.depSeleccionado}" style="width: 55%;" >
                              <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                              <f:selectItems value="#{catgeBean.deptos}" var="Depto" itemLabel="#{Depto.CDeptoDesc}" itemValue="#{Depto.CDeptoId}"/>
 				<p:ajax  listener="#{catgeBean.municipioSeleccion}" update="municipiom"/>                         
                             </h:selectOneMenu>
                 
                         <h:outputLabel value="Municipio:" style="font-weight: bold"/>
-                            <h:selectOneMenu id="municipiom" value="#{catgeBean.munSeleccionado}" >
+                            <h:selectOneMenu id="municipiom" value="#{catgeBean.munSeleccionado}" style="width: 55%;" >
                              <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                              <f:selectItems value="#{catgeBean.munic}" var="munic" itemLabel="#{munic.CMuniDesc}" itemValue="#{munic.CMuniId}"/>
                             </h:selectOneMenu>
@@ -154,10 +154,10 @@
 			</h:selectOneMenu>
                      
                         <h:outputLabel value="Latitud:   *" style="font-weight: bold"/>  
-                        <h:inputText value="#{catgeBean.edifSeleccionado.CEdifLatitud}" style="width: 99%;" /> 
+                        <h:inputText value="#{catgeBean.edifSeleccionado.CEdifLatitud}" style="width: 25%;" /> 
 
                         <h:outputLabel value="Longitud:   *" style="font-weight: bold"/>  
-                        <h:inputText value="#{catgeBean.edifSeleccionado.CEdifLongitud}" style="width: 99%;" /> 
+                        <h:inputText value="#{catgeBean.edifSeleccionado.CEdifLongitud}" style="width: 25%;" /> 
                         
                         
                         <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualEd()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayE2"  oncomplete="modifEdi.hide();"/>

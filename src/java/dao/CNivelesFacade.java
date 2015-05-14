@@ -59,6 +59,13 @@ public class CNivelesFacade extends AbstractFacade<CNiveles> implements CNiveles
 		return (CNiveles) em.createNamedQuery("CNiveles.findByCNivelId").setParameter("cNivelId",niv).getSingleResult();
 	}
     
-
+  public Integer busCodN(String cod) {
+        Integer resul;
+        String consuld = "SELECT count (s) from c_niveles AS s WHERE s.c_nivel_codigo = ?1";
+        Query qconsuld = em.createNativeQuery(consuld).setParameter(1, cod);
+        resul = ((Long) qconsuld.getSingleResult()).intValue();
+//    	System.out.println("query ejecutada en busDoc");
+        return resul;
+    }
     
 }

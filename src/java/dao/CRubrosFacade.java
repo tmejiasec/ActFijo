@@ -58,6 +58,13 @@ public class CRubrosFacade extends AbstractFacade<CRubros> implements CRubrosFac
 	public CRubros getRubro(Integer rubro){		
 		return (CRubros) em.createNamedQuery("CRubros.findByCRubroId").setParameter("cRubroId",rubro).getSingleResult();
 	}
-    
-    
+    @Override
+    public Integer busCodR(String cod) {
+        Integer resul;
+        String consuld = "SELECT count (s) from c_rubros AS s WHERE s.c_rubro_codigo = ?1";
+        Query qconsuld = em.createNativeQuery(consuld).setParameter(1, cod);
+        resul = ((Long) qconsuld.getSingleResult()).intValue();
+//    	System.out.println("query ejecutada en busDoc");
+        return resul;
+    }    
 }

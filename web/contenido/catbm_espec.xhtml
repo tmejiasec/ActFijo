@@ -12,6 +12,7 @@
 
         <ui:define name="content" >
             <h:form id="formEspec" >
+              <p:growl id="growl" />
                 <div class="table table-responsive table-bordered " >
 
                     <table id="tespec" class="table table-striped table-condensed">
@@ -63,19 +64,21 @@
                                     <h:outputText value="#{catbmBean.nuevoEspec.CEspecId}" /> 
 
                                     <h:outputLabel value="Rubro: *" style="font-weight: bold"/>
-                                    <h:selectOneMenu id="rubro" value="#{catbmBean.rubSeleccionado}" required="true">
+                                    <h:selectOneMenu id="rubro" value="#{catbmBean.rubSeleccionado}" required="true" style="width: 70%;">
                                         <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                                         <f:selectItems value="#{catbmBean.rubros}" var="rubro" itemLabel="#{rubro.CRubroDesc}" itemValue="#{rubro.CRubroId}"/>
                                     </h:selectOneMenu>
 
                                     <h:outputLabel value="Código de Específico:   *" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catbmBean.nuevoEspec.CEspecCodigo}" required="true"/>
+                                    <h:inputText value="#{catbmBean.nuevoEspec.CEspecCodigo}" required="true">
+                                    <p:ajax listener="#{catbmBean.buscarCodE}" update="@this :formEspec:growl :formEspec:guarde"/>
+                                    </h:inputText>
 
                                     <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.nuevoEspec.CEspecDesc}" style="width: 99%;" required="true"/> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.nuevoEspec.CEspecDesc}" size="70" required="true"/> 
 
 
-                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catbmBean.guardarEs()}"  rendered="#{!catbmBean.edit}" update="@all" process="@this displayEp1"  oncomplete="handleRequest(xhr, status, args); ; adicEsp.hide();" />
+                                    <p:commandButton value="Guardar" id="guarde" icon="ui-icon-disk" action="#{catbmBean.guardarEs()}"  rendered="#{!catbmBean.edit}" disabled="#{catbmBean.estadoE}" update="@all" process="@this displayEp1"  oncomplete="handleRequest(xhr, status, args); ; adicEsp.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -108,7 +111,7 @@
                                     <h:outputText value="#{catbmBean.especSeleccionado.CEspecId}" />    
 
                                     <h:outputLabel value="Rubro: *" style="font-weight: bold"/>
-                                    <h:selectOneMenu id="rubrom" value="#{catbmBean.rubSeleccionado}" required="true">
+                                    <h:selectOneMenu id="rubrom" value="#{catbmBean.rubSeleccionado}" required="true" style="width: 99%;">
                                         <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                                         <f:selectItems value="#{catbmBean.rubros}" var="rubro" itemLabel="#{rubro.CRubroDesc}" itemValue="#{rubro.CRubroId}"/>
                                     </h:selectOneMenu>
@@ -117,7 +120,7 @@
                                     <h:inputText value="#{catbmBean.especSeleccionado.CEspecCodigo}" />
 
                                     <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.especSeleccionado.CEspecDesc}" /> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.especSeleccionado.CEspecDesc}" size="50"/> 
 
                                     <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catbmBean.actualEs()}" rendered="#{!catbmBean.edit}" update="@all" process="@this displayEp2"  oncomplete="modifEsp.hide();"/>
 

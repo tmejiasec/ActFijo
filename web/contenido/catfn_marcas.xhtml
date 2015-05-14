@@ -58,7 +58,7 @@
                         <h:outputText value="#{catfnBean.nuevaMarca.CMarcaId}" /> 
                        
                         <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.nuevaMarca.CMarcaDesc}" style="width: 99%;" required="true"/> 
+                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.nuevaMarca.CMarcaDesc}" size="50" required="true"/> 
 
                         <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catfnBean.guardarMb()}"  rendered="#{!catfnBean.edit}" update="@all" process="@this displayMA1"  oncomplete="handleRequest(xhr, status, args); ; adicMarca.hide();" />
                         <script type="text/javascript">

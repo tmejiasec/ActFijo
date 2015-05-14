@@ -29,6 +29,9 @@ public interface CDependenciasFacadeLocal {
     public List busqueda(String desc);
     
     public CDependencias getDepend(Integer dep);
+    
+    public Integer busCodD(String cod);
+
 
 
     CDependencias find(Object id);

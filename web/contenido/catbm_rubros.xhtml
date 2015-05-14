@@ -12,6 +12,7 @@
 
         <ui:define name="content" >
             <h:form id="formRubros" >
+              <p:growl id="growl" />
                 <div class="table table-responsive table-bordered " >
 
                     <table id="trubros" class="table table-striped table-condensed">
@@ -60,12 +61,14 @@
                                     <h:outputText value="#{catbmBean.nuevoRubro.CRubroId}" /> 
 
                                     <h:outputLabel value="Código de Rubro:   *" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catbmBean.nuevoRubro.CRubroCodigo}" required="true"/>
+                                    <h:inputText value="#{catbmBean.nuevoRubro.CRubroCodigo}" required="true">
+                                    <p:ajax listener="#{catbmBean.buscarCodR}" update="@this :formRubros:growl :formRubros:guardr"/>
+                                    </h:inputText>
 
                                     <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.nuevoRubro.CRubroDesc}" style="width: 99%;" required="true"/> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.nuevoRubro.CRubroDesc}" size="80" required="true"/> 
 
-                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catbmBean.guardarRb()}"  rendered="#{!catbmBean.edit}" update="@all" process="@this displayRu1"  oncomplete="handleRequest(xhr, status, args); ; adicRub.hide();" />
+                                    <p:commandButton value="Guardar" id="guardr" icon="ui-icon-disk" action="#{catbmBean.guardarRb()}"  rendered="#{!catbmBean.edit}" disabled="#{catbmBean.estado}" update="@all" process="@this displayRu1"  oncomplete="handleRequest(xhr, status, args); ; adicRub.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -100,8 +103,8 @@
                         <h:outputLabel value="Código de Rubro:" style="font-weight: bold"/>  
                         <h:inputText value="#{catbmBean.rubroSeleccionado.CRubroCodigo}" />
 
-                        <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.rubroSeleccionado.CRubroDesc}" /> 
+                        <h:outputLabel value="Descripción:" style="font-weight: bold" />  
+                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.rubroSeleccionado.CRubroDesc}" size="50" /> 
 
                         <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catbmBean.actualRb()}" rendered="#{!catbmBean.edit}" update="@all" process="@this displayRu2"  oncomplete="modifRub.hide();"/>
                                 </p:panelGrid>  

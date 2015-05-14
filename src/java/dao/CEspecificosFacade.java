@@ -65,7 +65,7 @@ public class CEspecificosFacade extends AbstractFacade<CEspecificos> implements 
 		return (CEspecificos) em.createNamedQuery("CEspecificos.findByCEspecId").setParameter("cEspecId",espec).getSingleResult();
 	}
         
-@Override
+    @Override
     public Integer updateC(Integer espec, Integer corr){
     	
     	String actualiz = "UPDATE c_especificos SET c_espec_corr= ?2 WHERE c_espec_id= ?1";
@@ -73,6 +73,16 @@ public class CEspecificosFacade extends AbstractFacade<CEspecificos> implements 
         int resultado = qactual.executeUpdate(); 
         return resultado;
     }
+    
+    @Override
+    public Integer busCodE(String cod) {
+        Integer resul;
+        String consuld = "SELECT count (s) from c_especificos AS s WHERE s.c_espec_codigo = ?1";
+        Query qconsuld = em.createNativeQuery(consuld).setParameter(1, cod);
+        resul = ((Long) qconsuld.getSingleResult()).intValue();
+//    	System.out.println("query ejecutada en busDoc");
+        return resul;
+    }    
     
     
 }

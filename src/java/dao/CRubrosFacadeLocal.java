@@ -28,6 +28,8 @@ public interface CRubrosFacadeLocal {
     
     public CRubros getRubro(Integer rubro);
     
+    public Integer busCodR(String cod);
+    
     CRubros find(Object id);
 
     List<CRubros> findAll();

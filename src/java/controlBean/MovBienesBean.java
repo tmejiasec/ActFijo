@@ -96,13 +96,14 @@ public class MovBienesBean implements Serializable {
     
     Date fecs, fecr, feci, feca;
     private Integer iniCorr=0;
-    private Integer espec,m_id;
+    private Integer espec,m_id=0;
     private String tipref = "MOV";
     private String tipo = "D";
 
     
     private List<TBienes> bienes = new ArrayList<>();
     private List<TBienes> lotes = new ArrayList<>();
+    private TBienes[] selectedBienes;
     private List<TCorrMov> correls = new ArrayList<>();
     private int tipmo;
 //    private CTiposMov tipmSeleccionado = new CTiposMov();
@@ -138,6 +139,7 @@ public class MovBienesBean implements Serializable {
     private UploadedFile picture;
     private static final int BUFFER_SIZE = 1000000;
     private DefaultStreamedContent download;
+    private Integer respo;
 
     /**
      * Creates a new instance
@@ -148,7 +150,7 @@ public class MovBienesBean implements Serializable {
         respons = getDaoResp().getList();
         docums = getDaoArchiv().getListT(tipref);
         movenca = getDaoEnca().getList(); 
-        movdeta = getDaoDeta().getList();       
+        movdeta = getDaoDeta().getListM(m_id);       
         tiposm = getDaoTipMov().getList();
         correls = getDaoCorrel().getList();
         niveles = getDaoNivel().getList();
@@ -158,6 +160,7 @@ public class MovBienesBean implements Serializable {
     public String guardarE() throws NamingException, ParseException {
         Date fecha = new Date();
         // buscando id de fechas
+        System.out.println("entrando a guardar datos");
         fecs = nuevoEnca.getTMoveFecsal();
         fecr = nuevoEnca.getTMoveFecret();
         feci = nuevoEnca.getTMoveFecretr();
@@ -184,33 +187,53 @@ public class MovBienesBean implements Serializable {
         }
        // nuevoEnca.s(formatoHora.parse(formatoHora.format(fecha)));
         // creando registro y guardando datos
-        System.out.println("tipmo "+tipmo);
-        System.out.println("correl a guardar"+nuevoEnca.getTMoveCorr());
+//        System.out.println("tipmo de guardar"+tipmo);
+//        System.out.println("correl a guardar"+nuevoEnca.getTMoveCorr());
+//        System.out.println("est mov: "+estmoSeleccionado);
 //        estmo=nuevoEnca.getCEstmovId().getCEstmovId();
         nuevoEnca.setCTipmId(getDaoTipMov().getTipmov(tipmo));
         nuevoEnca.setCEstmovId(getDaoEstmo().getEstMov(estmoSeleccionado));
-        getDaoEnca().create(nuevoEnca);
+        try {
+             getDaoEnca().create(nuevoEnca);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Encabezado Agregado correctamente"));
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Encabezado NO se agregó"));
+
+        }
         //actualizando correlativo en t_corr_mov
         int anio=nuevoEnca.getTMoveAnio();
 	int nvoCorr=nuevoEnca.getTMoveCorr();
         nvoCorr=nvoCorr+1;
         getDaoCorrel().updateC(tipmo,anio,nvoCorr);
         // habilitando para datos complementarios si aplica.
-        String tiper;
-        tiper=nuevoEnca.getTMoveTipt();
-        if (tiper.equals("E") && tipmo == '2'){
-            m_id=nuevoEnca.getTMoveId();
-            encSeleccionado=m_id;
-            estadoC = false;
+        String tiper=" ";
+         if (!nuevoEnca.getTMoveTipt().equals(" ")) {
+             tiper=nuevoEnca.getTMoveTipt();
+         }
+             else{}
+        if (!tiper.equals(" ")) {
+            tiper=nuevoEnca.getTMoveTipt();
+            System.out.println("tiper");
+            if (tiper.equals("E") && tipmo == 2){
+                m_id=nuevoEnca.getTMoveId();
+                encSeleccionado=m_id;
+                estadoC = false;
+            }
+            if (tiper.equals("E") && tipmo == 3){
+                m_id=nuevoEnca.getTMoveId();
+                encSeleccionado=m_id;
+                estadoR = false;
+            }
         }
-        if (tiper.equals("E") && tipmo == '3'){
-            m_id=nuevoEnca.getTMoveId();
-            encSeleccionado=m_id;
-            estadoR = false;
-        }
+        else{}
+        respo=nuevoEnca.getTMovePere();
         //        FacesUtil.addMensaje("Bien Guardado");
-        bienes = getDaoBienes().getList();
+        System.out.println("resp: "+respo);
+        bienes = getDaoBienes().getListM(respo);
+        System.out.println("lista "+bienes.isEmpty());
         movenca = getDaoEnca().getList();
+        movdeta = getDaoDeta().getListM(m_id);
         estado = true;
         return null;
     }
@@ -246,8 +269,9 @@ public class MovBienesBean implements Serializable {
         encaSeleccionado.setTMoveFechm(fecha);
         //encaSeleccionado.setTBienHoramod(formatoHora.parse(formatoHora.format(fecha)));
         getDaoEnca().edit(encaSeleccionado);
+        respo=encaSeleccionado.getTMovePere();
         //generando tabla de nuevo
-        bienes = getDaoBienes().getList();
+        bienes = getDaoBienes().getListM(respo);
         movenca = getDaoEnca().getList();
 //        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Datos actualizados"));
 //        bienSeleccionado = new TBienes();
@@ -264,16 +288,38 @@ public class MovBienesBean implements Serializable {
         deta = new TMovimDeta();
         nuevoEnca = new TMovimEnca();
         nuevoDeta = new TMovimDeta();
-
-        bienes = getDaoBienes().getList();
-        lotes = getDaoBienes().getListL();
         estado = false;
+        estadoC = true;
+        estadoR = true;
+        m_id=0;
+        movenca = getDaoEnca().getList();
+        movdeta = getDaoDeta().getListM(m_id);
         return null;
     }
     
+        public void updateDetalle() {
+        try {
+            for (int i = 0; i < selectedBienes.length; i++) {
+                 Integer idAct =  selectedBienes[i].getTBienId();
+                 System.out.println("id sel"+idAct);
+                 String codAct = selectedBienes[i].getTBienCodigo();
+                 nuevoDeta.setTBienId(getDaoBienes().getIdCod(idAct));
+                 nuevoDeta.setTMovdCodigo(codAct);
+                 nuevoDeta.setTMoveId(getDaoEnca().getMove(m_id));
+                 getDaoDeta().create(nuevoDeta);
+                 movdeta = getDaoDeta().getListM(m_id);
+
+            }
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Bienes Agregados correctamente"));
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Bienes NO se agregaron"));
+
+        }
+    }
     public String actualD() throws NamingException {
         getDaoDeta().create(nuevoDeta);
-        movdeta = getDaoDeta().getList();
+        movdeta = getDaoDeta().getListM(m_id);
         return null;
     }    
 
@@ -915,6 +961,22 @@ public class MovBienesBean implements Serializable {
         this.modelo = modelo;
     }
 
+    public Integer getRespo() {
+        return respo;
+    }
+
+    public void setRespo(Integer respo) {
+        this.respo = respo;
+    }
+
+    public TBienes[] getSelectedBienes() {
+        return selectedBienes;
+    }
+
+    public void setSelectedBienes(TBienes[] selectedBienes) {
+        this.selectedBienes = selectedBienes;
+    }
+
     
     public void depSeleccionA() {
         nivSeleccionado = nuevoEnca.getTMoveNivs();
@@ -965,8 +1027,8 @@ public class MovBienesBean implements Serializable {
 //        cod = nuevoDeta.getTMovdCodigo();
         tipmo=tipmSeleccionado;
         anio = nuevoEnca.getTMoveAnio();
-        System.out.println("tipmo: "+tipmo);
-        System.out.println("anio: "+anio);
+//        System.out.println("tipmo: "+tipmo);
+//        System.out.println("anio: "+anio);
         resul = getDaoCorrel().getCorrel(tipmo, anio).getTCorrCorrel();
         if (resul == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No puede encontrar correlativo"));
@@ -975,9 +1037,9 @@ public class MovBienesBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok."));
             estado = true;
         }
-        System.out.println("resul "+resul);
+//        System.out.println("resul "+resul);
         nuevoEnca.setTMoveCorr(resul);
-        System.out.println("correl: "+nuevoEnca.getTMoveCorr());
+//        System.out.println("correl: "+nuevoEnca.getTMoveCorr());
     }
     
     public void tipSelec() {
@@ -1012,6 +1074,8 @@ public class MovBienesBean implements Serializable {
 	return codSeleccionado;
 		}
 
+    
+ 
     
     public Date ParseFecha(String fecha) {
         SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");

@@ -71,30 +71,30 @@
                                     <h:outputLabel value="Nombre:   *" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.nuevoProv.CProvNombre}" style="width: 99%;" required="true"/> 
 
-                                    <h:outputLabel value="Dirección:   *" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catfnBean.nuevoProv.CProvDirec}" /> 
+                                    <h:outputLabel value="Dirección:   *" style="font-weight: bold" />  
+                                    <h:inputText value="#{catfnBean.nuevoProv.CProvDirec}"  size="75"/> 
 
                                     <h:outputLabel value="Departamento:" style="font-weight: bold"/>  
-                                    <h:selectOneMenu id="deptos" value="#{catfnBean.depSeleccionado}" >
+                                    <h:selectOneMenu id="deptos" value="#{catfnBean.depSeleccionado}" style="width: 55%;" >
                                         <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                                         <f:selectItems value="#{catfnBean.deptos}" var="Depto" itemLabel="#{Depto.CDeptoDesc}" itemValue="#{Depto.CDeptoId}"/>
                                         <p:ajax  listener="#{catfnBean.municipioSeleccion}" update="municipio"/>                         
                                     </h:selectOneMenu>
 
                                     <h:outputLabel value="Municipio:" style="font-weight: bold"/>
-                                    <h:selectOneMenu id="municipio" value="#{catfnBean.munSeleccionado}" >
+                                    <h:selectOneMenu id="municipio" value="#{catfnBean.munSeleccionado}" style="width: 55%;" >
                                         <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                                         <f:selectItems value="#{catfnBean.munic}" var="munic" itemLabel="#{munic.CMuniDesc}" itemValue="#{munic.CMuniId}"/>
                                     </h:selectOneMenu>
 
                                     <h:outputLabel value="Contacto:   *" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catfnBean.nuevoProv.CProvContacto}" /> 
+                                    <h:inputText value="#{catfnBean.nuevoProv.CProvContacto}" style="width: 55%;"/> 
 
                                     <h:outputLabel value="Teléfono:   *" style="font-weight: bold"/>  
                                     <p:inputMask value="#{catfnBean.nuevoProv.CProvTelef}" mask="9999-9999"/> 
 
                                     <h:outputLabel value="Correo:   *" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catfnBean.nuevoProv.CProvCorreo}" /> 
+                                    <h:inputText value="#{catfnBean.nuevoProv.CProvCorreo}" style="width: 45%;"/> 
 
                                     <h:outputLabel value="Fax:   *" style="font-weight: bold"/>  
                                     <p:inputMask value="#{catfnBean.nuevoProv.CProvFax}" mask="9999-9999"/> 
@@ -149,30 +149,30 @@
                                     <h:outputLabel value="Nombre:   *" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.provSeleccionado.CProvNombre}" style="width: 99%;" required="true"/> 
 
-                                    <h:outputLabel value="Dirección:   *" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvDirec}" /> 
+                                    <h:outputLabel value="Dirección:   *" style="font-weight: bold" />  
+                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvDirec}" size="75"/> 
 
                                     <h:outputLabel value="Departamento:" style="font-weight: bold"/>  
-                                    <h:selectOneMenu id="deptosm" value="#{catfnBean.depSeleccionado}" >
+                                    <h:selectOneMenu id="deptosm" value="#{catfnBean.depSeleccionado}" style="width: 55%;" >
                                         <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                                         <f:selectItems value="#{catfnBean.deptos}" var="Depto" itemLabel="#{Depto.CDeptoDesc}" itemValue="#{Depto.CDeptoId}"/>
                                         <p:ajax  listener="#{catfnBean.municipioSeleccion}" update="municipiom"/>                         
                                     </h:selectOneMenu>
 
                                     <h:outputLabel value="Municipio:" style="font-weight: bold"/>
-                                    <h:selectOneMenu id="municipiom" value="#{catfnBean.munSeleccionado}" >
+                                    <h:selectOneMenu id="municipiom" value="#{catfnBean.munSeleccionado}" style="width: 55%;">
                                         <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                                         <f:selectItems value="#{catfnBean.munic}" var="munic" itemLabel="#{munic.CMuniDesc}" itemValue="#{munic.CMuniId}"/>
                                     </h:selectOneMenu>
 
                                     <h:outputLabel value="Contacto:   *" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvContacto}" /> 
+                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvContacto}" style="width: 60%;"/> 
 
                                     <h:outputLabel value="Teléfono:   *" style="font-weight: bold"/>  
                                     <p:inputMask value="#{catfnBean.provSeleccionado.CProvTelef}" mask="9999-9999"/> 
 
-                                    <h:outputLabel value="Correo:   *" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvCorreo}" /> 
+                                    <h:outputLabel value="Correo:   *" style="font-weight: bold" />  
+                                    <h:inputText value="#{catfnBean.provSeleccionado.CProvCorreo}" style="width: 45%;"/> 
 
                                     <h:outputLabel value="Fax:   *" style="font-weight: bold"/>  
                                     <p:inputMask value="#{catfnBean.provSeleccionado.CProvFax}" mask="9999-9999"/> 

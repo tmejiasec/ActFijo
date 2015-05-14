@@ -32,9 +32,11 @@ import entidades.CMunic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 //import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 import util.FacesUtil;
 
@@ -51,6 +53,8 @@ public class CatgeBean implements Serializable {
 
     protected Integer tabIndex = 1;
     protected Boolean edit = false;
+    protected Boolean estado = false;
+    protected Boolean estadoD = false;
     private String desc, nombre;
     private List<CNiveles> niveles = new ArrayList<>();
     private CNiveles nivel;
@@ -999,6 +1003,22 @@ public class CatgeBean implements Serializable {
         this.zonSeleccionada = zonSeleccionada;
     }
 
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    public Boolean getEstadoD() {
+        return estadoD;
+    }
+
+    public void setEstadoD(Boolean estadoD) {
+        this.estadoD = estadoD;
+    }
+
     public void asignarNivel() {
         nivSeleccionado = depSeleccionada.getCNivelId().getCNivelId();
     }
@@ -1054,4 +1074,32 @@ public class CatgeBean implements Serializable {
         depens = getDaoDepen().getListM(nivSeleccionado);
     }
 
+        public void buscarCodN() throws NamingException {
+        int resul = 0;
+        String cod;
+        cod = nuevoNivel.getCNivelCodigo();
+        resul = getDaoNivel().busCodN(cod);
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok"));
+            estado = false;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Código ya existe. No puede adicionarlo: "));
+            estado = true;
+        }
+    }
+
+     public void buscarCodD() throws NamingException {
+        int resul = 0;
+        String cod;
+        cod = nuevaDep.getCDepenCodigo();
+        resul = getDaoDepen().busCodD(cod);
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok"));
+            estado = false;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Código ya existe. No puede adicionarlo: "));
+            estado = true;
+        }
+    }        
+    
 }

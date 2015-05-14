@@ -65,7 +65,14 @@ public class CDependenciasFacade extends AbstractFacade<CDependencias> implement
 		return (CDependencias) em.createNamedQuery("CDependencias.findByCDepenId").setParameter("cDepenId",dep).getSingleResult();
 	}
     
-    
+    public Integer busCodD(String cod) {
+        Integer resul;
+        String consuld = "SELECT count (s) from c_dependencias AS s WHERE s.c_depen_codigo = ?1";
+        Query qconsuld = em.createNativeQuery(consuld).setParameter(1, cod);
+        resul = ((Long) qconsuld.getSingleResult()).intValue();
+//    	System.out.println("query ejecutada en busDoc");
+        return resul;
+    }    
     
     
 }

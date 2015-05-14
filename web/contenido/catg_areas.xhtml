@@ -60,13 +60,13 @@
                         <h:outputText value="#{catgeBean.nuevaArea.CAreaId}" /> 
                         
                         <h:outputLabel value="Edificio: *" style="font-weight: bold"/>
-                        <h:selectOneMenu id="edifa" value="#{catgeBean.ediSeleccionado}" required="true">
+                        <h:selectOneMenu id="edifa" value="#{catgeBean.ediSeleccionado}" required="true" style="width: 99%;">
                                 <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                                 <f:selectItems value="#{catgeBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif.CEdifId}"/>
                             </h:selectOneMenu>
 
                         <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaArea.CAreaDesc}" style="width: 99%;" required="true"/> 
+                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaArea.CAreaDesc}" size="65" required="true"/> 
 
                         <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarAr()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayA1"  oncomplete="handleRequest(xhr, status, args); ; adicArea.hide();" />
                         <script type="text/javascript">
@@ -103,13 +103,13 @@
                         <h:outputText value="#{catgeBean.areaSeleccionada.CAreaId}" />    
 
                            <h:outputLabel value="Edificio: *" style="font-weight: bold"/>
-                           <h:selectOneMenu id="edifm" value="#{catgeBean.ediSeleccionado}" required="true">
+                           <h:selectOneMenu id="edifm" value="#{catgeBean.ediSeleccionado}" required="true" style="width: 99%;">
                                 <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
                                 <f:selectItems value="#{catgeBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif.CEdifId}"/>
                             </h:selectOneMenu>
 
                         <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.areaSeleccionada.CAreaDesc}" /> 
+                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.areaSeleccionada.CAreaDesc}" size="65"/> 
 
                         <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualAr()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayA2"  oncomplete="modifAarea.hide();"/>
                                     

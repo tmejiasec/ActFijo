@@ -27,6 +27,8 @@ public interface CNivelesFacadeLocal {
     public List busqueda(String desc);
     
     public CNiveles getNivel(Integer niv);
+    
+    public Integer busCodN(String cod);
 
     CNiveles find(Object id);
 

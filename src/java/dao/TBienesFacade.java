@@ -78,6 +78,11 @@ public class TBienesFacade extends AbstractFacade<TBienes> implements TBienesFac
         return (TBienes) em.createNamedQuery("TBienes.findByTBienCodigo").setParameter("tBienCodigo", cod).getSingleResult();
     }
 
+   @Override
+	public TBienes getIdCod(Integer cod){		
+		return (TBienes) em.createNamedQuery("TBienes.findByTBienId").setParameter("tBienId",cod).getSingleResult();
+	}
+    
     @Override
     public Integer busCod(String cod) {
         Integer resul;
@@ -96,6 +101,7 @@ public class TBienesFacade extends AbstractFacade<TBienes> implements TBienesFac
 
 //	 generando datos a replicar
         List ingresos = qconsul.getResultList();
+       
 
         System.out.println("query ejecutada");
         System.out.println("tot: " + ingresos.size());
