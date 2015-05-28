@@ -59,7 +59,7 @@
                                     <label for="cod" >Codigo del Bien a sustituir</label>
                                     <div>
                                         <p:inputMask id="cod" value="#{sustitucionBienesBean.cod}" mask="99-9999-9999"> 
-                                            <p:ajax listener="#{sustitucionBienesBean.datosCodigo()}" update="@this rubro espec descm marcaant modelant seriant"/>
+                                            <p:ajax listener="#{sustitucionBienesBean.datosCodigo()}" update="@this rubro espec descm marcaant modelant seriant respob fecaqq valnt"/>
                                         </p:inputMask>
                                     </div>
                                 </div>
@@ -68,8 +68,8 @@
                                     <label >Tipo de Sustitución</label>
                                     <div >
                                         <h:selectOneRadio value="#{sustitucionBienesBean.nuevaSustit.TSustTipo}" required="true">
-                                                <f:selectItem itemValue="1" itemLabel=" Extravío "/>
-                                                <f:selectItem itemValue="2" itemLabel=" Garantía "/>
+                                            <f:selectItem itemValue="1" itemLabel=" Extravío "/>
+                                            <f:selectItem itemValue="2" itemLabel=" Garantía "/>
                                         </h:selectOneRadio>
                                     </div>
                                 </div>
@@ -142,26 +142,56 @@
                                 <div class="col-md-6">
                                     <label for="respob">Responsable del Bien</label>
                                     <div>
-                                        <h:outputText id="respob" value="#{sustitucionBienesBean.codSeleccionado.CRespId.CRespNom1 }"/>
+                                        <h:outputText id="respob" value="#{sustitucionBienesBean.codSeleccionado.CRespId.CRespApe1}"/>
                                     </div>
                                 </div> 
-
+                                
+                                <div class="col-md-6">
+                                    <label for="depenb">Dependencia</label>
+                                    <div>
+                                        <h:outputText id="depenb" value="#{sustitucionBienesBean.codSeleccionado.CDepenId.CDepenDesc}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                            
+                                
+                            
+                            
+                            <div class="form-group">
+                            
+                                <div class="col-md-6">
+                                    <label for="estfisb">Estado Fisico del bien</label>
+                                    <div>
+                                        <h:outputText id="estfisb" value="#{sustitucionBienesBean.codSeleccionado.CEstadbId.CEstadbDesc}"/>
+                                    </div>
+                                </div>
+                            
+                            
                                 <div class="col-md-6">
                                     <label >Fecha de adquisicion</label>
                                     <div>
-                                        <!--<h:outputText value="{bienesBean.nuevoBien.TBienUscrea}"/>-->
-                                    </div>
-                                </div> 
+                                        <h:outputText id="fecaqq" value="#{sustitucionBienesBean.codSeleccionado.TBienFechadq}"/>
 
+                                    </div>
+                                </div>
+                                
                             </div>
+                            
+                            
 
 
                             <div class="form-group">
 
                                 <div class="col-md-6">
-                                    <label for="valorsustit">Valor del Bien</label>
+                                    <label>Valor del Bien</label>
                                     <div>
-                                        <!--<h:outputText id="valorsustit" value="{bienesBean.nuevoBien.TBienUscrea}"/>-->
+                                        <h:outputText id="valnt" value="#{sustitucionBienesBean.codSeleccionado.TBienValoradq}"/>
+
+
+
+
                                     </div>
                                 </div> 
 
@@ -173,21 +203,21 @@
                             <div class="form-group">
 
                                 <div class="col-md-6">
-                                    <label for="fecadm">Fecha de Resolucion</label>
+                                    <label for="fechres">Fecha de Resolucion</label>
                                     <div>
-<!--                                        <p:calendar id="fecrs"
-                                                    value="{bienesBean.bienSeleccionado.TBienFechadq}" locale="es"
+                                        <p:calendar id="fechres"
+                                                    value="#{sustitucionBienesBean.nuevaSustit.TSustFechres}" locale="es"
                                                     pattern="dd/MM/yyyy" showOn="button" 
                                                     size="12" tabindex="2" style="width: 100%;">
                                             <p:ajax event="dateSelect" />
-                                        </p:calendar>-->
+                                        </p:calendar>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="docin" >Copia de Resolucion</label>
+                                    <label for="docres" >Copia de Resolucion</label>
                                     <div>
-                                        <p:commandButton id="guard" class="btn btn-default" value="Examinar"  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="@all" process="@this adiSBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                        <p:commandButton id="guardres" class="btn btn-default" value="Examinar"  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="@all" process="@this adiSBien"  oncomplete="handleRequest(xhr, status, args);" />
                                         <script type="text/javascript">
                                             function handleRequest(xhr, status, args) {
                                                 if (args.validationFailed) {
@@ -210,19 +240,19 @@
                                 <div class="col-md-6">
                                     <label for="fecidt">Fecha de Dictamen Tecnico</label>
                                     <div>
-<!--                                        <p:calendar id="fecidt"
-                                                    value="{bienesBean.bienSeleccionado.TBienFechadq}" locale="es"
+                                        <p:calendar id="fecidt"
+                                                    value="#{sustitucionBienesBean.nuevaSustit.TSustFechdict}" locale="es"
                                                     pattern="dd/MM/yyyy" showOn="button" 
                                                     size="12" tabindex="2" style="width: 100%;">
-                                            <p:ajax event="dateSelect" />
-                                        </p:calendar>-->
+                                            <p:ajax event="dateSelect"/>
+                                        </p:calendar>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label for="docin" >Copia de Dictamen</label>
+                                    <label for="guardic" >Copia de Dictamen</label>
                                     <div>
-<!--                                        <p:commandButton id="guard" class="btn btn-default" value="Examinar"  action="{bienesBean.guardarB()}"  rendered="{!bienesBean.edit}" disabled="{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                        <p:commandButton id="guardic" class="btn btn-default" value="Examinar"  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="@all" process="@this adiSBien"  oncomplete="handleRequest(xhr, status, args);" />
                                         <script type="text/javascript">
                                             function handleRequest(xhr, status, args) {
                                                 if (args.validationFailed) {
@@ -232,125 +262,125 @@
                                                 }
                                             }
                                         </script>
-                                    </div>-->
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <label for="nvadesc" >Nueva Descripcion</label>
-<!--                                    <div>
-                                        <h:inputText id="nvadesc" value="{bienesBean.nuevoBien.TBienModelo}" style="width: 100%;"/> 
-                                    </div>-->
-                                </div>
-
-                                <div class="col-md-4">
-                                    <label for="nvomod" >Nuevo Modelo</label>
-                                    <div>
-<!--                                        <p:inputMask id="nvomod" value="#" mask="99-9999-9999"> 
-                                            <p:ajax listener="{bienesBean.buscarCod}" update="@this :adiBien:growl :adiBien:guard"/>
-                                        </p:inputMask>-->
                                     </div>
                                 </div>
 
-                                <div class="col-md-4">
-                                    <label for="nvaser" >Nueva Serie</label>
+
+                                <div class="form-group">
+                                    <div class="col-md-6">
+                                        <label for="nvadesc" >Nueva Descripcion</label>
+                                        <div>
+                                            <h:inputText id="nvadesc" value="#{sustitucionBienesBean.nuevaSustit.TSustDescNew}" required="true" style="width: 100%;"/>  
+                                        </div>
+                                    </div>
+                                    
+                                     <div class="col-md-6">
+                                    <label for="fechsus">Fecha de Sustitucion</label>
                                     <div>
-                                        <p:inputMask id="nvaser" value="#" mask="99-9999-9999"> 
-                                            <!--<p:ajax listener="{bienesBean.buscarCod}" update="@this :adiBien:growl :adiBien:guard"/>-->
-                                        </p:inputMask>
+                                        <p:calendar id="fechsus"
+                                                    value="#{sustitucionBienesBean.nuevaSustit.TSustFecha}" locale="es"
+                                                    pattern="dd/MM/yyyy" showOn="button" 
+                                                    size="12" tabindex="2" style="width: 100%;">
+                                            <p:ajax event="dateSelect" />
+                                        </p:calendar>
                                     </div>
                                 </div>
-                            </div>
 
-                            <!--Tabla-->
-                            <div class="table table-responsive table-bordered" >
-                                <table id="tbienes" class="table table-striped table-condensed paginada" >
-                                    <thead>
-                                        <tr align="center">
-                                            Detalle Bien a Asignar
-                                        </tr>
-                                        <tr>
-                                            <th>N°</th>
-                                            <th>Codigo</th>
-                                            <th>Descripcion</th>
-                                            <th>Marca</th>
-                                            <th >Modelo</th>
-                                            <th >Serie</th>
-                                            <th >Eliminar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <ui:repeat value="#{AsignacionBienesBean.asigDet}" var="asdet" >
-                                            <tr>
-                                                <td>#{asdet.tAsigdId}</td>
-                                                <td>#{asdet.CRespNom1} #{resp.CRespNom2} #{resp.CRespNom3}</td>
-                                                <td>#{asdet.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec}</td>
-                                                <td>#{asdet.CRespCargo}</td>
-                                                <td>
-                                                </td>
-                                                <td>
-                                                </td>
-                                                <td>
-                                                    <input name="j_idt6:j_idt10" id="j_idt6:j_idt10:0" value="1" type="checkbox" />
-                                                </td>
-                                            </tr>
-                                        </ui:repeat>
-                                    </tbody>  
-                                </table>
-                            </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    
+                                    
+                                    <div class="col-md-6">
+                                        <label for="nvamarc" >Marca</label>
+                                        <div>
+                                            <h:selectOneMenu id="nvamarc" value="#{sustitucionBienesBean.nuevaSustit.TSustMarcNew}" style="width: 100%;">
+                                                <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <!--
+                                    <div class="col-md-6">
+                                        <label for="nvamar" >Nueva Marca</label>
+                                        <div>
+                                            <h:inputText id="nvomod" value="{sustitucionBienesBean.nuevaSustit.TSustModeNew}" required="true" style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                    -->
+                                    <div class="col-md-6">
+                                        <label for="nvomod" >Nuevo Modelo</label>
+                                        <div>
+                                            <h:inputText id="nvomod" value="#{sustitucionBienesBean.nuevaSustit.TSustModeNew}" required="true" style="width: 100%;"/>
+                                        </div>
+                                    </div>
 
-                            <!--Fin Tabla-->
+                                    
+                                </div>
+                                
+                                <div class="form-group">
+                                <div class="col-md-6">
+                                        <label for="nvaser" >Nueva Serie</label>
+                                        <div>
+                                            <p:inputMask id="nvaser" value="#" mask="99-9999-9999"> 
+                                                <!--<p:ajax listener="{bienesBean.buscarCod}" update="@this :adiBien:growl :adiBien:guard"/>-->
+                                            </p:inputMask>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--Tabla-->
 
-                            <!-- Botones -->
-                            <div class="form-group">
-                                <div class="col-lg-10 col-lg-offset-8">
 
-<!--                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
-                                                     action="{bienesBean.limpiarB()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                <!--Fin Tabla-->
+
+                                <!-- Botones -->
+                                <div class="form-group">
+                                    <div class="col-lg-10 col-lg-offset-8">
+
+                                        <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                                                         action="#{sustitucionBienesBean.limpiarTSutit()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                            <script type="text/javascript">
+                                                function refrescar(xhr, status, args) {
+                                                    if (args.validationFailed) {
+                                                        alert('Ha ocurrido un error');
+                                                    } else {
+                                                        alert('nuevo');
+                                                        location.reload(true);
+                                                    }
+                                                }
+                                            </script>
+
+
+                                        </p:commandButton>
+
+                                        <p:commandButton id="guard" class="btn btn-primary" value="Guardar "  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="@all"  oncomplete="handleRequest(xhr, status, args);" />
                                         <script type="text/javascript">
-                                            function refrescar(xhr, status, args) {
+                                            function handleRequest(xhr, status, args) {
                                                 if (args.validationFailed) {
-                                                    alert('Ha ocurrido un error');
+                                                    alert('Ha ocurrido un error. Complete los datos necesarios');
                                                 } else {
-                                                    alert('nuevo');
-                                                    location.reload(true);
+                                                    alert('Datos adicionados correctamente');
                                                 }
                                             }
                                         </script>
+                                        <!--
+                                                                            <p:commandButton id="guard" class="btn btn-primary" value="Cancelar "  action="{bienesBean.guardarB()}"  rendered="{!bienesBean.edit}" disabled="{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                                                            <script type="text/javascript">
+                                                                                function handleRequest(xhr, status, args) {
+                                        
+                                                                                }
+                                                                            </script>-->
+
+                                        <!--aqui agregar boton ingreso por lote-->
 
 
-                                    </p:commandButton>-->
-
-<!--                                    <p:commandButton id="guard" class="btn btn-primary" value="Guardar "  action="{bienesBean.guardarB()}"  rendered="{!bienesBean.edit}" disabled="{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
-                                    <script type="text/javascript">
-                                        function handleRequest(xhr, status, args) {
-                                            if (args.validationFailed) {
-                                                alert('Ha ocurrido un error. Complete los datos necesarios');
-                                            } else {
-                                                alert('Datos adicionados correctamente');
-                                            }
-                                        }
-                                    </script>-->
-<!--
-                                    <p:commandButton id="guard" class="btn btn-primary" value="Cancelar "  action="{bienesBean.guardarB()}"  rendered="{!bienesBean.edit}" disabled="{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
-                                    <script type="text/javascript">
-                                        function handleRequest(xhr, status, args) {
-
-                                        }
-                                    </script>-->
-
-                                    <!--aqui agregar boton ingreso por lote-->
-
-
+                                    </div>
                                 </div>
-                            </div>
-                            <!-- Botones -->
+                                <!-- Botones -->
 
                             </div>
 
-                            <!--aqui agregar dialogo ingreso por lote-->
+
                         </h:form>
                     </div>
                 </div>
@@ -367,24 +397,28 @@
                                     </tr>
                                     <tr>
                                         <th>Correlativo</th>
-                                        <th>Asignado a</th>
-                                        <th>Dependencia</th>
-                                        <th>Fecha</th>
+                                        <th>Codigo</th>
+                                        <th>Rubro</th>
+                                        <th>Especifico</th>
+                                        <th>Fecha de Sustitucion</th>
+                                        <th>Responsable</th>
                                         <th >Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ui:repeat value="#{AsignacionBienesBean.asigDet}" var="asdet" >
+                                    <ui:repeat value="#{sustitucionBienesBean.sustituc}" var="susti" >
                                         <tr>
-                                            <td>#{asdet.tAsigdId}</td>
-                                            <td>#{asdet.CRespNom1} #{resp.CRespNom2} #{resp.CRespNom3}</td>
-                                            <td>#{asdet.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec}</td>
-                                            <td>#{asdet.CRespCargo}</td>
+                                            <td>#{susti.TSustCorr}</td>
+                                            <td>#{susti.TSustCodigo}</td>
+                                            <td>#{susti.TBienId.CRubroId.CRubroDesc}</td>
+                                            <td>#{susti.TBienId.CEspecId.CEspecDesc}</td>
+                                            <td>#{susti.TSustFecha}</td>
+                                            <td>#{susti.TBienId.CRespId.CRespNom1}#{susti.TBienId.CRespId.CRespNom2}#{susti.TBienId.CRespId.CRespApe1}#{susti.TBienId.CRespId.CRespApe2}</td>
                                             <td>
-                                                <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifArea" action="#{catgeBean.asignarEdif()}">
-                                                    <f:setPropertyActionListener value="#{asdet}"
-                                                                                 target="#{AsignacionBienesBean.asigDetaSeleccionado}"  />
-                                                    <p:ajax process="@this" update=":formAreas:displayA2"/>
+                                                <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modiSus" action="#{sustitucionBienesBean.guardarSustit()}">
+                                                    <f:setPropertyActionListener value="#{susti}"
+                                                                                 target="#{sustitucionBienesBean.sustitSeleccionada}"  />
+                                                    <p:ajax process="@this" update=":formAreas:displayS3"/>
                                                 </h:commandLink>
                                             </td>
                                         </tr>
@@ -392,23 +426,24 @@
                                 </tbody>  
                             </table>
                         </div>
-                        <div id="modifBien" class="modal">
+                        <div id="modifSus" class="modal">
                             <div class="modal-dialog">
                                 <h:head></h:head>
-                                <h:form id="modiBien" > 
+                                <h:form id="modiSus" > 
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar ×</button>
-                                            <h4 class="modal-title">Modificación de Bienes Muebles</h4>
+                                            <h4 class="modal-title">Modificacion de Sustitucion de Bienes</h4>
                                         </div>
                                         <div class="modal-body">
                                             <div class="panel panel-default">
                                                 <div class="panel-body" id="modiPy2">
-                                                    <h:panelGroup id="displayB2"> 
-                                                    
+                                                    <h:panelGroup id="displayS3"> 
+                                                      
                                                     </h:panelGroup>  
                                                 </div>
                                             </div>
+                                            <!--  -->
 
                                         </div>
                                     </div>
@@ -458,6 +493,17 @@
             </script>
 
         </ui:define>
+        
+        <!--***********************************************************************************************************
+        ***************************************************************************************************************
+        ***************************************************************************************************************-->
+        
+        
+        
+        
+        <!--***********************************************************************************************************
+        ***************************************************************************************************************
+        ***************************************************************************************************************-->
 
     </ui:composition>
 </html>

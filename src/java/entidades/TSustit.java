@@ -61,11 +61,11 @@ public class TSustit implements Serializable {
     @Column(name = "t_sust_id")
     private Integer tSustId;
     @Column(name = "t_sust_tipo")
-    private Short tSustTipo;
+    private Integer tSustTipo;
     @Column(name = "t_sust_corr")
-    private Short tSustCorr;
+    private Integer tSustCorr;
     @Column(name = "t_sust_anio")
-    private Short tSustAnio;
+    private Integer tSustAnio;
     @Size(max = 12)
     @Column(name = "t_sust_codigo")
     private String tSustCodigo;
@@ -83,7 +83,7 @@ public class TSustit implements Serializable {
     @Column(name = "t_sust_desc_ant")
     private String tSustDescAnt;
     @Column(name = "t_sust_marc_ant")
-    private Short tSustMarcAnt;
+    private Integer tSustMarcAnt;
     @Size(max = 20)
     @Column(name = "t_sust_mode_ant")
     private String tSustModeAnt;
@@ -105,12 +105,12 @@ public class TSustit implements Serializable {
     @Column(name = "t_sust_serie_new")
     private String tSustSerieNew;
     @Column(name = "t_sust_usec")
-    private Short tSustUsec;
+    private Integer tSustUsec;
     @Column(name = "t_sust_fechc")
     @Temporal(TemporalType.DATE)
     private Date tSustFechc;
     @Column(name = "t_sust_usem")
-    private Short tSustUsem;
+    private Integer tSustUsem;
     @Column(name = "t_sust_fechm")
     @Temporal(TemporalType.DATE)
     private Date tSustFechm;
@@ -166,27 +166,27 @@ public class TSustit implements Serializable {
         this.tSustId = tSustId;
     }
 
-    public Short getTSustTipo() {
+    public Integer getTSustTipo() {
         return tSustTipo;
     }
 
-    public void setTSustTipo(Short tSustTipo) {
+    public void setTSustTipo(Integer tSustTipo) {
         this.tSustTipo = tSustTipo;
     }
 
-    public Short getTSustCorr() {
+    public Integer getTSustCorr() {
         return tSustCorr;
     }
 
-    public void setTSustCorr(Short tSustCorr) {
+    public void setTSustCorr(Integer tSustCorr) {
         this.tSustCorr = tSustCorr;
     }
 
-    public Short getTSustAnio() {
+    public Integer getTSustAnio() {
         return tSustAnio;
     }
 
-    public void setTSustAnio(Short tSustAnio) {
+    public void setTSustAnio(Integer tSustAnio) {
         this.tSustAnio = tSustAnio;
     }
 
@@ -238,11 +238,11 @@ public class TSustit implements Serializable {
         this.tSustDescAnt = tSustDescAnt;
     }
 
-    public Short getTSustMarcAnt() {
+    public Integer getTSustMarcAnt() {
         return tSustMarcAnt;
     }
 
-    public void setTSustMarcAnt(Short tSustMarcAnt) {
+    public void setTSustMarcAnt(Integer tSustMarcAnt) {
         this.tSustMarcAnt = tSustMarcAnt;
     }
 
@@ -302,11 +302,11 @@ public class TSustit implements Serializable {
         this.tSustSerieNew = tSustSerieNew;
     }
 
-    public Short getTSustUsec() {
+    public Integer getTSustUsec() {
         return tSustUsec;
     }
 
-    public void setTSustUsec(Short tSustUsec) {
+    public void setTSustUsec(Integer tSustUsec) {
         this.tSustUsec = tSustUsec;
     }
 
@@ -318,11 +318,11 @@ public class TSustit implements Serializable {
         this.tSustFechc = tSustFechc;
     }
 
-    public Short getTSustUsem() {
+    public Integer getTSustUsem() {
         return tSustUsem;
     }
 
-    public void setTSustUsem(Short tSustUsem) {
+    public void setTSustUsem(Integer tSustUsem) {
         this.tSustUsem = tSustUsem;
     }
 
@@ -446,9 +446,5 @@ public class TSustit implements Serializable {
     public String toString() {
         return "entidades.TSustit[ tSustId=" + tSustId + " ]";
     }
-
-    
-
-   
     
 }

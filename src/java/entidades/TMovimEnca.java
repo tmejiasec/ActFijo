@@ -143,6 +143,12 @@ public class TMovimEnca implements Serializable {
     private Integer tMoveFeccId;
     @Column(name = "t_move_fecaf_id")
     private Integer tMoveFecafId;
+    @Column(name = "t_move_horac")
+    @Temporal(TemporalType.TIME)
+    private Date tMoveHorac;
+    @Column(name = "t_move_horam")
+    @Temporal(TemporalType.TIME)
+    private Date tMoveHoram;
     @JoinColumn(name = "t_repar_id", referencedColumnName = "t_repar_id")
     @ManyToOne
     private TRepar tReparId;
@@ -461,6 +467,23 @@ public class TMovimEnca implements Serializable {
         return cEstmovId;
     }
 
+    public Date getTMoveHorac() {
+        return tMoveHorac;
+    }
+
+    public void setTMoveHorac(Date tMoveHorac) {
+        this.tMoveHorac = tMoveHorac;
+    }
+
+    public Date getTMoveHoram() {
+        return tMoveHoram;
+    }
+
+    public void setTMoveHoram(Date tMoveHoram) {
+        this.tMoveHoram = tMoveHoram;
+    }
+
+    
     public void setCEstmovId(CEstadoMov cEstmovId) {
         this.cEstmovId = cEstmovId;
     }

@@ -44,6 +44,5 @@ public class TMovimEncaFacade extends AbstractFacade<TMovimEnca> implements TMov
 		return (TMovimEnca) em.createNamedQuery("TMovimEnca.findByTMoveId").setParameter("tMoveId",move).getSingleResult();
 	}
 
-
     
 }

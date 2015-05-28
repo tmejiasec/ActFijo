@@ -13,14 +13,14 @@
 
         <ui:define name="content">
             <ul class="nav nav-tabs">
-                <li class=""><a aria-expanded="true" href="#adicion" data-toggle="tab">Adición</a></li>
-                <li class="active"><a aria-expanded="false" href="#consulta" data-toggle="tab">Consulta</a></li>
+                <li class="active"><a aria-expanded="true" href="#adicion" data-toggle="tab">Adición</a></li>
+                <li class=""><a aria-expanded="false" href="#consulta" data-toggle="tab">Consulta</a></li>
                 <li class=""><a aria-expanded="false" href="#seguimiento" data-toggle="tab">Seguimiento</a></li>
                 <li class=""><a aria-expanded="false" href="#imagenes" data-toggle="tab">Imágenes</a></li>
                 <li class=""><a aria-expanded="false" href="#codigo" data-toggle="tab">Código</a></li>
             </ul>
             <div id="myTabContent" class="tab-content">
-                <div class="tab-pane fade" id="adicion">
+                <div class="tab-pane fade active in" id="adicion">
                     <div class="well bs-component">
                         <h:form id="adiMBien" class="form-horizontal" enctype="multipart/form-data" >
                             <p:growl id="growl" />
@@ -32,208 +32,193 @@
                             </legend>
                             <h:panelGroup id="adicMov"> 
 
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label >Tipo de Movimiento</label>
-                                    <h:selectOneMenu id="tipmov" value="#{movBienesBean.tipmSeleccionado}" style="width: 100%;" >
-                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                        <f:selectItems value="#{movBienesBean.tiposm}" var="tipm" itemLabel="#{tipm.CTipmDesc}" itemValue="#{tipm.CTipmId}" />
-                                        <p:ajax  listener="#{movBienesBean.tipSelec()}" update="tipmov"/>                    
-                                    </h:selectOneMenu>                                    
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="anio" >Año</label>
-                                    <div>
-                                        <p:inputText id="anio" value="#{movBienesBean.nuevoEnca.TMoveAnio}"> 
-                                            <p:ajax listener="#{movBienesBean.buscarCorr}" update="@this :adiMBien:growl :adiMBien:corr"/>
-                                        </p:inputText>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label >Correlativo</label>
-                                    <div>
-                                        <h:outputText id="corr" value="#{movBienesBean.nuevoEnca.TMoveCorr}"/>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label >Estado del Movimiento</label>
-                                    <h:selectOneMenu value="#{movBienesBean.estmoSeleccionado}">
-                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                        <f:selectItems value="#{movBienesBean.estmovs}" var="estmo" itemLabel="#{estmo.CEstmovDesc}" itemValue="#{estmo.CEstmovId}" />
-                                        <!--<p:ajax  listener="{movBienesBean.tipSelec()}" update="tipmo"/>-->                    
-                                    </h:selectOneMenu>                                        
-                                </div>                                
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label >Nivel Organizativo Solicitante</label>
-                                    <div >
-                                        <h:selectOneMenu id="nivels" value="#{movBienesBean.nuevoEnca.TMoveNivs}" style="width: 100%;" >
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label >Tipo de Movimiento</label>
+                                        <h:selectOneMenu id="tipmov" value="#{movBienesBean.tipmSeleccionado}" style="width: 100%;" >
                                             <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{movBienesBean.niveles}" var="niv" itemLabel="#{niv.CNivelDescrip}" itemValue="#{niv.CNivelId}" />
-                                            <p:ajax  listener="#{movBienesBean.depSeleccionA()}" update="depen"/>                         
-                                        </h:selectOneMenu>
+                                            <f:selectItems value="#{movBienesBean.tiposm}" var="tipm" itemLabel="#{tipm.CTipmDesc}" itemValue="#{tipm.CTipmId}" />
+                                            <p:ajax  listener="#{movBienesBean.tipSelec()}" update="tipmov"/>                    
+                                        </h:selectOneMenu>                                    
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label >Dependencia Solicitante</label>
-                                    <div >
-                                        <h:selectOneMenu id="depen" value="#{movBienesBean.nuevoEnca.TMoveDeps}" style="width: 100%" >
-                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{movBienesBean.depens}" var="depe" itemLabel="#{depe.CDepenDesc}" itemValue="#{depe.CDepenId}"/>
-                                        </h:selectOneMenu>
+                                    <div class="col-md-3">
+                                        <label for="anio" >Año</label>
+                                        <div>
+                                            <p:inputText id="anio" value="#{movBienesBean.nuevoEnca.TMoveAnio}"> 
+                                                <p:ajax listener="#{movBienesBean.buscarCorr}" update="@this :adiMBien:growl :adiMBien:corr"/>
+                                            </p:inputText>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="respos" >Persona Solicitante</label>
-                                    <h:selectOneMenu id="respos" value="#{movBienesBean.nuevoEnca.TMovePers}" style="width: 100%" >
-                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                        <f:selectItems value="#{movBienesBean.respons}" var="resp" itemLabel="#{resp.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec} #{resp.CRespNom1} #{resp.CRespNom2}" itemValue="#{resp.CRespId}"/>
-                                    </h:selectOneMenu>  
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="cargos" >Cargo de Persona Solicitante</label>
-                                    <h:outputText id="cargos" value="#{resp.CRespCargo}"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label >Nivel Organizativo Responsable</label>
-                                    <div >
-                                        <h:selectOneMenu id="nivel" value="#{movBienesBean.nuevoEnca.TMoveNive}" style="width: 100%;" >
+                                    <div class="col-md-3">
+                                        <label >Correlativo</label>
+                                        <div>
+                                            <h:outputText id="corr" value="#{movBienesBean.nuevoEnca.TMoveCorr}"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label >Estado del Movimiento</label>
+                                        <h:selectOneMenu id="estmov" value="#{movBienesBean.estmoSeleccionado}">
                                             <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{movBienesBean.niveles}" var="nive" itemLabel="#{nive.CNivelDescrip}" itemValue="#{nive.CNivelId}" />
-                                            <p:ajax  listener="#{movBienesBean.depSeleccionE()}" update="depene"/>                         
-                                        </h:selectOneMenu>
+                                            <f:selectItems value="#{movBienesBean.estmovs}" var="estmo" itemLabel="#{estmo.CEstmovDesc}" itemValue="#{estmo.CEstmovId}" />
+                                            <p:ajax  listener="#{movBienesBean.tipSelecM()}" update="estmov"/>                    
+                                        </h:selectOneMenu>                                        
+                                    </div>                                
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label >Nivel Organizativo Solicitante</label>
+                                        <div >
+                                            <h:selectOneMenu id="nivels" value="#{movBienesBean.nuevoEnca.TMoveNivs}" style="width: 100%;" >
+                                                <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{movBienesBean.niveles}" var="niv" itemLabel="#{niv.CNivelDescrip}" itemValue="#{niv.CNivelId}" />
+                                                <p:ajax  listener="#{movBienesBean.depSeleccionA()}" update="depen"/>                         
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label >Dependencia Solicitante</label>
+                                        <div >
+                                            <h:selectOneMenu id="depen" value="#{movBienesBean.nuevoEnca.TMoveDeps}" style="width: 100%" >
+                                                <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{movBienesBean.depens}" var="depe" itemLabel="#{depe.CDepenDesc}" itemValue="#{depe.CDepenId}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="respos" >Persona Solicitante</label>
+                                        <h:selectOneMenu id="respos" value="#{movBienesBean.nuevoEnca.TMovePers}" style="width: 100%" >
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{movBienesBean.respons}" var="resp" itemLabel="#{resp.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec} #{resp.CRespNom1} #{resp.CRespNom2}" itemValue="#{resp.CRespId}"/>
+                                        </h:selectOneMenu>  
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="cargos" >Cargo de Persona Solicitante</label>
+                                        <h:outputText id="cargos" value="#{resp.CRespCargo}"/>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label >Dependencia Responsable</label>
-                                    <div >
-                                        <h:selectOneMenu id="depene" value="#{movBienesBean.nuevoEnca.TMoveDepe}" style="width: 100%" >
-                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{movBienesBean.depense}" var="deper" itemLabel="#{deper.CDepenDesc}" itemValue="#{deper.CDepenId}"/>
-                                        </h:selectOneMenu>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label >Nivel Organizativo Responsable</label>
+                                        <div >
+                                            <h:selectOneMenu id="nivel" value="#{movBienesBean.nuevoEnca.TMoveNive}" style="width: 100%;" >
+                                                <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{movBienesBean.niveles}" var="nive" itemLabel="#{nive.CNivelDescrip}" itemValue="#{nive.CNivelId}" />
+                                                <p:ajax  listener="#{movBienesBean.depSeleccionE()}" update="depene"/>                         
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label >Dependencia Responsable</label>
+                                        <div >
+                                            <h:selectOneMenu id="depene" value="#{movBienesBean.nuevoEnca.TMoveDepe}" style="width: 100%" >
+                                                <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{movBienesBean.depense}" var="deper" itemLabel="#{deper.CDepenDesc}" itemValue="#{deper.CDepenId}"/>
+                                            </h:selectOneMenu>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="respoe" >Persona Responsable del Bien</label>
+                                        <h:selectOneMenu id="respo" value="#{movBienesBean.nuevoEnca.TMovePere}" style="width: 100%" >
+                                            <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{movBienesBean.respons}" var="respe" itemLabel="#{respe.CRespApe1} #{respe.CRespApe2} #{respe.CRespApec} #{respe.CRespNom1} #{respe.CRespNom2}" itemValue="#{respe.CRespId}"/>
+                                        </h:selectOneMenu>  
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="cargor" >Cargo de Persona Responsable</label>
+                                        <h:outputText id="cargor" value="#{respe.CRespCargo}"/>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="respoe" >Persona Responsable del Bien</label>
-                                    <h:selectOneMenu id="respo" value="#{movBienesBean.nuevoEnca.TMovePere}" style="width: 100%" >
-                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
-                                        <f:selectItems value="#{movBienesBean.respons}" var="respe" itemLabel="#{respe.CRespApe1} #{respe.CRespApe2} #{respe.CRespApec} #{respe.CRespNom1} #{respe.CRespNom2}" itemValue="#{respe.CRespId}"/>
-                                    </h:selectOneMenu>  
-                                </div>
-                                <div class="col-md-3">
-                                    <label for="cargor" >Cargo de Persona Responsable</label>
-                                    <h:outputText id="cargor" value="#{respe.CRespCargo}"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-3">
-                                    <label >Tipo de Préstamo/Reparación</label>
-                                    <h:selectOneMenu value="#{movBienesBean.nuevoEnca.TMoveTipt}">
-                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=" "/>                                        
-                                        <f:selectItem itemValue="I" itemLabel="Interno" />
-                                        <f:selectItem itemValue="E" itemLabel="Externo" />
-                                    </h:selectOneMenu>                                        
-                                </div>             
-                                <div class="col-md-3">
-                                    <label for="fecs">Fecha de Salida del Bien</label>
-                                    <div>
-                                        <p:calendar id="fecs"
-                                                    value="#{movBienesBean.nuevoEnca.TMoveFecsal}" locale="es"
-                                                    pattern="dd/MM/yyyy" showOn="button" 
-                                                    size="12" tabindex="2" style="width: 100%;">
-                                            <p:ajax event="dateSelect" />
-                                        </p:calendar>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label >Tipo de Préstamo/Reparación</label>
+                                        <h:selectOneMenu id="tip" value="#{movBienesBean.nuevoEnca.TMoveTipt}">
+                                            <f:selectItem itemValue="I" itemLabel="Interno" />
+                                            <f:selectItem itemValue="E" itemLabel="Externo" />
+                                            <!--                                        <p:ajax  listener="{movBienesBean.tipoSel()}" update="tip"/>                    -->
+                                        </h:selectOneMenu>                                        
+                                    </div>             
+                                    <div class="col-md-3">
+                                        <label for="fecs">Fecha de Salida del Bien</label>
+                                        <div>
+                                            <p:calendar id="fecs"
+                                                        value="#{movBienesBean.nuevoEnca.TMoveFecsal}" locale="es"
+                                                        pattern="dd/MM/yyyy" showOn="button" 
+                                                        size="12" tabindex="2" style="width: 100%;">
+                                                <p:ajax event="dateSelect" />
+                                            </p:calendar>
+                                        </div>
                                     </div>
+                                    <div class="col-md-3">
+                                        <label for="fecr">Fecha de Retorno del Bien</label>
+                                        <div>
+                                            <p:calendar id="fecr"
+                                                        value="#{movBienesBean.nuevoEnca.TMoveFecret}" locale="es"
+                                                        pattern="dd/MM/yyyy" showOn="button" 
+                                                        size="12" tabindex="2" style="width: 100%;">
+                                                <p:ajax event="dateSelect" />
+                                            </p:calendar>
+                                        </div>
+                                    </div>  
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="fecr">Fecha de Retorno del Bien</label>
-                                    <div>
-                                        <p:calendar id="fecr"
-                                                    value="#{movBienesBean.nuevoEnca.TMoveFecret}" locale="es"
-                                                    pattern="dd/MM/yyyy" showOn="button" 
-                                                    size="12" tabindex="2" style="width: 100%;">
-                                            <p:ajax event="dateSelect" />
-                                        </p:calendar>
+                                <div class="form-group">
+                                    <h:outputLabel value="Observaciones: " />
+                                    <p:inputTextarea value="#{movBienesBean.nuevoEnca.TMoveObser}"
+                                                     rows="3" style="width: 98%;" autoResize="false" tabindex="9"/>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-lg-8 col-lg-offset-6">
+                                        <h:commandButton id="guardEnc" value="Guardar Encabezado"  styleClass="btn btn-primary" >
+                                            <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.nuevoEnca}" />
+                                            <p:ajax listener="#{movBienesBean.guardarE()}" rendered="#{!movBienesBean.edit}" process="@this :adiMBien" update="growl guardEnc adiComP adiComR" />
+                                        </h:commandButton>	
+
+
+
+                                        <h:commandButton id="adiComP" value="Préstamo Externo"  pt:data-toggle="modal" pt:data-target="#adComP" disabled="#{movBienesBean.estadoC}" styleClass="btn btn-primary"  >
+                                            <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.encSeleccionado}" />
+                                            <p:ajax process="@this" update=":adiMBien:displayPt2"/>
+                                        </h:commandButton>
+
+                                        <h:commandButton id="adiComR" value="Reparación Externa"  pt:data-toggle="modal" pt:data-target="#adComR" disabled="#{movBienesBean.estadoR}" styleClass="btn btn-primary">
+                                            <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.encSeleccionado}" />
+                                            <p:ajax process="@this" update=":adiMBien:displayRe2"/>
+                                        </h:commandButton>
+
+                                        <!--copiar siguiente bloque en agregar otro mov despues de grabar detalle-->
+
                                     </div>
-                                </div>  
-                                <div class="col-md-3">
-                                    <label for="depre" >Hay Documento que respalda el Movimiento?</label>
-                                    <h:selectOneRadio value="#{movBienesBean.nuevoEnca.TMoveDocp}" >
-                                        <f:selectItem itemValue="TRUE" itemLabel="Si"/>
-                                        <f:selectItem itemValue="FALSE" itemLabel="No"/></h:selectOneRadio>
-                                </div> 
-                            </div>
-                            <div class="form-group">
-                                <h:outputLabel value="Observaciones: " />
-                                <p:inputTextarea value="#{movBienesBean.nuevoEnca.TMoveObser}"
-                                                 rows="3" style="width: 98%;" autoResize="false" tabindex="9"/>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-lg-8 col-lg-offset-6">
-                                    <p:commandButton id="guard" value="Guardar Encabezado" process="@this :adiMBien:adicMov" action="#{movBienesBean.guardarE()}" rendered="#{!movBienesBean.edit}" disabled="#{movBienesBean.estado}" update=":adiMBien:adicMov growl guard adiComP adiComR" style="margin-top: 10px;"/>
-<!--                                    
-                                    <p:commandButton id="guard"  value="Guardar Encabezado"  action="{movBienesBean.guardarE()}"  rendered="{!movBienesBean.edit}" disabled="{movBienesBean.estado}" update="@this :adiMBien:adicMov growl guard adiComP adiComR" process="@this :adiMBien:adicMov"  oncomplete="handleRequest(xhr, status, args);" />
-                                    <script type="text/javascript">
-                                        function handleRequest(xhr, status, args) {
-                                            if (args.validationFailed) {
-                                                alert('Ha ocurrido un error. Complete los datos necesarios');
-                                            } else {
-                                                alert('Datos adicionados correctamente');
-                                            }
-                                        }
-                                    </script>-->
-                                    <h:commandButton id="adiComP" value="Préstamo Externo"  pt:data-toggle="modal" pt:data-target="#adComP" disabled="#{movBienesBean.estadoC}" >
-                                        <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.encSeleccionado}" />
-                                        <p:ajax process="@this" update=":adiMBien:displayPt2"/>
-                                    </h:commandButton>
-
-                                    <h:commandButton id="adiComR" value="Reparación Externa"  pt:data-toggle="modal" pt:data-target="#adComR" disabled="#{movBienesBean.estadoR}">
-                                        <f:setPropertyActionListener value="#{movBienesBean.enca}" target="#{movBienesBean.encSeleccionado}" />
-                                        <p:ajax process="@this" update=":adiMBien:displayRe2"/>
-                                    </h:commandButton>
-
-                                    <!--copiar siguiente bloque en agregar otro mov despues de grabar detalle-->
 
                                 </div>
-
-                            </div>
                             </h:panelGroup>
                             <!--aqui agregar dialogo para adicionar datos complementarios-->
 
                             <!--aqui agregar tabla de detalle de movimientos-->
                             <div class="table table-responsive table-bordered" >
-                                <table id="detmov" class="table table-striped table-condensed paginada" >
-                                    <thead>
-                                        <tr align="center">
-                                            DETALLE DE BIENES MUEBLES
-                                        </tr>
-                                        <tr>
-                                            <th>Código</th>
-                                            <th>Descripción</th>
-                                            <th>Marca</th>
-                                            <th>Modelo</th>
-                                            <th>Serie</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <ui:repeat value="#{movBienesBean.movdeta}" var="dbien" >
-                                            <tr>
-                                                <td>#{dbien.TMovdCodigo}</td>
-                                                <td>#{dbien.TBienId.TBienDesc}</td>
-                                                <td>#{dbien.TBienId.CMarcaId.CMarcaDesc}</td>
-                                                <td>#{dbien.TBienId.TBienModelo}</td>
-                                                <td>#{dbien.TBienId.TBienSerie}</td>
-                                            </tr>
-                                        </ui:repeat>
-                                        <div class="col-md-6" align="center" >
-                                            <a data-toggle="modal" href="#adicDetmov" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar Bienes</a>
-                                        </div>                              
-
-                                    </tbody>  
-                                </table>
+                                <p:dataTable id="encab" var="detalle" value="#{movBienesBean.movdeta}" rowKey="#{detalle.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
+                                    <p:column headerText="Codigo" filterBy="#{detalle.TBienId.TBienCodigo}"  style="width:125px;" >
+                                        <h:outputText value="#{detalle.TMovdCodigo}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Descripción" >
+                                        <h:outputText value="#{detalle.TBienId.TBienDesc}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Marca">
+                                        <h:outputText value="#{detalle.TBienId.CMarcaId.CMarcaDesc}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Modelo">
+                                        <h:outputText value="#{detalle.TBienId.TBienModelo}">
+                                        </h:outputText>
+                                    </p:column>   
+                                    <p:column headerText="Serie">
+                                        <h:outputText value="#{detalle.TBienId.TBienSerie}">
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:dataTable>
+                                <div>
+                                    <p:commandButton id="agregaDet" value="Adicionar Bienes"  styleClass="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicDetmov" action="#{movBienesBean.genTabla()}"  update="seleccionar_bienes"/>
+                                </div>
                             </div>
                             <!--// probar aqui los botones -->
 
@@ -246,25 +231,32 @@
                                         </div>
                                         <div class="modal-body">
                                             <div class="table table-responsive table-bordered" >
-                                                <p:dataTable id="table_seleccionar_bienes" var="bienR" value="#{movBienesBean.bienes}" selection="#{movBienesBean.selectedBienes}" rowKey="#{bienR.TBienId}" paginator="true"  paginatorPosition="top" rows="5" emptyMessage="No hay códigos para agregar">
+                                                <p:dataTable id="seleccionar_bienes" var="bienR" value="#{movBienesBean.bienes}" selection="#{movBienesBean.selectedBienes}" rowKey="#{bienR.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay códigos para agregar">
                                                     <p:column selectionMode="multiple" style="width:40px;"/>
                                                     <p:column headerText="Codigo" filterBy="#{bienR.TBienCodigo}" filterMatchMode="contains" style="width:125px;" >
-                                                        #{bienR.TBienCodigo}
+                                                        <h:outputText value="#{bienR.TBienCodigo}">
+                                                        </h:outputText>
                                                     </p:column>
                                                     <p:column headerText="Descripción" >
-                                                        #{bienR.TBienDesc}
+                                                        <h:outputText value="#{bienR.TBienDesc}">
+                                                        </h:outputText>
                                                     </p:column>
                                                     <p:column headerText="Marca">
-                                                        #{bienR.CMarcaId.CMarcaDesc}
+                                                        <h:outputText value="#{bienR.CMarcaId.CMarcaDesc}">
+                                                        </h:outputText>
                                                     </p:column>
                                                     <p:column headerText="Modelo">
-                                                        #{bienR.TBienModelo}
+                                                        <h:outputText value="#{bienR.TBienModelo}">
+                                                        </h:outputText>
                                                     </p:column>   
                                                     <p:column headerText="Serie">
-                                                        #{bienR.TBienSerie}
+                                                        <h:outputText value="#{bienR.TBienSerie}">
+                                                        </h:outputText>
                                                     </p:column>                                                    
                                                 </p:dataTable>
-                                                <p:commandButton icon="ui-icon-plusthick" value="Agregar" process="@this table_seleccionar_bienes" action="#{movBienesBean.updateDetalle()}" update=":adiMBien table_seleccionar_bienes" oncomplete="adicDetmov.hide();" style="margin-top: 10px;"/>
+                                                <div>
+                                                <p:commandButton icon="ui-icon-plusthick" value="Agregar" process="@this seleccionar_bienes" action="#{movBienesBean.updateDetalle()}" update=":adiMBien:encab" oncomplete="adicDetmov.hide();" style="margin-top: 10px;"/>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -368,7 +360,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                            <p:commandButton id="Nuevo" value="Agregar Otro Movimiento" class="btn btn-primary"
                                              action="#{movBienesBean.limpiarE()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
                                 <script type="text/javascript">
                                     function refrescar(xhr, status, args) {
@@ -388,7 +380,7 @@
 
                     </div>
                 </div>
-                <div class="tab-pane fade  active in" id="consulta">
+                <div class="tab-pane fade" id="consulta">
                     <h:head></h:head>                    
                     <h:form id="formMBien" >
                         <div class="table table-responsive table-bordered" >

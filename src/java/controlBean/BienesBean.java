@@ -64,6 +64,7 @@ import java.util.List;
 import java.util.Properties;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -109,7 +110,7 @@ public class BienesBean implements Serializable {
     private Integer respSeleccionado, nivSeleccionado, depSeleccionada, edifSeleccionado, areaSeleccionada, ubicSeleccionada;
     private Integer rubSeleccionado, espSeleccionado, marcaSeleccionada, formSeleccionada, tdocSeleccionado, ftefSeleccionada;
     private Integer provSeleccionado, proySeleccionado, estbSeleccionado, condbSeleccionado, estpSeleccionado, tdescSeleccionado;
-    private Integer tiempoSeleccionado, idAdq, idReg, idDep, idGar, bienIng;
+    private Integer tiempoSeleccionado, idAdq, idReg, idDep, idGar, bienIng, idUs;
 
     private CResponsablesFacadeLocal respFacade;
     private CNivelesFacadeLocal nivFacade;
@@ -161,6 +162,9 @@ public class BienesBean implements Serializable {
     private UploadedFile picture;
     private static final int BUFFER_SIZE = 1000000;
     private DefaultStreamedContent download;
+    
+    @ManagedProperty(value = "#{appSession}")
+    private AppSession appSession;
 
     /**
      * Creates a new instance
@@ -216,7 +220,11 @@ public class BienesBean implements Serializable {
             idDep = getDaoTiempo().getFecha(fecdep).getTTmId();
             nuevoBien.setTBienFinidId(idDep);
         }
+        
         nuevoBien.setTBienHoracrea(formatoHora.parse(formatoHora.format(fecha)));
+        idUs = appSession.getUsuario().getCUserId();
+        nuevoBien.setTBienUscrea(idUs);
+        nuevoBien.setTBienFechcrea(fecha);       
         // creando registro y guardando datos
         if (nuevoBien.getTBienCantxlote()==0){}
         else{nuevoBien.setTBienLoteingre(ingLote);
@@ -257,8 +265,10 @@ public class BienesBean implements Serializable {
             bienSeleccionado.setTBienFinidId(idDep);
         }
         //actualizando cambios en la tabla
+        idUs = appSession.getUsuario().getCUserId();
         bienSeleccionado.setTBienFechmod(fecha);
         bienSeleccionado.setTBienHoramod(formatoHora.parse(formatoHora.format(fecha)));
+        bienSeleccionado.setTBienUsmodif(idUs);
         if (bienSeleccionado.getTBienCantxlote()==0){}
         else{bienSeleccionado.setTBienLoteingre(ingLote);
         }
@@ -1154,6 +1164,22 @@ public class BienesBean implements Serializable {
         this.espec = espec;
     }
 
+    public Integer getIdUs() {
+        return idUs;
+    }
+
+    public void setIdUs(Integer idUs) {
+        this.idUs = idUs;
+    }
+
+    public AppSession getAppSession() {
+        return appSession;
+    }
+
+    public void setAppSession(AppSession appSession) {
+        this.appSession = appSession;
+    }
+
     public void nivDepSeleccion() {
 //        nuevoBien.setCRespId(getDaoResp().getResp(respSeleccionado));
 //        nivSeleccionado=nuevoBien.getCRespId().getCNivelId().getCNivelId();
@@ -1166,7 +1192,7 @@ public class BienesBean implements Serializable {
         nivSeleccionado = bienSeleccionado.getCNivelId().getCNivelId();
         depens = getDaoDepen().getListM(nivSeleccionado);
     }
-
+    
     public void depSeleccionA() {
         nivSeleccionado = nuevoBien.getCNivelId().getCNivelId();
         depens = getDaoDepen().getListM(nivSeleccionado);
@@ -1182,6 +1208,10 @@ public class BienesBean implements Serializable {
         areas = getDaoArea().getListM(edifSeleccionado);
     }
 
+    public void detCant() {
+        int cani=0;
+        nuevoBien.setTBienCantxlote(cani);
+    }
     public void ubicSeleccion() {
         areaSeleccionada = bienSeleccionado.getCAreaId().getCAreaId();
         ubics = getDaoUbic().getListA(areaSeleccionada);

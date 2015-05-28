@@ -6,6 +6,7 @@
 package controlBean;
 
 
+import dao.CAreasFacadeLocal;
 import entidades.TBienes;
 import entidades.TSustit;
 import entidades.CEspecificos;
@@ -25,12 +26,21 @@ import dao.CResponsablesFacade;
 import dao.CResponsablesFacadeLocal;
 import dao.CDependenciasFacade;
 import dao.CDependenciasFacadeLocal;
+import dao.CEdificiosFacadeLocal;
 import dao.CEstadoBienFacade;
 import dao.CEstadoBienFacadeLocal;
+import dao.CJefesDepFacadeLocal;
+import dao.CMarcasBmFacadeLocal;
+import dao.CUbicFacadeLocal;
 import entidades.TArchivos;
 import dao.TArchivosFacade;
 import dao.TArchivosFacadeLocal;
 import dao.TTiempoFacadeLocal;
+import entidades.CAreas;
+import entidades.CEdificios;
+import entidades.CJefesDep;
+import entidades.CMarcasBm;
+import entidades.CUbic;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -79,21 +89,27 @@ public class SustitucionBienesBean implements Serializable {
     private TSustit sustituc;
     private TSustit nuevaSustit = new TSustit();
     private List<CResponsables> respon = new ArrayList<>(); 
+    private List<CUbic> ubic = new ArrayList();
+    private List<CJefesDep> jef = new ArrayList();
+    private List<CAreas> areas = new ArrayList();
+    private List<CEdificios>edif = new ArrayList();
     private List<CEspecificos> espec = new ArrayList<>(); 
     private List<CRubros> rub = new ArrayList<>();
     private List<CDependencias> depen = new ArrayList<>();
     private List<CEstadoBien> estad = new ArrayList<>();
     private List<TBienes> bien = new ArrayList<>();
     private List<TArchivos> docums = new ArrayList<>();
+    private List<CMarcasBm> marcas = new ArrayList<>();
     private TArchivos archSeleccionado = new TArchivos();
     private TArchivos nuevoArch = new TArchivos();
     private TBienes codSeleccionado = new TBienes();
     
     private Integer respoSeleccionado, especSeleccionada,rubSeleccionado, depenSeleccionado,sustitSeleccionada;
-    private Integer estadSeleccionado, bienseleccionado, ducumseleccionado;
+    private Integer estadSeleccionado, bienseleccionado, ducumseleccionado, ubicacionSeleccionada, jefeSeleccionado, areaSeleccionada, edificioSeleccionado;
+    private Integer selDep, selUbic, selJefe, selArea, selEdif, selEstad;
     private short marcaAnterior;
     private short tipoSustit;
-    
+    private double valBien;
     private TSustitFacadeLocal sutitu;
     private CResponsablesFacadeLocal responFacade;
     private CEspecificosFacadeLocal especFacade;
@@ -118,10 +134,9 @@ public class SustitucionBienesBean implements Serializable {
     private String nomResp, nomDep, regBien, especi;
     private String cod, modelo, serie;
     private Integer reparSelec, codSelec, marca;
-    /**
-     * Creates a new instance of SustitucionBienes  
-     * Beanprivate FacadeLocal ;
-     */
+    private Integer idFdic, idFres, idFsus;
+   
+    
     public SustitucionBienesBean() {
         
         
@@ -132,9 +147,12 @@ public class SustitucionBienesBean implements Serializable {
         estad = getDaoEstBien().getList();
         bien = getDaoBienes().getList();
         docums = getDaoArchiv().getList();
-        
-        
-        
+        marcas = getDaoMarcas().getList();
+        ubic= getDaoUbica().getList();
+        jef = getDaoJefes().getList();
+        edif= getDaoEdificio().getList();
+        areas=getDaoAreas().getList();
+      
         
     }
     
@@ -187,6 +205,25 @@ public class SustitucionBienesBean implements Serializable {
         return (TSustitFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/TSustitFacade!dao.TSustitFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
     }
     
+     private CMarcasBmFacadeLocal getDaoMarcas() {
+        return (CMarcasBmFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CMarcasBmFacade!dao.CMarcasBmFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+     private CUbicFacadeLocal getDaoUbica() {
+        return (CUbicFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CUbicFacade!dao.CUbicFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+    }
+     
+     private CJefesDepFacadeLocal getDaoJefes() {
+        return (CJefesDepFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CJefesDepFacade!dao.CJefesDepFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private CEdificiosFacadeLocal getDaoEdificio() {
+        return (CEdificiosFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CEdificiosFacade!dao.CEdificiosFacadeLocal");//To change body of generated methods, choose Tools | Templates.
+    }
+
+    private CAreasFacadeLocal getDaoAreas() {
+        return (CAreasFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CAreasFacade!dao.CAreasFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+    }
     public Boolean getEdit() {
         return edit;
     }
@@ -254,7 +291,112 @@ public class SustitucionBienesBean implements Serializable {
     public void setMarca(Integer marca) {
         this.marca = marca;
     }
+
+    public Integer getDepenSeleccionado() {
+        return depenSeleccionado;
+    }
+
+    public void setDepenSeleccionado(Integer depenSeleccionado) {
+        this.depenSeleccionado = depenSeleccionado;
+    }
+
+    public Integer getUbicacionSeleccionada() {
+        return ubicacionSeleccionada;
+    }
+
+    public void setUbicacionSeleccionada(Integer ubicacionSeleccionada) {
+        this.ubicacionSeleccionada = ubicacionSeleccionada;
+    }
+
+    public Integer getJefeSeleccionado() {
+        return jefeSeleccionado;
+    }
+
+    public void setJefeSeleccionado(Integer jefeSeleccionado) {
+        this.jefeSeleccionado = jefeSeleccionado;
+    }
+
+    public Integer getAreaSeleccionada() {
+        return areaSeleccionada;
+    }
+
+    public void setAreaSeleccionada(Integer areaSeleccionada) {
+        this.areaSeleccionada = areaSeleccionada;
+    }
+
+    public Integer getEdificioSeleccionado() {
+        return edificioSeleccionado;
+    }
+
+    public void setEdificioSeleccionado(Integer edificioSeleccionado) {
+        this.edificioSeleccionado = edificioSeleccionado;
+    }
+
+    public Integer getEstadSeleccionado() {
+        return estadSeleccionado;
+    }
+
+    public void setEstadSeleccionado(Integer estadSeleccionado) {
+        this.estadSeleccionado = estadSeleccionado;
+    }
+
+    public double getValBien() {
+        return valBien;
+    }
+
+    public void setValBien(double valBien) {
+        this.valBien = valBien;
+    }
+
+    public Integer getSelDep() {
+        return selDep;
+    }
+
+    public void setSelDep(Integer selDep) {
+        this.selDep = selDep;
+    }
+
+    public Integer getSelUbic() {
+        return selUbic;
+    }
+
+    public void setSelUbic(Integer selUbic) {
+        this.selUbic = selUbic;
+    }
+
+    public Integer getSelJefe() {
+        return selJefe;
+    }
+
+    public void setSelJefe(Integer selJefe) {
+        this.selJefe = selJefe;
+    }
+
+    public Integer getSelArea() {
+        return selArea;
+    }
+
+    public void setSelArea(Integer selArea) {
+        this.selArea = selArea;
+    }
+
+    public Integer getSelEdif() {
+        return selEdif;
+    }
+
+    public void setSelEdif(Integer selEdif) {
+        this.selEdif = selEdif;
+    }
+
+    public Integer getSelEstad() {
+        return selEstad;
+    }
+
+    public void setSelEstad(Integer selEstad) {
+        this.selEstad = selEstad;
+    }
      
+    
   
 //    public String buscarSusti() throws NamingException {
 //
@@ -262,6 +404,10 @@ public class SustitucionBienesBean implements Serializable {
 //
 //        return null;
 //    }
+
+    public List<CMarcasBm> getMarcas() {
+        return marcas;
+    }
     
      public String borrarSustit() throws NamingException {
         return null;
@@ -296,10 +442,19 @@ public class SustitucionBienesBean implements Serializable {
 //        cod = detaSeleccionado.getTMovdCodigo();
     	codSeleccionado = getDaoBienes().getCodBien(cod);
         System.out.println("despues de query"+codSeleccionado);
-//        desc=codSeleccionado.getTBienDesc();
-//	modelo =codSeleccionado.getTBienModelo();
-//	marca=codSeleccionado.getCMarcaId().getCMarcaId();
-//	serie=codSeleccionado.getTBienSerie();
+        if (codSeleccionado.getCDepenId().getCDepenId()== null){}
+        else{
+        depenSeleccionado = codSeleccionado.getCDepenId().getCDepenId();}
+        ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();
+        areaSeleccionada = codSeleccionado.getCAreaId().getCAreaId();
+        edificioSeleccionado = codSeleccionado.getCEdifId().getCEdifId();
+        estadSeleccionado = codSeleccionado.getCEstadbId().getCEstadbId();
+        valBien = codSeleccionado.getTBienValoradq();
+        System.out.println("dep: "+depenSeleccionado);
+        System.out.println("ubicacionSeleccionada");
+        //jefeSeleccionado=codSeleccionado.
+        
+        
         System.out.println("codsel: "+codSeleccionado);
 	return codSeleccionado;
     }
@@ -310,17 +465,41 @@ public class SustitucionBienesBean implements Serializable {
          Date fecha = new Date();
          fechres = nuevaSustit.getTSustFechres();
          fechdic = nuevaSustit.getTSustFechdict();
+         fechsut = nuevaSustit.getTSustFecha();
          
          if (fechres == null){
          }else {
-         
+             idFres = getDaoTiempo().getFecha(fechres).getTTmId();
+             nuevaSustit.setTFechresId(idFres);
+         }
+         if (fechdic == null){
+         }else {
+             idFdic = getDaoTiempo().getFecha(fechdic).getTTmId();
+             nuevaSustit.setTFechdicId(idFdic);
              
+         }
+         if (fechsut == null){
+         }else {
+             idFsus = getDaoTiempo().getFecha(fechsut).getTTmId();
+             nuevaSustit.setTFechsustId(idFsus);
              
          }
          
          
-       
+        nuevaSustit.setCDepenId(getDaoDepen().getDepend(depenSeleccionado));
+        nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
+        nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));
+        nuevaSustit.setCEdifId(getDaoEdificio().getEdif(edificioSeleccionado));
+        nuevaSustit.setCAreaId(getDaoAreas().getArea(areaSeleccionada));
+        nuevaSustit.setCJefesdId(getDaoJefes().getJefeDep(jefeSeleccionado));
         
+        
+        
+        getDaoSustit().create(nuevaSustit);
         return null;
     }
+
+    
+
+   
 }

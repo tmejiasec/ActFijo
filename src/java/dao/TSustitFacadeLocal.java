@@ -29,5 +29,11 @@ public interface TSustitFacadeLocal {
     List<TSustit> findRange(int[] range);
 
     int count();
+
+    public List<TSustit> getList();
+
+    public List<TSustit> busqueda(String desc);
+
+    
     
 }
