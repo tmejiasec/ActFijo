@@ -77,7 +77,8 @@ import util.FacesUtil;
  * @author Portillo
  */
 @ManagedBean
-@RequestScoped
+@SessionScoped
+//@RequestScoped
 public class SustitucionBienesBean implements Serializable {
 
     protected Integer tabIndex = 1;
@@ -117,12 +118,6 @@ public class SustitucionBienesBean implements Serializable {
     private SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
 
     //Variables intermedias
-    private Integer depenInter=0;
-    private Integer respoInter=0;
-    private Integer ubicInter=0;
-    private Integer edifInter=0;
-    private Integer areaInter=0;
-    private Integer jefeInter=0;
     private Integer marcaAntInter=0;
     private Integer marcaNewInter=0; 
     private Integer marcaAntSeleccionada;
@@ -349,45 +344,6 @@ public class SustitucionBienesBean implements Serializable {
         this.areaSeleccionada = areaSeleccionada;
     }
 
-    public Integer getDepenInter() {
-        return depenInter;
-    }
-
-    public void setDepenInter(Integer depenInter) {
-        this.depenInter = depenInter;
-    }
-
-    public Integer getRespoInter() {
-        return respoInter;
-    }
-
-    public void setRespoInter(Integer respoInter) {
-        this.respoInter = respoInter;
-    }
-
-    public Integer getUbicInter() {
-        return ubicInter;
-    }
-
-    public void setUbicInter(Integer ubicInter) {
-        this.ubicInter = ubicInter;
-    }
-
-    public Integer getEdifInter() {
-        return edifInter;
-    }
-
-    public void setEdifInter(Integer edifInter) {
-        this.edifInter = edifInter;
-    }
-
-    public Integer getJefeInter() {
-        return jefeInter;
-    }
-
-    public void setJefeInter(Integer jefeInter) {
-        this.jefeInter = jefeInter;
-    }
 
     public Integer getMarcaAntSeleccionada() {
         return marcaAntSeleccionada;
@@ -487,11 +443,15 @@ public class SustitucionBienesBean implements Serializable {
             depenSeleccionado = codSeleccionado.getCDepenId().getCDepenId();
             jefSelec = getDaoJefes().getDep(depenSeleccionado);
             jefeSeleccionado=jefSelec.getCJefesdId();
+            nuevaSustit.setCDepenId(getDaoDepen().getDepend(depenSeleccionado));
+            nuevaSustit.setCJefesdId(getDaoJefes().getJefeDep(jefeSeleccionado));
         }
         else{
             depenSeleccionado=0;}
         if (codSeleccionado.getCUbicId() != null){
-        ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();}
+        ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();
+        nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));  
+        }
         else{
                 ubicacionSeleccionada = 0;
                 }
@@ -511,10 +471,10 @@ public class SustitucionBienesBean implements Serializable {
         {
             estadSeleccionado = 0;
         }
-        
-        
          if (codSeleccionado.getCRespId()!=null ){
-        respoSeleccionado = codSeleccionado.getCRespId().getCRespId();}
+        respoSeleccionado = codSeleccionado.getCRespId().getCRespId();
+        nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
+        }
         else
         {
             respoSeleccionado = 0;
@@ -533,14 +493,18 @@ public class SustitucionBienesBean implements Serializable {
         else{
             valBien=0;
         }
-    
-
         //jefeSeleccionado=codSeleccionado.
         System.out.println("codsel: " + codSeleccionado);
         System.out.println("ubic: "+ubicacionSeleccionada);
         System.out.println("jefe: "+jefSelec);
         System.out.println("respo: "+respoSeleccionado);
         System.out.println("depen:"+depenSeleccionado);
+        System.out.println("Id ubic: "+nuevaSustit.getCUbicId());
+        System.out.println("ubicg: "+nuevaSustit.getCUbicId().getCUbicDesc());
+        System.out.println("Id jefe: "+nuevaSustit.getCJefesdId());
+        System.out.println("jefeg: "+nuevaSustit.getCJefesdId().getCJefesdNombre());
+        System.out.println("depeng:"+nuevaSustit.getCDepenId().getCDepenDesc());
+        System.out.println("respong:"+nuevaSustit.getCRespId().getCRespNom1());
         return codSeleccionado;
     }
     
@@ -550,21 +514,54 @@ public class SustitucionBienesBean implements Serializable {
 
     public String guardarSustit() throws NamingException, ParseException {
         Date fecha = new Date();
-        this.codSeleccionado=codSeleccionado;
-        this.ubicacionSeleccionada=ubicacionSeleccionada;
-        System.out.println("datos para guardar");
-        System.out.println("codsel: " + codSeleccionado);
-        System.out.println("ubic: "+ubicacionSeleccionada);
-        System.out.println("jefe: "+jefSelec);
-        System.out.println("respo: "+respoSeleccionado);
-        System.out.println("depen:"+depenSeleccionado);
+                if ( codSeleccionado.getCDepenId() != null  ){
+            depenSeleccionado = codSeleccionado.getCDepenId().getCDepenId();
+            jefSelec = getDaoJefes().getDep(depenSeleccionado);
+            jefeSeleccionado=jefSelec.getCJefesdId();
+            nuevaSustit.setCDepenId(getDaoDepen().getDepend(depenSeleccionado));
+            nuevaSustit.setCJefesdId(getDaoJefes().getJefeDep(jefeSeleccionado));
+        }
+        else{
+            depenSeleccionado=0;}
+        if (codSeleccionado.getCUbicId() != null){
+        ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();
+        nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));  
+        }
+        else{
+                ubicacionSeleccionada = 0;
+                }
+        if (codSeleccionado.getCAreaId() != null){
+        areaSeleccionada = codSeleccionado.getCAreaId().getCAreaId();
+        nuevaSustit.setCAreaId(getDaoAreas().getArea(areaSeleccionada));
+}
+        else{
+            areaSeleccionada = 0;
+        }
+        if (codSeleccionado.getCEdifId() != null){
+        edificioSeleccionado = codSeleccionado.getCEdifId().getCEdifId();
+        nuevaSustit.setCEdifId(getDaoEdificio().getEdif(edificioSeleccionado));
+}
+        else{
+            edificioSeleccionado = 0;
+        }
+        if (codSeleccionado.getCEstadbId() !=null ){
+        estadSeleccionado = codSeleccionado.getCEstadbId().getCEstadbId();}
+        else
+        {
+            estadSeleccionado = 0;
+        }
+         if (codSeleccionado.getCRespId()!=null ){
+        respoSeleccionado = codSeleccionado.getCRespId().getCRespId();
+        nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
+        }
+        else
+        {
+            respoSeleccionado = 0;
+        }
+
         fechres = nuevaSustit.getTSustFechres();
         fechdic = nuevaSustit.getTSustFechdict();
         fechsut = nuevaSustit.getTSustFecha();
-
-         ////////////////////////////////////////////////////////////////////////
-  
-
         if (fechres == null) {
         } else {
             idFres = getDaoTiempo().getFecha(fechres).getTTmId();
@@ -583,42 +580,6 @@ public class SustitucionBienesBean implements Serializable {
 
         }
         
-        if(depenSeleccionado == null){
-        } else{
-           nuevaSustit.setCDepenId(getDaoDepen().getDepend(depenSeleccionado));
-        }
-        
-        if(respoSeleccionado == null){
-        } else{
-            nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
-        }
-        
-        if(ubicacionSeleccionada == null){
-        } else{
-            nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));  
-        }
-        
-        if(edificioSeleccionado ==null){
-        } else{
-            nuevaSustit.setCEdifId(getDaoEdificio().getEdif(edificioSeleccionado));
-        }
-        
-        if(areaSeleccionada == null){
-        } else {
-            nuevaSustit.setCAreaId(getDaoAreas().getArea(areaSeleccionada));
-        }
-        
-        if(jefeSeleccionado == null){
-        }else{
-            nuevaSustit.setCJefesdId(getDaoJefes().getJefeDep(jefeSeleccionado));
-        }
-        
-        if(respoSeleccionado == null){
-        }else{
-            nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
-        }
-        
-        
         System.out.println("todavia no se guardo");
         
         
@@ -632,6 +593,12 @@ public class SustitucionBienesBean implements Serializable {
         else {
             nuevaSustit.setTSustMarcNew(marcaNewSeleccionada);
         }
+        System.out.println("verificar antes de guardar");
+        System.out.println("Id ubic: "+nuevaSustit.getCUbicId());
+        System.out.println("ubicg: "+nuevaSustit.getCUbicId().getCUbicDesc());
+        System.out.println("jefeg: "+nuevaSustit.getCJefesdId().getCJefesdNombre());
+        System.out.println("depeng:"+nuevaSustit.getCDepenId().getCDepenDesc());
+        System.out.println("respong:"+nuevaSustit.getCRespId().getCRespNom1());
         
         getDaoSustit().create(nuevaSustit);
         

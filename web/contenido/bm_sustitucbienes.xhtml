@@ -30,11 +30,7 @@
                                     <h4 class="modal-title">Adicion de ficha de Sustitucion de Bienes</h4>
                                 </div>
                             </legend>
-
-
-                            <!-- Fila 1 -->
                             <div class="form-group">
-
                                 <div class="col-md-6">
                                     <label>Correlativo</label>
                                     <div>
@@ -49,12 +45,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Fin Fila 1 -->
-
-                            <!-- Fila 2 -->
                             <div class="form-group">
-
-
                                 <div class="col-md-6">
                                     <label for="cod" >Codigo del Bien a sustituir</label>
                                     <div>
@@ -74,9 +65,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Fin Fila 2 -->
-
-                            <!-- Fila 3 -->
                             <div class="form-group">
 
                                 <div class="col-md-6">
@@ -145,7 +133,7 @@
                                         <h:outputText id="respob" value="#{sustitucionBienesBean.codSeleccionado.CRespId.CRespApe1}"/>
                                     </div>
                                 </div> 
-                                
+
                                 <div class="col-md-6">
                                     <label for="depenb">Dependencia</label>
                                     <div>
@@ -153,22 +141,14 @@
                                     </div>
                                 </div>
                             </div>
-                            
-                            
-                            
-                                
-                            
-                            
                             <div class="form-group">
-                            
+
                                 <div class="col-md-6">
                                     <label for="estdfis">Estado Fisico del bien</label>
                                     <div>
                                         <h:outputText id="estdfis" value="#{sustitucionBienesBean.codSeleccionado.CEstadbId.CEstadbDesc}"/>
                                     </div>
                                 </div>
-                            
-                            
                                 <div class="col-md-6">
                                     <label >Fecha de adquisicion</label>
                                     <div>
@@ -176,27 +156,16 @@
 
                                     </div>
                                 </div>
-                                
+
                             </div>
-                            
-                            
-
-
                             <div class="form-group">
 
                                 <div class="col-md-6">
                                     <label>Valor del Bien</label>
                                     <div>
                                         <h:outputText id="valnt" value="#{sustitucionBienesBean.codSeleccionado.TBienValoradq}"/>
-
-
-
-
                                     </div>
                                 </div> 
-
-
-
                             </div>
                             <!-- Fin Fila 5 -->
 
@@ -217,24 +186,10 @@
                                 <div class="col-md-6">
                                     <label for="docres" >Copia de Resolucion</label>
                                     <div>
-                                        <p:commandButton id="guardres" class="btn btn-default" value="Examinar"  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="@all" process="@this adiSBien"  oncomplete="handleRequest(xhr, status, args);" />
-                                        <script type="text/javascript">
-                                            function handleRequest(xhr, status, args) {
-                                                if (args.validationFailed) {
-                                                    alert('Ha ocurrido un error durante la carga del documento');
-                                                } else {
-                                                    alert('Documento adicionado correctamente');
-                                                }
-                                            }
-                                        </script>
                                     </div>
                                 </div>
-
-
                             </div>
                             <!-- Fin Fila 6 -->
-
-
                             <div class="form-group">
 
                                 <div class="col-md-6">
@@ -252,29 +207,19 @@
                                 <div class="col-md-6">
                                     <label for="guardic" >Copia de Dictamen</label>
                                     <div>
-                                        <p:commandButton id="guardic" class="btn btn-default" value="Examinar"  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="@all" process="@this adiSBien"  oncomplete="handleRequest(xhr, status, args);" />
-                                        <script type="text/javascript">
-                                            function handleRequest(xhr, status, args) {
-                                                if (args.validationFailed) {
-                                                    alert('Ha ocurrido un error durante la carga del documento');
-                                                } else {
-                                                    alert('Documento adicionado correctamente');
-                                                }
-                                            }
-                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label for="nvadesc" >Nueva Descripcion</label>
+                                    <div>
+                                        <h:inputText id="nvadesc" value="#{sustitucionBienesBean.nuevaSustit.TSustDescNew}" required="true" style="width: 100%;"/>  
                                     </div>
                                 </div>
 
-
-                                <div class="form-group">
-                                    <div class="col-md-6">
-                                        <label for="nvadesc" >Nueva Descripcion</label>
-                                        <div>
-                                            <h:inputText id="nvadesc" value="#{sustitucionBienesBean.nuevaSustit.TSustDescNew}" required="true" style="width: 100%;"/>  
-                                        </div>
-                                    </div>
-                                    
-                                     <div class="col-md-6">
+                                <div class="col-md-6">
                                     <label for="fechsus">Fecha de Sustitucion</label>
                                     <div>
                                         <p:calendar id="fechsus"
@@ -286,56 +231,45 @@
                                     </div>
                                 </div>
 
-                                </div>
-                                
-                                <div class="form-group">
-                                    
-                                    
-                                    <div class="col-md-6">
-                                        <label for="nvamarc" >Marca</label>
-                                        <div>
-                                            <h:selectOneMenu id="nvamarc" value="#{sustitucionBienesBean.nuevaSustit.TSustMarcNew}" style="width: 100%;">
-                                                <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
-                                                <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca.CMarcaId}"/>
-                                                <p:ajax  listener="#{sustitucionBienesBean.marcaSeleccion()}" update="nvamarc"/>                         
-                                            </h:selectOneMenu>
-                                        </div>
-                                    </div>
-                                    <!--
-                                    <div class="col-md-6">
-                                        <label for="nvamar" >Nueva Marca</label>
-                                        <div>
-                                            <h:inputText id="nvomod" value="{sustitucionBienesBean.nuevaSustit.TSustModeNew}" required="true" style="width: 100%;"/>
-                                        </div>
-                                    </div>
-                                    -->
-                                    <div class="col-md-6">
-                                        <label for="nvomod" >Nuevo Modelo</label>
-                                        <div>
-                                            <h:inputText id="nvomod" value="#{sustitucionBienesBean.nuevaSustit.TSustModeNew}" required="true" style="width: 100%;"/>
-                                        </div>
-                                    </div>
+                            </div>
 
-                                    
-                                </div>
-                                
-                                <div class="form-group">
+                            <div class="form-group">
                                 <div class="col-md-6">
-                                        <label for="vnserie" >Nuevo Serie</label>
-                                        <div>
-                                            <h:inputText id="vnserie" value="#{sustitucionBienesBean.nuevaSustit.TSustSerieNew}" required="true" style="width: 100%;"/>
-                                        </div>
+                                    <label for="nvamarc" >Marca</label>
+                                    <div>
+                                        <h:selectOneMenu id="nvamarc" value="#{sustitucionBienesBean.nuevaSustit.TSustMarcNew}" style="width: 100%;">
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca.CMarcaId}"/>
+                                            <p:ajax  listener="#{sustitucionBienesBean.marcaSeleccion()}" update="nvamarc"/>                         
+                                        </h:selectOneMenu>
                                     </div>
                                 </div>
-                                <!--Tabla-->
+
+                                <div class="col-md-6">
+                                    <label for="nvomod" >Nuevo Modelo</label>
+                                    <div>
+                                        <h:inputText id="nvomod" value="#{sustitucionBienesBean.nuevaSustit.TSustModeNew}" required="true" style="width: 100%;"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <label for="vnserie" >Nuevo Serie</label>
+                                     <div>
+                                        <h:inputText id="vnserie" value="#{sustitucionBienesBean.nuevaSustit.TSustSerieNew}" required="true" style="width: 100%;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Tabla-->
 
 
-                                <!--Fin Tabla-->
+                            <!--Fin Tabla-->
 
-                                <!-- Botones -->
-                                <div class="form-group">
-                                    <div class="col-lg-10 col-lg-offset-8">
-                                        <p:commandButton id="guard" class="btn btn-primary" value="Guardar "  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="guard"  oncomplete="handleRequest(xhr, status, args);" />
+                            <!-- Botones -->
+                            <div class="form-group">
+                                <div class="col-lg-10 col-lg-offset-8">
+                                    <p:commandButton id="guard" class="btn btn-primary" value="Guardar "  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="guard"  oncomplete="handleRequest(xhr, status, args);" >
                                         <script type="text/javascript">
                                             function handleRequest(xhr, status, args) {
                                                 if (args.validationFailed) {
@@ -345,31 +279,22 @@
                                                 }
                                             }
                                         </script>
-                              
-                                        <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
-                                                         action="#{sustitucionBienesBean.limpiarTSutit()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
-                                            <script type="text/javascript">
-                                                function refrescar(xhr, status, args) {
-                                                    if (args.validationFailed) {
-                                                        alert('Ha ocurrido un error');
-                                                    } else {
-                                                        alert('nuevo');
-                                                        location.reload(true);
-                                                    }
+                                    </p:commandButton>                              
+                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                                                     action="#{sustitucionBienesBean.limpiarTSutit()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                        <script type="text/javascript">
+                                            function refrescar(xhr, status, args) {
+                                                if (args.validationFailed) {
+                                                    alert('Ha ocurrido un error');
+                                                } else {
+                                                    alert('nuevo');
+                                                    location.reload(true);
                                                 }
-                                            </script>
-
-
-                                        </p:commandButton>
-
-
-                                    </div>
+                                            }
+                                        </script>
+                                    </p:commandButton>
                                 </div>
-                                <!-- Botones -->
-
                             </div>
-
-
                         </h:form>
                     </div>
                 </div>
@@ -428,7 +353,7 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-body" id="modiPy2">
                                                     <h:panelGroup id="displayS3"> 
-                                                      
+
                                                     </h:panelGroup>  
                                                 </div>
                                             </div>
@@ -482,14 +407,14 @@
             </script>
 
         </ui:define>
-        
+
         <!--***********************************************************************************************************
         ***************************************************************************************************************
         ***************************************************************************************************************-->
-        
-        
-        
-        
+
+
+
+
         <!--***********************************************************************************************************
         ***************************************************************************************************************
         ***************************************************************************************************************-->
