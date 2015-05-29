@@ -93,7 +93,12 @@
                     <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Bienes Muebles</a>
                         <ul class="dropdown-menu" >
                             <li><h:link value="Registro de Bienes Muebles" outcome="Bienes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                            <li><h:link value="Movimientos de Bienes" outcome="MovBienes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
+                            <li><a>Movimientos de Bienes</a>
+                                <ul class="dropdown-menu">
+                                    <li><h:link value="Traslados" outcome="Traslados" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
+                                    <li><h:link value="Préstamos/Reparaciones" outcome="Prestamos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
+                                </ul>
+                            </li>
                             <li><a href="#">Asignaciones</a></li>
                             <li><a href="#">Recepciones</a></li>
                             <li><a href="#">Robo/Hurto</a></li>

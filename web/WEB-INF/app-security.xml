@@ -47,7 +47,8 @@
         <intercept-url pattern="/contenido/catbm_estbien.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/catbm_tipdesc.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/bm_registro.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/bm_movBienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
+        <intercept-url pattern="/contenido/bm_movBienesT.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
+        <intercept-url pattern="/contenido/bm_movBienesP.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
         <intercept-url pattern="/contenido/bm_sustitucbienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
 
             

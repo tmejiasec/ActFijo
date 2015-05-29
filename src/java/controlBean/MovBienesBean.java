@@ -101,6 +101,8 @@ public class MovBienesBean implements Serializable {
     private String tipref = "MOV";
     private String tipo = "D";
     private String tipom = "I";
+    private Integer traslad=1;
+    private Integer estini=1;
 
     
     private List<TBienes> bienes = new ArrayList<>();
@@ -141,7 +143,7 @@ public class MovBienesBean implements Serializable {
     private UploadedFile picture;
     private static final int BUFFER_SIZE = 1000000;
     private DefaultStreamedContent download;
-    private Integer respo;
+    private Integer respo=9999;
     @ManagedProperty(value = "#{appSession}")
     private AppSession appSession;
     /**
@@ -158,6 +160,7 @@ public class MovBienesBean implements Serializable {
         correls = getDaoCorrel().getList();
         niveles = getDaoNivel().getList();
         estmovs = getDaoEstmo().getList();
+        bienes = getDaoBienes().getListM(respo);
     }
 
     public String guardarE() throws NamingException, ParseException {
@@ -197,6 +200,7 @@ public class MovBienesBean implements Serializable {
         System.out.println("tipo "+tipo);
         nuevoEnca.setCTipmId(getDaoTipMov().getTipmov(tipmo));
         nuevoEnca.setCEstmovId(getDaoEstmo().getEstMov(estmoSeleccionado));
+        nuevoEnca.setTMoveTipt(tipom);
         try {
              getDaoEnca().create(nuevoEnca);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Encabezado Agregado correctamente"));
@@ -214,29 +218,11 @@ public class MovBienesBean implements Serializable {
         System.out.println("corr actualizado");
         // habilitando para datos complementarios si aplica.
         m_id=nuevoEnca.getTMoveId();
-        String tiper=" ";
-         if (nuevoEnca.getTMoveTipt().equals(" ")) {}
-             else{
-             tiper=nuevoEnca.getTMoveTipt();
-         }
-        if (tiper.equals(" ")) {}
-        else{
-            tiper=nuevoEnca.getTMoveTipt();
-            System.out.println("tiper");
-            if (tiper.equals("E") && tipmo == 2){
-                encSeleccionado=m_id;
-                estadoC = false;
-            }
-            if (tiper.equals("E") && tipmo == 3){
-                encSeleccionado=m_id;
-                estadoR = false;
-            }
-        }
-        respo=nuevoEnca.getTMovePere();
-        //        FacesUtil.addMensaje("Bien Guardado");
-        System.out.println("resp: "+respo);
-        bienes = getDaoBienes().getListM(respo);
-        System.out.println("lista vacía: "+bienes.isEmpty());
+//        respo=nuevoEnca.getTMovePere();
+//        //        FacesUtil.addMensaje("Bien Guardado");
+//        System.out.println("resp: "+respo);
+//        bienes = getDaoBienes().getListM(respo);
+//        System.out.println("lista vacía: "+bienes.isEmpty());
 //        movenca = getDaoEnca().getList();
         movdeta = getDaoDeta().getListM(m_id);
         estado = true;
@@ -288,6 +274,7 @@ public class MovBienesBean implements Serializable {
 
     public List genTabla() throws NamingException {
         System.out.println("entrando a generar tabla");
+        respo=nuevoEnca.getTMovePere();
         System.out.println("resp_"+respo);
         bienes = getDaoBienes().getListM(respo);
         System.out.println("lista vacía 2: "+bienes.isEmpty());        
@@ -307,9 +294,11 @@ public class MovBienesBean implements Serializable {
         estado = false;
         estadoC = true;
         estadoR = true;
-        m_id=0;
         movenca = getDaoEnca().getList();
+        m_id=0;
         movdeta = getDaoDeta().getListM(m_id);
+        respo=9999;
+        bienes = getDaoBienes().getListM(respo);
         return null;
     }
     
@@ -1080,7 +1069,8 @@ public class MovBienesBean implements Serializable {
         int anio;
 //        String cod;
 //        cod = nuevoDeta.getTMovdCodigo();
-        tipmo=tipmSeleccionado;
+        tipmo=traslad;
+        estmoSeleccionado=estini;
         anio = nuevoEnca.getTMoveAnio();
 //        System.out.println("tipmo: "+tipmo);
 //        System.out.println("anio: "+anio);
@@ -1109,6 +1099,22 @@ public class MovBienesBean implements Serializable {
     public void tipoSel() {
         tipom=nuevoEnca.getTMoveTipt();
         System.out.println("tipo "+tipom);
+    }
+
+    public Integer getTraslad() {
+        return traslad;
+    }
+
+    public void setTraslad(Integer traslad) {
+        this.traslad = traslad;
+    }
+
+    public Integer getEstini() {
+        return estini;
+    }
+
+    public void setEstini(Integer estini) {
+        this.estini = estini;
     }
     
     

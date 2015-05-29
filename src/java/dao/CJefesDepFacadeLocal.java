@@ -28,6 +28,7 @@ public interface CJefesDepFacadeLocal {
     
     public CJefesDep getJefeDep(Integer jef);
     
+    public CJefesDep getDep(Integer dep);
 
     CJefesDep find(Object id);
 

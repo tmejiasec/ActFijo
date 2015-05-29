@@ -162,9 +162,9 @@
                             <div class="form-group">
                             
                                 <div class="col-md-6">
-                                    <label for="estfisb">Estado Fisico del bien</label>
+                                    <label for="estdfis">Estado Fisico del bien</label>
                                     <div>
-                                        <h:outputText id="estfisb" value="#{sustitucionBienesBean.codSeleccionado.CEstadbId.CEstadbDesc}"/>
+                                        <h:outputText id="estdfis" value="#{sustitucionBienesBean.codSeleccionado.CEstadbId.CEstadbDesc}"/>
                                     </div>
                                 </div>
                             
@@ -296,7 +296,8 @@
                                         <div>
                                             <h:selectOneMenu id="nvamarc" value="#{sustitucionBienesBean.nuevaSustit.TSustMarcNew}" style="width: 100%;">
                                                 <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
-                                                <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca}"/>
+                                                <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca.CMarcaId}"/>
+                                                <p:ajax  listener="#{sustitucionBienesBean.marcaSeleccion()}" update="nvamarc"/>                         
                                             </h:selectOneMenu>
                                         </div>
                                     </div>
@@ -320,11 +321,9 @@
                                 
                                 <div class="form-group">
                                 <div class="col-md-6">
-                                        <label for="nvaser" >Nueva Serie</label>
+                                        <label for="vnserie" >Nuevo Serie</label>
                                         <div>
-                                            <p:inputMask id="nvaser" value="#" mask="99-9999-9999"> 
-                                                <!--<p:ajax listener="{bienesBean.buscarCod}" update="@this :adiBien:growl :adiBien:guard"/>-->
-                                            </p:inputMask>
+                                            <h:inputText id="vnserie" value="#{sustitucionBienesBean.nuevaSustit.TSustSerieNew}" required="true" style="width: 100%;"/>
                                         </div>
                                     </div>
                                 </div>
@@ -336,7 +335,17 @@
                                 <!-- Botones -->
                                 <div class="form-group">
                                     <div class="col-lg-10 col-lg-offset-8">
-
+                                        <p:commandButton id="guard" class="btn btn-primary" value="Guardar "  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="guard"  oncomplete="handleRequest(xhr, status, args);" />
+                                        <script type="text/javascript">
+                                            function handleRequest(xhr, status, args) {
+                                                if (args.validationFailed) {
+                                                    alert('Ha ocurrido un error. Complete los datos necesarios');
+                                                } else {
+                                                    alert('Datos adicionados correctamente');
+                                                }
+                                            }
+                                        </script>
+                              
                                         <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
                                                          action="#{sustitucionBienesBean.limpiarTSutit()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
                                             <script type="text/javascript">
@@ -352,26 +361,6 @@
 
 
                                         </p:commandButton>
-
-                                        <p:commandButton id="guard" class="btn btn-primary" value="Guardar "  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="@all"  oncomplete="handleRequest(xhr, status, args);" />
-                                        <script type="text/javascript">
-                                            function handleRequest(xhr, status, args) {
-                                                if (args.validationFailed) {
-                                                    alert('Ha ocurrido un error. Complete los datos necesarios');
-                                                } else {
-                                                    alert('Datos adicionados correctamente');
-                                                }
-                                            }
-                                        </script>
-                                        <!--
-                                                                            <p:commandButton id="guard" class="btn btn-primary" value="Cancelar "  action="{bienesBean.guardarB()}"  rendered="{!bienesBean.edit}" disabled="{bienesBean.estado}" update="@all" process="@this adiBien"  oncomplete="handleRequest(xhr, status, args);" />
-                                                                            <script type="text/javascript">
-                                                                                function handleRequest(xhr, status, args) {
-                                        
-                                                                                }
-                                                                            </script>-->
-
-                                        <!--aqui agregar boton ingreso por lote-->
 
 
                                     </div>

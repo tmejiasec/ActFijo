@@ -55,13 +55,13 @@ public class TRecepEnca implements Serializable {
     @Column(name = "t_rece_id")
     private Integer tReceId;
     @Column(name = "t_rece_mot")
-    private Character tReceMot;
+    private String tReceMot;
     @Column(name = "t_rece_corr")
-    private Short tReceCorr;
+    private Integer tReceCorr;
     @Column(name = "t_rece_anio")
-    private Short tReceAnio;
+    private Integer tReceAnio;
     @Column(name = "t_rece_tec")
-    private Short tReceTec;
+    private Integer tReceTec;
     @Column(name = "t_rece_fecha")
     @Temporal(TemporalType.DATE)
     private Date tReceFecha;
@@ -77,12 +77,12 @@ public class TRecepEnca implements Serializable {
     @Column(name = "t_rece_doc")
     private Boolean tReceDoc;
     @Column(name = "t_rece_usec")
-    private Short tReceUsec;
+    private Integer tReceUsec;
     @Column(name = "t_rece_fechc")
     @Temporal(TemporalType.DATE)
     private Date tReceFechc;
     @Column(name = "t_rece_usem")
-    private Short tReceUsem;
+    private Integer tReceUsem;
     @Column(name = "t_rece_fechm")
     @Temporal(TemporalType.DATE)
     private Date tReceFechm;
@@ -113,35 +113,35 @@ public class TRecepEnca implements Serializable {
         this.tReceId = tReceId;
     }
 
-    public Character getTReceMot() {
+    public String getTReceMot() {
         return tReceMot;
     }
 
-    public void setTReceMot(Character tReceMot) {
+    public void setTReceMot(String tReceMot) {
         this.tReceMot = tReceMot;
     }
 
-    public Short getTReceCorr() {
+    public Integer getTReceCorr() {
         return tReceCorr;
     }
 
-    public void setTReceCorr(Short tReceCorr) {
+    public void setTReceCorr(Integer tReceCorr) {
         this.tReceCorr = tReceCorr;
     }
 
-    public Short getTReceAnio() {
+    public Integer getTReceAnio() {
         return tReceAnio;
     }
 
-    public void setTReceAnio(Short tReceAnio) {
+    public void setTReceAnio(Integer tReceAnio) {
         this.tReceAnio = tReceAnio;
     }
 
-    public Short getTReceTec() {
+    public Integer getTReceTec() {
         return tReceTec;
     }
 
-    public void setTReceTec(Short tReceTec) {
+    public void setTReceTec(Integer tReceTec) {
         this.tReceTec = tReceTec;
     }
 
@@ -185,11 +185,11 @@ public class TRecepEnca implements Serializable {
         this.tReceDoc = tReceDoc;
     }
 
-    public Short getTReceUsec() {
+    public Integer getTReceUsec() {
         return tReceUsec;
     }
 
-    public void setTReceUsec(Short tReceUsec) {
+    public void setTReceUsec(Integer tReceUsec) {
         this.tReceUsec = tReceUsec;
     }
 
@@ -201,11 +201,11 @@ public class TRecepEnca implements Serializable {
         this.tReceFechc = tReceFechc;
     }
 
-    public Short getTReceUsem() {
+    public Integer getTReceUsem() {
         return tReceUsem;
     }
 
-    public void setTReceUsem(Short tReceUsem) {
+    public void setTReceUsem(Integer tReceUsem) {
         this.tReceUsem = tReceUsem;
     }
 

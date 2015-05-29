@@ -38,6 +38,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CJefesDep.findByCJefesdCorreo", query = "SELECT c FROM CJefesDep c WHERE c.cJefesdCorreo = :cJefesdCorreo"),
     @NamedQuery(name = "CJefesDep.findByCJefesdTelofi", query = "SELECT c FROM CJefesDep c WHERE c.cJefesdTelofi = :cJefesdTelofi"),
     @NamedQuery(name = "CJefesDep.findByCJefesdAutoriz", query = "SELECT c FROM CJefesDep c WHERE c.cJefesdAutoriz = :cJefesdAutoriz"),
+    @NamedQuery(name = "CJefesDep.findByCDepenId", query = "SELECT c FROM CJefesDep c WHERE c.cDepenId.cDepenId = :cDepenId AND c.cJefesdEstado = 'A'"),
     @NamedQuery(name = "CJefesDep.findByCJefesdEstado", query = "SELECT c FROM CJefesDep c WHERE c.cJefesdEstado = :cJefesdEstado")})
 public class CJefesDep implements Serializable {
     @OneToMany(mappedBy = "cJefesdId")

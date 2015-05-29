@@ -97,7 +97,7 @@ public class TSustit implements Serializable {
     @Column(name = "t_sust_desc_new")
     private String tSustDescNew;
     @Column(name = "t_sust_marc_new")
-    private Short tSustMarcNew;
+    private Integer tSustMarcNew;
     @Size(max = 20)
     @Column(name = "t_sust_mode_new")
     private String tSustModeNew;
@@ -114,16 +114,12 @@ public class TSustit implements Serializable {
     @Column(name = "t_sust_fechm")
     @Temporal(TemporalType.DATE)
     private Date tSustFechm;
-    
-  
     @Column(name = "t_fechdic_id")
     private Integer tFechdicId;
     @Column(name = "t_fechsust_id")
     private Integer tFechsustId;
     @Column(name = "t_fechres_id")   
     private Integer tFechresId;
-    
-    
     @JoinColumn(name = "t_tm_id", referencedColumnName = "t_tm_id")
     @ManyToOne(optional = false)
     private TTiempo tTmId;
@@ -142,15 +138,18 @@ public class TSustit implements Serializable {
     @JoinColumn(name = "c_depen_id", referencedColumnName = "c_depen_id")
     @ManyToOne(optional = false)
     private CDependencias cDepenId;
-    
     @JoinColumn(name = "c_area_id", referencedColumnName = "c_area_id")
     @ManyToOne
     private CAreas cAreaId;
-
     @JoinColumn(name = "t_bien_id", referencedColumnName = "t_bien_id")
     @ManyToOne
     private TBienes tBienId;
     
+//    @JoinColumn(name = "c_marca_id", referencedColumnName = "c_marca_id")
+//    @ManyToOne(optional = false)
+//    private CMarcasBm cMarcaId;
+    
+
     public TSustit() {
     }
 
@@ -278,11 +277,11 @@ public class TSustit implements Serializable {
         this.tSustDescNew = tSustDescNew;
     }
 
-    public Short getTSustMarcNew() {
+    public Integer getTSustMarcNew() {
         return tSustMarcNew;
     }
 
-    public void setTSustMarcNew(Short tSustMarcNew) {
+    public void setTSustMarcNew(Integer tSustMarcNew) {
         this.tSustMarcNew = tSustMarcNew;
     }
 
@@ -382,6 +381,16 @@ public class TSustit implements Serializable {
         this.cDepenId = cDepenId;
     }
 
+    public TBienes getTBienId() {
+        return tBienId;
+    }
+
+    public void setTBienId(TBienes tBienId) {
+        this.tBienId = tBienId;
+    }
+
+    
+    
     public CAreas getCAreaId() {
         return cAreaId;
     }
@@ -414,13 +423,14 @@ public class TSustit implements Serializable {
         this.tFechresId = tFechresId;
     }
 
-    public TBienes getTBienId() {
-        return tBienId;
-    }
-
-    public void setTBienId(TBienes tBienId) {
-        this.tBienId = tBienId;
-    }
+//    public CMarcasBm getCMarcaId() {
+//        return cMarcaId;
+//    }
+//
+//    public void setCMarcaId(CMarcasBm cMarcaId) {
+//        this.cMarcaId = cMarcaId;
+//    }
+    
 
     @Override
     public int hashCode() {
@@ -446,5 +456,9 @@ public class TSustit implements Serializable {
     public String toString() {
         return "entidades.TSustit[ tSustId=" + tSustId + " ]";
     }
+
+    
+
+   
     
 }

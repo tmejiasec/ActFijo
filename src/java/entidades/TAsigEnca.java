@@ -58,13 +58,13 @@ public class TAsigEnca implements Serializable {
     @Column(name = "t_asige_id")
     private Integer tAsigeId;
     @Column(name = "t_asige_corr")
-    private Short tAsigeCorr;
+    private Integer tAsigeCorr;
     @Column(name = "t_asige_anio")
-    private Short tAsigeAnio;
+    private Integer tAsigeAnio;
     @Column(name = "t_asige_tec")
-    private Short tAsigeTec;
+    private Integer tAsigeTec;
     @Column(name = "t_asige_mot")
-    private Character tAsigeMot;
+    private String tAsigeMot;
     @Column(name = "t_asige_fecha")
     @Temporal(TemporalType.DATE)
     private Date tAsigeFecha;
@@ -80,7 +80,7 @@ public class TAsigEnca implements Serializable {
     @Column(name = "t_asige_observ")
     private String tAsigeObserv;
     @Column(name = "t_asige_dep")
-    private Short tAsigeDep;
+    private Integer tAsigeDep;
     @Size(max = 100)
     @Column(name = "t_asige_pers")
     private String tAsigePers;
@@ -88,12 +88,12 @@ public class TAsigEnca implements Serializable {
     @Column(name = "t_asige_cargo")
     private String tAsigeCargo;
     @Column(name = "t_asige_usec")
-    private Short tAsigeUsec;
+    private Integer tAsigeUsec;
     @Column(name = "t_asige_fechc")
     @Temporal(TemporalType.DATE)
     private Date tAsigeFechc;
     @Column(name = "t_asige_usem")
-    private Short tAsigeUsem;
+    private Integer tAsigeUsem;
     @Column(name = "t_asige_fechm")
     @Temporal(TemporalType.DATE)
     private Date tAsigeFechm;
@@ -127,35 +127,35 @@ public class TAsigEnca implements Serializable {
         this.tAsigeId = tAsigeId;
     }
 
-    public Short getTAsigeCorr() {
+    public Integer getTAsigeCorr() {
         return tAsigeCorr;
     }
 
-    public void setTAsigeCorr(Short tAsigeCorr) {
+    public void setTAsigeCorr(Integer tAsigeCorr) {
         this.tAsigeCorr = tAsigeCorr;
     }
 
-    public Short getTAsigeAnio() {
+    public Integer getTAsigeAnio() {
         return tAsigeAnio;
     }
 
-    public void setTAsigeAnio(Short tAsigeAnio) {
+    public void setTAsigeAnio(Integer tAsigeAnio) {
         this.tAsigeAnio = tAsigeAnio;
     }
 
-    public Short getTAsigeTec() {
+    public Integer getTAsigeTec() {
         return tAsigeTec;
     }
 
-    public void setTAsigeTec(Short tAsigeTec) {
+    public void setTAsigeTec(Integer tAsigeTec) {
         this.tAsigeTec = tAsigeTec;
     }
 
-    public Character getTAsigeMot() {
+    public String getTAsigeMot() {
         return tAsigeMot;
     }
 
-    public void setTAsigeMot(Character tAsigeMot) {
+    public void setTAsigeMot(String tAsigeMot) {
         this.tAsigeMot = tAsigeMot;
     }
 
@@ -199,11 +199,11 @@ public class TAsigEnca implements Serializable {
         this.tAsigeObserv = tAsigeObserv;
     }
 
-    public Short getTAsigeDep() {
+    public Integer getTAsigeDep() {
         return tAsigeDep;
     }
 
-    public void setTAsigeDep(Short tAsigeDep) {
+    public void setTAsigeDep(Integer tAsigeDep) {
         this.tAsigeDep = tAsigeDep;
     }
 
@@ -223,11 +223,11 @@ public class TAsigEnca implements Serializable {
         this.tAsigeCargo = tAsigeCargo;
     }
 
-    public Short getTAsigeUsec() {
+    public Integer getTAsigeUsec() {
         return tAsigeUsec;
     }
 
-    public void setTAsigeUsec(Short tAsigeUsec) {
+    public void setTAsigeUsec(Integer tAsigeUsec) {
         this.tAsigeUsec = tAsigeUsec;
     }
 
@@ -239,11 +239,11 @@ public class TAsigEnca implements Serializable {
         this.tAsigeFechc = tAsigeFechc;
     }
 
-    public Short getTAsigeUsem() {
+    public Integer getTAsigeUsem() {
         return tAsigeUsem;
     }
 
-    public void setTAsigeUsem(Short tAsigeUsem) {
+    public void setTAsigeUsem(Integer tAsigeUsem) {
         this.tAsigeUsem = tAsigeUsem;
     }
 

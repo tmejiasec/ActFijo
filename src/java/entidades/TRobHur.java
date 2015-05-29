@@ -58,11 +58,11 @@ public class TRobHur implements Serializable {
     @Column(name = "t_rh_id")
     private Integer tRhId;
     @Column(name = "t_rh_clase")
-    private Short tRhClase;
+    private Integer tRhClase;
     @Column(name = "t_rh_corr")
-    private Short tRhCorr;
+    private Integer tRhCorr;
     @Column(name = "t_rh_anio")
-    private Short tRhAnio;
+    private Integer tRhAnio;
     @Size(max = 12)
     @Column(name = "t_rh_codigo")
     private String tRhCodigo;
@@ -70,18 +70,18 @@ public class TRobHur implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date tRhFecdenun;
     @Column(name = "t_rh_fecdenun_id")
-    private Short tRhFecdenunId;
+    private Integer tRhFecdenunId;
     @Column(name = "t_rh_copiad")
     private Boolean tRhCopiad;
     @Column(name = "t_rh_fecinfor")
     @Temporal(TemporalType.DATE)
     private Date tRhFecinfor;
     @Column(name = "t_rh_fecinfor_id")
-    private Short tRhFecinforId;
+    private Integer tRhFecinforId;
     @Column(name = "t_rh_copiainf")
     private Boolean tRhCopiainf;
     @Column(name = "t_rh_tramite")
-    private Short tRhTramite;
+    private Integer tRhTramite;
     @Size(max = 2147483647)
     @Column(name = "t_rh_observ")
     private String tRhObserv;
@@ -89,16 +89,16 @@ public class TRobHur implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date tRhFecfin;
     @Column(name = "t_rh_fecfin_id")
-    private Short tRhFecfinId;
+    private Integer tRhFecfinId;
     @Column(name = "t_rh_estadof")
-    private Short tRhEstadof;
+    private Integer tRhEstadof;
     @Column(name = "t_rh_usec")
-    private Short tRhUsec;
+    private Integer tRhUsec;
     @Column(name = "t_rh_fechc")
     @Temporal(TemporalType.DATE)
     private Date tRhFechc;
     @Column(name = "t_rh_usem")
-    private Short tRhUsem;
+    private Integer tRhUsem;
     @Column(name = "t_rh_fechm")
     @Temporal(TemporalType.DATE)
     private Date tRhFechm;
@@ -133,27 +133,27 @@ public class TRobHur implements Serializable {
         this.tRhId = tRhId;
     }
 
-    public Short getTRhClase() {
+    public Integer getTRhClase() {
         return tRhClase;
     }
 
-    public void setTRhClase(Short tRhClase) {
+    public void setTRhClase(Integer tRhClase) {
         this.tRhClase = tRhClase;
     }
 
-    public Short getTRhCorr() {
+    public Integer getTRhCorr() {
         return tRhCorr;
     }
 
-    public void setTRhCorr(Short tRhCorr) {
+    public void setTRhCorr(Integer tRhCorr) {
         this.tRhCorr = tRhCorr;
     }
 
-    public Short getTRhAnio() {
+    public Integer getTRhAnio() {
         return tRhAnio;
     }
 
-    public void setTRhAnio(Short tRhAnio) {
+    public void setTRhAnio(Integer tRhAnio) {
         this.tRhAnio = tRhAnio;
     }
 
@@ -173,11 +173,11 @@ public class TRobHur implements Serializable {
         this.tRhFecdenun = tRhFecdenun;
     }
 
-    public Short getTRhFecdenunId() {
+    public Integer getTRhFecdenunId() {
         return tRhFecdenunId;
     }
 
-    public void setTRhFecdenunId(Short tRhFecdenunId) {
+    public void setTRhFecdenunId(Integer tRhFecdenunId) {
         this.tRhFecdenunId = tRhFecdenunId;
     }
 
@@ -197,11 +197,11 @@ public class TRobHur implements Serializable {
         this.tRhFecinfor = tRhFecinfor;
     }
 
-    public Short getTRhFecinforId() {
+    public Integer getTRhFecinforId() {
         return tRhFecinforId;
     }
 
-    public void setTRhFecinforId(Short tRhFecinforId) {
+    public void setTRhFecinforId(Integer tRhFecinforId) {
         this.tRhFecinforId = tRhFecinforId;
     }
 
@@ -213,11 +213,11 @@ public class TRobHur implements Serializable {
         this.tRhCopiainf = tRhCopiainf;
     }
 
-    public Short getTRhTramite() {
+    public Integer getTRhTramite() {
         return tRhTramite;
     }
 
-    public void setTRhTramite(Short tRhTramite) {
+    public void setTRhTramite(Integer tRhTramite) {
         this.tRhTramite = tRhTramite;
     }
 
@@ -237,27 +237,27 @@ public class TRobHur implements Serializable {
         this.tRhFecfin = tRhFecfin;
     }
 
-    public Short getTRhFecfinId() {
+    public Integer getTRhFecfinId() {
         return tRhFecfinId;
     }
 
-    public void setTRhFecfinId(Short tRhFecfinId) {
+    public void setTRhFecfinId(Integer tRhFecfinId) {
         this.tRhFecfinId = tRhFecfinId;
     }
 
-    public Short getTRhEstadof() {
+    public Integer getTRhEstadof() {
         return tRhEstadof;
     }
 
-    public void setTRhEstadof(Short tRhEstadof) {
+    public void setTRhEstadof(Integer tRhEstadof) {
         this.tRhEstadof = tRhEstadof;
     }
 
-    public Short getTRhUsec() {
+    public Integer getTRhUsec() {
         return tRhUsec;
     }
 
-    public void setTRhUsec(Short tRhUsec) {
+    public void setTRhUsec(Integer tRhUsec) {
         this.tRhUsec = tRhUsec;
     }
 
@@ -269,11 +269,11 @@ public class TRobHur implements Serializable {
         this.tRhFechc = tRhFechc;
     }
 
-    public Short getTRhUsem() {
+    public Integer getTRhUsem() {
         return tRhUsem;
     }
 
-    public void setTRhUsem(Short tRhUsem) {
+    public void setTRhUsem(Integer tRhUsem) {
         this.tRhUsem = tRhUsem;
     }
 

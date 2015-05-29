@@ -5,7 +5,6 @@
  */
 package controlBean;
 
-
 import dao.CAreasFacadeLocal;
 import entidades.TBienes;
 import entidades.TSustit;
@@ -73,7 +72,6 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import util.FacesUtil;
 
-
 /**
  *
  * @author Portillo
@@ -88,12 +86,13 @@ public class SustitucionBienesBean implements Serializable {
     private List<TSustit> sutit = new ArrayList<>();
     private TSustit sustituc;
     private TSustit nuevaSustit = new TSustit();
-    private List<CResponsables> respon = new ArrayList<>(); 
+    private List<CResponsables> respon = new ArrayList<>();
     private List<CUbic> ubic = new ArrayList();
     private List<CJefesDep> jef = new ArrayList();
+    private CJefesDep jefSelec = new CJefesDep();
     private List<CAreas> areas = new ArrayList();
-    private List<CEdificios>edif = new ArrayList();
-    private List<CEspecificos> espec = new ArrayList<>(); 
+    private List<CEdificios> edif = new ArrayList();
+    private List<CEspecificos> espec = new ArrayList<>();
     private List<CRubros> rub = new ArrayList<>();
     private List<CDependencias> depen = new ArrayList<>();
     private List<CEstadoBien> estad = new ArrayList<>();
@@ -103,12 +102,9 @@ public class SustitucionBienesBean implements Serializable {
     private TArchivos archSeleccionado = new TArchivos();
     private TArchivos nuevoArch = new TArchivos();
     private TBienes codSeleccionado = new TBienes();
-    
-    private Integer respoSeleccionado, especSeleccionada,rubSeleccionado, depenSeleccionado,sustitSeleccionada;
-    private Integer estadSeleccionado, bienseleccionado, ducumseleccionado, ubicacionSeleccionada, jefeSeleccionado, areaSeleccionada, edificioSeleccionado;
-    private Integer selDep, selUbic, selJefe, selArea, selEdif, selEstad;
-    private short marcaAnterior;
-    private short tipoSustit;
+
+    private Integer respoSeleccionado, especSeleccionada, rubSeleccionado, depenSeleccionado, sustitSeleccionada;
+    private Integer estadSeleccionado, bienseleccionado, ducumseleccionado, ubicacionSeleccionada, jefeSeleccionado, areaSeleccionada, edificioSeleccionado,marcaSeleccionada;
     private double valBien;
     private TSustitFacadeLocal sutitu;
     private CResponsablesFacadeLocal responFacade;
@@ -119,8 +115,18 @@ public class SustitucionBienesBean implements Serializable {
     private TBienesFacadeLocal bienFacade;
     private Date fech = new Date();
     private SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
-    
-    
+
+    //Variables intermedias
+    private Integer depenInter=0;
+    private Integer respoInter=0;
+    private Integer ubicInter=0;
+    private Integer edifInter=0;
+    private Integer areaInter=0;
+    private Integer jefeInter=0;
+    private Integer marcaAntInter=0;
+    private Integer marcaNewInter=0; 
+    private Integer marcaAntSeleccionada;
+    private Integer marcaNewSeleccionada;
     
     private Boolean estado = false;
     private Boolean estadoI = false;
@@ -129,17 +135,14 @@ public class SustitucionBienesBean implements Serializable {
     private Integer especif;
     private String serieAnt;
     private Date fechres, fechdic, fechsut;
-    
-     
+
     private String nomResp, nomDep, regBien, especi;
     private String cod, modelo, serie;
     private Integer reparSelec, codSelec, marca;
     private Integer idFdic, idFres, idFsus;
-   
-    
+
     public SustitucionBienesBean() {
-        
-        
+
         respon = getDaoResp().getList();
         depen = getDaoDepen().getList();
         rub = getDaoRubro().getList();
@@ -148,26 +151,23 @@ public class SustitucionBienesBean implements Serializable {
         bien = getDaoBienes().getList();
         docums = getDaoArchiv().getList();
         marcas = getDaoMarcas().getList();
-        ubic= getDaoUbica().getList();
+        ubic = getDaoUbica().getList();
         jef = getDaoJefes().getList();
-        edif= getDaoEdificio().getList();
-        areas=getDaoAreas().getList();
-      
-        
+        edif = getDaoEdificio().getList();
+        areas = getDaoAreas().getList();
+
     }
-    
+
     public String borrarB() throws NamingException {
         return null;
     }
-    
-    
+
     public String setEditAction() {
         edit = true;
         tabIndex = 0;
 
         return null;
     }
-    
 
     private CRubrosFacadeLocal getDaoRubro() {
         return (CRubrosFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CRubrosFacade!dao.CRubrosFacadeLocal");
@@ -181,7 +181,7 @@ public class SustitucionBienesBean implements Serializable {
         return (CResponsablesFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CResponsablesFacade!dao.CResponsablesFacadeLocal");
     }
 
-     private CEspecificosFacadeLocal getDaoEspec() {
+    private CEspecificosFacadeLocal getDaoEspec() {
         return (CEspecificosFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CEspecificosFacade!dao.CEspecificosFacadeLocal");
     }
 
@@ -192,7 +192,7 @@ public class SustitucionBienesBean implements Serializable {
     private TBienesFacadeLocal getDaoBienes() {
         return (TBienesFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TBienesFacade!dao.TBienesFacadeLocal");
     }
-    
+
     private TTiempoFacadeLocal getDaoTiempo() {
         return (TTiempoFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TTiempoFacade!dao.TTiempoFacadeLocal");
     }
@@ -200,47 +200,48 @@ public class SustitucionBienesBean implements Serializable {
     private TArchivosFacadeLocal getDaoArchiv() {
         return (TArchivosFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TArchivosFacade!dao.TArchivosFacadeLocal");
     }
-    
+
     private TSustitFacadeLocal getDaoSustit() {
-        return (TSustitFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/TSustitFacade!dao.TSustitFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+        return (TSustitFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TSustitFacade!dao.TSustitFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
     }
-    
-     private CMarcasBmFacadeLocal getDaoMarcas() {
-        return (CMarcasBmFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CMarcasBmFacade!dao.CMarcasBmFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+
+    private CMarcasBmFacadeLocal getDaoMarcas() {
+        return (CMarcasBmFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CMarcasBmFacade!dao.CMarcasBmFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
     }
-    
-     private CUbicFacadeLocal getDaoUbica() {
-        return (CUbicFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CUbicFacade!dao.CUbicFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+
+    private CUbicFacadeLocal getDaoUbica() {
+        return (CUbicFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CUbicFacade!dao.CUbicFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
     }
-     
-     private CJefesDepFacadeLocal getDaoJefes() {
-        return (CJefesDepFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CJefesDepFacade!dao.CJefesDepFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+
+    private CJefesDepFacadeLocal getDaoJefes() {
+        return (CJefesDepFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CJefesDepFacade!dao.CJefesDepFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
     }
 
     private CEdificiosFacadeLocal getDaoEdificio() {
-        return (CEdificiosFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CEdificiosFacade!dao.CEdificiosFacadeLocal");//To change body of generated methods, choose Tools | Templates.
+        return (CEdificiosFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CEdificiosFacade!dao.CEdificiosFacadeLocal");//To change body of generated methods, choose Tools | Templates.
     }
 
     private CAreasFacadeLocal getDaoAreas() {
-        return (CAreasFacadeLocal)FacesUtil.getEjb("java:global/ActFijo/CAreasFacade!dao.CAreasFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+        return (CAreasFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CAreasFacade!dao.CAreasFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
     }
+
     public Boolean getEdit() {
         return edit;
     }
-    
+
     public void setEdit(Boolean edit) {
         this.edit = edit;
     }
-    
+
     public String getDesc() {
         return desc;
     }
-    
+
     public void setDesc(String desc) {
         this.desc = desc;
     }
 
-     public List<TSustit> getSustituc() {
+    public List<TSustit> getSustituc() {
         return sutit;
     }
 
@@ -300,6 +301,30 @@ public class SustitucionBienesBean implements Serializable {
         this.depenSeleccionado = depenSeleccionado;
     }
 
+    public Integer getRespoSeleccionado() {
+        return respoSeleccionado;
+    }
+
+    public void setRespoSeleccionado(Integer respoSeleccionado) {
+        this.respoSeleccionado = respoSeleccionado;
+    }
+
+    public Integer getRubSeleccionado() {
+        return rubSeleccionado;
+    }
+
+    public void setRubSeleccionado(Integer rubSeleccionado) {
+        this.rubSeleccionado = rubSeleccionado;
+    }
+
+    public Integer getEstadSeleccionado() {
+        return estadSeleccionado;
+    }
+
+    public void setEstadSeleccionado(Integer estadSeleccionado) {
+        this.estadSeleccionado = estadSeleccionado;
+    }
+
     public Integer getUbicacionSeleccionada() {
         return ubicacionSeleccionada;
     }
@@ -324,105 +349,113 @@ public class SustitucionBienesBean implements Serializable {
         this.areaSeleccionada = areaSeleccionada;
     }
 
-    public Integer getEdificioSeleccionado() {
-        return edificioSeleccionado;
+    public Integer getDepenInter() {
+        return depenInter;
     }
 
-    public void setEdificioSeleccionado(Integer edificioSeleccionado) {
-        this.edificioSeleccionado = edificioSeleccionado;
+    public void setDepenInter(Integer depenInter) {
+        this.depenInter = depenInter;
     }
 
-    public Integer getEstadSeleccionado() {
-        return estadSeleccionado;
+    public Integer getRespoInter() {
+        return respoInter;
     }
 
-    public void setEstadSeleccionado(Integer estadSeleccionado) {
-        this.estadSeleccionado = estadSeleccionado;
+    public void setRespoInter(Integer respoInter) {
+        this.respoInter = respoInter;
     }
 
-    public double getValBien() {
-        return valBien;
+    public Integer getUbicInter() {
+        return ubicInter;
     }
 
-    public void setValBien(double valBien) {
-        this.valBien = valBien;
+    public void setUbicInter(Integer ubicInter) {
+        this.ubicInter = ubicInter;
     }
 
-    public Integer getSelDep() {
-        return selDep;
+    public Integer getEdifInter() {
+        return edifInter;
     }
 
-    public void setSelDep(Integer selDep) {
-        this.selDep = selDep;
+    public void setEdifInter(Integer edifInter) {
+        this.edifInter = edifInter;
     }
 
-    public Integer getSelUbic() {
-        return selUbic;
+    public Integer getJefeInter() {
+        return jefeInter;
     }
 
-    public void setSelUbic(Integer selUbic) {
-        this.selUbic = selUbic;
+    public void setJefeInter(Integer jefeInter) {
+        this.jefeInter = jefeInter;
     }
 
-    public Integer getSelJefe() {
-        return selJefe;
+    public Integer getMarcaAntSeleccionada() {
+        return marcaAntSeleccionada;
     }
 
-    public void setSelJefe(Integer selJefe) {
-        this.selJefe = selJefe;
+    public void setMarcaAntSeleccionada(Integer marcaAntSeleccionada) {
+        this.marcaAntSeleccionada = marcaAntSeleccionada;
     }
 
-    public Integer getSelArea() {
-        return selArea;
+    public Integer getMarcaNewSeleccionada() {
+        return marcaNewSeleccionada;
     }
 
-    public void setSelArea(Integer selArea) {
-        this.selArea = selArea;
+    public void setMarcaNewSeleccionada(Integer marcaNewSeleccionada) {
+        this.marcaNewSeleccionada = marcaNewSeleccionada;
     }
 
-    public Integer getSelEdif() {
-        return selEdif;
+    public Integer getMarcaAntInter() {
+        return marcaAntInter;
     }
 
-    public void setSelEdif(Integer selEdif) {
-        this.selEdif = selEdif;
+    public void setMarcaAntInter(Integer marcaAntInter) {
+        this.marcaAntInter = marcaAntInter;
     }
 
-    public Integer getSelEstad() {
-        return selEstad;
+    public Integer getMarcaNewInter() {
+        return marcaNewInter;
     }
 
-    public void setSelEstad(Integer selEstad) {
-        this.selEstad = selEstad;
+    public void setMarcaNewInter(Integer marcaNewInter) {
+        this.marcaNewInter = marcaNewInter;
     }
-     
+
+    public Integer getMarcaSeleccionada() {
+        return marcaSeleccionada;
+    }
+
+    public void setMarcaSeleccionada(Integer marcaSeleccionada) {
+        this.marcaSeleccionada = marcaSeleccionada;
+    }
     
-  
+    
+    
+    
 //    public String buscarSusti() throws NamingException {
 //
 //        sutit = getDaoSustit().busqueda(desc);
 //
 //        return null;
 //    }
-
     public List<CMarcasBm> getMarcas() {
         return marcas;
     }
-    
-     public String borrarSustit() throws NamingException {
+
+    public String borrarSustit() throws NamingException {
         return null;
     }
-     
+
     public TSustit getNuevaSustit() {
         return nuevaSustit;
     }
-    
-    public void setNuevasustit(){
-    
+
+    public void setNuevasustit() {
+
         this.nuevaSustit = nuevaSustit;
-        
+
     }
-    
+
     public TSustit getSustitSeleccionada() {
         return sustituc;
     }
@@ -430,76 +463,184 @@ public class SustitucionBienesBean implements Serializable {
     public void setSustitSeleccionada(TBienes bienSeleccionado) {
         this.sustituc = sustituc;
     }
-    
+
+    public CJefesDep getJefSelec() {
+        return jefSelec;
+    }
+
+    public void setJefSelec(CJefesDep jefSelec) {
+        this.jefSelec = jefSelec;
+    }
+
     public String limpiarTSutit() {
         sustituc = new TSustit();
         return null;
     }
-    
+
     public TBienes datosCodigo() throws NamingException {
-        this.cod=cod;
-        System.out.println("cod dig: "+cod);
+        this.cod = cod;
+        System.out.println("cod dig: " + cod);
 //        cod = detaSeleccionado.getTMovdCodigo();
-    	codSeleccionado = getDaoBienes().getCodBien(cod);
-        System.out.println("despues de query"+codSeleccionado);
-        if (codSeleccionado.getCDepenId().getCDepenId()== null){}
+        codSeleccionado = getDaoBienes().getCodBien(cod);
+        System.out.println("despues de query" + codSeleccionado);
+        if ( codSeleccionado.getCDepenId() != null  ){
+            depenSeleccionado = codSeleccionado.getCDepenId().getCDepenId();
+            jefSelec = getDaoJefes().getDep(depenSeleccionado);
+            jefeSeleccionado=jefSelec.getCJefesdId();
+        }
         else{
-        depenSeleccionado = codSeleccionado.getCDepenId().getCDepenId();}
-        ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();
-        areaSeleccionada = codSeleccionado.getCAreaId().getCAreaId();
-        edificioSeleccionado = codSeleccionado.getCEdifId().getCEdifId();
-        estadSeleccionado = codSeleccionado.getCEstadbId().getCEstadbId();
-        valBien = codSeleccionado.getTBienValoradq();
-        System.out.println("dep: "+depenSeleccionado);
-        System.out.println("ubicacionSeleccionada");
+            depenSeleccionado=0;}
+        if (codSeleccionado.getCUbicId() != null){
+        ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();}
+        else{
+                ubicacionSeleccionada = 0;
+                }
+        if (codSeleccionado.getCAreaId() != null){
+        areaSeleccionada = codSeleccionado.getCAreaId().getCAreaId();}
+        else{
+            areaSeleccionada = 0;
+        }
+        if (codSeleccionado.getCEdifId() != null){
+        edificioSeleccionado = codSeleccionado.getCEdifId().getCEdifId();}
+        else{
+            edificioSeleccionado = 0;
+        }
+        if (codSeleccionado.getCEstadbId() !=null ){
+        estadSeleccionado = codSeleccionado.getCEstadbId().getCEstadbId();}
+        else
+        {
+            estadSeleccionado = 0;
+        }
+        
+        
+         if (codSeleccionado.getCRespId()!=null ){
+        respoSeleccionado = codSeleccionado.getCRespId().getCRespId();}
+        else
+        {
+            respoSeleccionado = 0;
+        }
+        
+        System.out.println("no guarda las marcas");
+        if (codSeleccionado.getCMarcaId() != null ){
+        marcaAntSeleccionada = codSeleccionado.getCMarcaId().getCMarcaId();}
+        else
+        {
+            marcaAntSeleccionada = 0;
+        }
+//        marcaNewSeleccionada = codSeleccionado.getCMarcaId().getCMarcaId();
+        if (codSeleccionado.getTBienValoradq() != null ){
+            valBien = codSeleccionado.getTBienValoradq();}
+        else{
+            valBien=0;
+        }
+    
+
         //jefeSeleccionado=codSeleccionado.
-        
-        
-        System.out.println("codsel: "+codSeleccionado);
-	return codSeleccionado;
+        System.out.println("codsel: " + codSeleccionado);
+        System.out.println("ubic: "+ubicacionSeleccionada);
+        System.out.println("jefe: "+jefSelec);
+        System.out.println("respo: "+respoSeleccionado);
+        System.out.println("depen:"+depenSeleccionado);
+        return codSeleccionado;
     }
     
-   
-    
-    public String guardarSustit() throws NamingException, ParseException{
-         Date fecha = new Date();
-         fechres = nuevaSustit.getTSustFechres();
-         fechdic = nuevaSustit.getTSustFechdict();
-         fechsut = nuevaSustit.getTSustFecha();
-         
-         if (fechres == null){
-         }else {
-             idFres = getDaoTiempo().getFecha(fechres).getTTmId();
-             nuevaSustit.setTFechresId(idFres);
-         }
-         if (fechdic == null){
-         }else {
-             idFdic = getDaoTiempo().getFecha(fechdic).getTTmId();
-             nuevaSustit.setTFechdicId(idFdic);
-             
-         }
-         if (fechsut == null){
-         }else {
-             idFsus = getDaoTiempo().getFecha(fechsut).getTTmId();
-             nuevaSustit.setTFechsustId(idFsus);
-             
-         }
-         
-         
-        nuevaSustit.setCDepenId(getDaoDepen().getDepend(depenSeleccionado));
-        nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
-        nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));
-        nuevaSustit.setCEdifId(getDaoEdificio().getEdif(edificioSeleccionado));
-        nuevaSustit.setCAreaId(getDaoAreas().getArea(areaSeleccionada));
-        nuevaSustit.setCJefesdId(getDaoJefes().getJefeDep(jefeSeleccionado));
+     public void buscarJefe() {
+        jefSelec = getDaoJefes().getDep(depenSeleccionado);
+    }
+
+    public String guardarSustit() throws NamingException, ParseException {
+        Date fecha = new Date();
+        this.codSeleccionado=codSeleccionado;
+        this.ubicacionSeleccionada=ubicacionSeleccionada;
+        System.out.println("datos para guardar");
+        System.out.println("codsel: " + codSeleccionado);
+        System.out.println("ubic: "+ubicacionSeleccionada);
+        System.out.println("jefe: "+jefSelec);
+        System.out.println("respo: "+respoSeleccionado);
+        System.out.println("depen:"+depenSeleccionado);
+        fechres = nuevaSustit.getTSustFechres();
+        fechdic = nuevaSustit.getTSustFechdict();
+        fechsut = nuevaSustit.getTSustFecha();
+
+         ////////////////////////////////////////////////////////////////////////
+  
+
+        if (fechres == null) {
+        } else {
+            idFres = getDaoTiempo().getFecha(fechres).getTTmId();
+            nuevaSustit.setTFechresId(idFres);
+        }
+        if (fechdic == null) {
+        } else {
+            idFdic = getDaoTiempo().getFecha(fechdic).getTTmId();
+            nuevaSustit.setTFechdicId(idFdic);
+
+        }
+        if (fechsut == null) {
+        } else {
+            idFsus = getDaoTiempo().getFecha(fechsut).getTTmId();
+            nuevaSustit.setTFechsustId(idFsus);
+
+        }
+        
+        if(depenSeleccionado == null){
+        } else{
+           nuevaSustit.setCDepenId(getDaoDepen().getDepend(depenSeleccionado));
+        }
+        
+        if(respoSeleccionado == null){
+        } else{
+            nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
+        }
+        
+        if(ubicacionSeleccionada == null){
+        } else{
+            nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));  
+        }
+        
+        if(edificioSeleccionado ==null){
+        } else{
+            nuevaSustit.setCEdifId(getDaoEdificio().getEdif(edificioSeleccionado));
+        }
+        
+        if(areaSeleccionada == null){
+        } else {
+            nuevaSustit.setCAreaId(getDaoAreas().getArea(areaSeleccionada));
+        }
+        
+        if(jefeSeleccionado == null){
+        }else{
+            nuevaSustit.setCJefesdId(getDaoJefes().getJefeDep(jefeSeleccionado));
+        }
+        
+        if(respoSeleccionado == null){
+        }else{
+            nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
+        }
         
         
+        System.out.println("todavia no se guardo");
+        
+        
+        if(marcaAntSeleccionada == null){
+        } else{
+           nuevaSustit.setTSustMarcAnt(marcaAntSeleccionada);
+        }
+       
+        if(marcaNewInter == null){
+        }
+        else {
+            nuevaSustit.setTSustMarcNew(marcaNewSeleccionada);
+        }
         
         getDaoSustit().create(nuevaSustit);
+        
+        System.out.println("Se guardo");
         return null;
     }
 
+        public void marcaSeleccion() {
+        marcaNewSeleccionada = nuevaSustit.getTSustMarcNew();
+    }    
     
-
-   
 }

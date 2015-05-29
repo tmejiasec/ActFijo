@@ -129,8 +129,12 @@ and open the template in the editor.
    <to-view-id>/contenido/bm_registro.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
-   <from-outcome>MovBienes</from-outcome>
-   <to-view-id>/contenido/bm_movBienes.xhtml</to-view-id>
+   <from-outcome>Traslados</from-outcome>
+   <to-view-id>/contenido/bm_movBienesT.xhtml</to-view-id>
+  </navigation-case>
+   <navigation-case>
+   <from-outcome>Prestamos</from-outcome>
+   <to-view-id>/contenido/bm_movBienesP.xhtml</to-view-id>
   </navigation-case>
   <navigation-case>
    <from-outcome>Sustituciones</from-outcome>
