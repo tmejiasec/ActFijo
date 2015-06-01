@@ -40,6 +40,7 @@ import entidades.CEdificios;
 import entidades.CJefesDep;
 import entidades.CMarcasBm;
 import entidades.CUbic;
+import entidades.TTiempo;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -61,6 +62,7 @@ import java.util.List;
 import java.util.Properties;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -107,13 +109,6 @@ public class SustitucionBienesBean implements Serializable {
     private Integer respoSeleccionado, especSeleccionada, rubSeleccionado, depenSeleccionado, sustitSeleccionada;
     private Integer estadSeleccionado, bienseleccionado, ducumseleccionado, ubicacionSeleccionada, jefeSeleccionado, areaSeleccionada, edificioSeleccionado,marcaSeleccionada;
     private double valBien;
-    private TSustitFacadeLocal sutitu;
-    private CResponsablesFacadeLocal responFacade;
-    private CEspecificosFacadeLocal especFacade;
-    private CRubrosFacadeLocal rubFacade;
-    private CDependenciasFacadeLocal depenFacadeLocal;
-    private CEstadoBienFacadeLocal estadFacade;
-    private TBienesFacadeLocal bienFacade;
     private Date fech = new Date();
     private SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
 
@@ -134,8 +129,12 @@ public class SustitucionBienesBean implements Serializable {
     private String nomResp, nomDep, regBien, especi;
     private String cod, modelo, serie;
     private Integer reparSelec, codSelec, marca;
-    private Integer idFdic, idFres, idFsus;
+    private Integer idFdic, idFres, idFsus, idUs;
+    private int idFec,idCod;
+    @ManagedProperty(value = "#{appSession}")
+    private AppSession appSession;
 
+    
     public SustitucionBienesBean() {
 
         respon = getDaoResp().getList();
@@ -384,7 +383,30 @@ public class SustitucionBienesBean implements Serializable {
     public void setMarcaSeleccionada(Integer marcaSeleccionada) {
         this.marcaSeleccionada = marcaSeleccionada;
     }
-    
+
+    public Integer getIdFec() {
+        return idFec;
+    }
+
+    public void setIdFec(Integer idFec) {
+        this.idFec = idFec;
+    }
+
+    public int getIdCod() {
+        return idCod;
+    }
+
+    public void setIdCod(int idCod) {
+        this.idCod = idCod;
+    }
+
+    public Integer getIdUs() {
+        return idUs;
+    }
+
+    public void setIdUs(Integer idUs) {
+        this.idUs = idUs;
+    }
     
     
     
@@ -406,19 +428,21 @@ public class SustitucionBienesBean implements Serializable {
         return nuevaSustit;
     }
 
-    public void setNuevasustit() {
+    public void setNuevaSustit() {
 
         this.nuevaSustit = nuevaSustit;
 
     }
 
-    public TSustit getSustitSeleccionada() {
-        return sustituc;
+    public Integer getSustitSeleccionada() {
+        return sustitSeleccionada;
     }
 
-    public void setSustitSeleccionada(TBienes bienSeleccionado) {
-        this.sustituc = sustituc;
+    public void setSustitSeleccionada(Integer sustitSeleccionada) {
+        this.sustitSeleccionada = sustitSeleccionada;
     }
+
+   
 
     public CJefesDep getJefSelec() {
         return jefSelec;
@@ -427,6 +451,16 @@ public class SustitucionBienesBean implements Serializable {
     public void setJefSelec(CJefesDep jefSelec) {
         this.jefSelec = jefSelec;
     }
+    
+    
+    public AppSession getAppSession() {
+        return appSession;
+    }
+
+    public void setAppSession(AppSession appSession) {
+        this.appSession = appSession;
+    }
+
 
     public String limpiarTSutit() {
         sustituc = new TSustit();
@@ -438,7 +472,7 @@ public class SustitucionBienesBean implements Serializable {
         System.out.println("cod dig: " + cod);
 //        cod = detaSeleccionado.getTMovdCodigo();
         codSeleccionado = getDaoBienes().getCodBien(cod);
-        System.out.println("despues de query" + codSeleccionado);
+//        System.out.println("despues de query" + codSeleccionado);
         if ( codSeleccionado.getCDepenId() != null  ){
             depenSeleccionado = codSeleccionado.getCDepenId().getCDepenId();
             jefSelec = getDaoJefes().getDep(depenSeleccionado);
@@ -480,7 +514,6 @@ public class SustitucionBienesBean implements Serializable {
             respoSeleccionado = 0;
         }
         
-        System.out.println("no guarda las marcas");
         if (codSeleccionado.getCMarcaId() != null ){
         marcaAntSeleccionada = codSeleccionado.getCMarcaId().getCMarcaId();}
         else
@@ -494,17 +527,7 @@ public class SustitucionBienesBean implements Serializable {
             valBien=0;
         }
         //jefeSeleccionado=codSeleccionado.
-        System.out.println("codsel: " + codSeleccionado);
-        System.out.println("ubic: "+ubicacionSeleccionada);
-        System.out.println("jefe: "+jefSelec);
-        System.out.println("respo: "+respoSeleccionado);
-        System.out.println("depen:"+depenSeleccionado);
-        System.out.println("Id ubic: "+nuevaSustit.getCUbicId());
-        System.out.println("ubicg: "+nuevaSustit.getCUbicId().getCUbicDesc());
-        System.out.println("Id jefe: "+nuevaSustit.getCJefesdId());
-        System.out.println("jefeg: "+nuevaSustit.getCJefesdId().getCJefesdNombre());
-        System.out.println("depeng:"+nuevaSustit.getCDepenId().getCDepenDesc());
-        System.out.println("respong:"+nuevaSustit.getCRespId().getCRespNom1());
+//        System.out.println("codsel: " + codSeleccionado);
         return codSeleccionado;
     }
     
@@ -513,8 +536,7 @@ public class SustitucionBienesBean implements Serializable {
     }
 
     public String guardarSustit() throws NamingException, ParseException {
-        Date fecha = new Date();
-                if ( codSeleccionado.getCDepenId() != null  ){
+        if ( codSeleccionado.getCDepenId() != null  ){
             depenSeleccionado = codSeleccionado.getCDepenId().getCDepenId();
             jefSelec = getDaoJefes().getDep(depenSeleccionado);
             jefeSeleccionado=jefSelec.getCJefesdId();
@@ -558,7 +580,6 @@ public class SustitucionBienesBean implements Serializable {
         {
             respoSeleccionado = 0;
         }
-
         fechres = nuevaSustit.getTSustFechres();
         fechdic = nuevaSustit.getTSustFechdict();
         fechsut = nuevaSustit.getTSustFecha();
@@ -580,9 +601,9 @@ public class SustitucionBienesBean implements Serializable {
 
         }
         
-        System.out.println("todavia no se guardo");
-        
-        
+        nuevaSustit.setTSustFechc(fech);
+        idFec = getDaoTiempo().getFecha(fech).getTTmId();
+   	nuevaSustit.setTTmId(getDaoTiempo().getTm(idFec));
         if(marcaAntSeleccionada == null){
         } else{
            nuevaSustit.setTSustMarcAnt(marcaAntSeleccionada);
@@ -593,11 +614,20 @@ public class SustitucionBienesBean implements Serializable {
         else {
             nuevaSustit.setTSustMarcNew(marcaNewSeleccionada);
         }
+        nuevaSustit.setTSustCodigo(codSeleccionado.getTBienCodigo());
+        idCod=codSeleccionado.getTBienId();
+        nuevaSustit.setTBienId(getDaoBienes().getBien(idCod));
+        nuevaSustit.setTSustDescAnt(codSeleccionado.getTBienDesc());
+        nuevaSustit.setTSustModeAnt(codSeleccionado.getTBienModelo());
+        nuevaSustit.setTSustSerieAnt(codSeleccionado.getTBienSerie());
+        nuevaSustit.setTSustHorac(formatoHora.parse(formatoHora.format(fech)));
+        idUs = appSession.getUsuario().getCUserId();
+        nuevaSustit.setTSustUsec(idUs);
         System.out.println("verificar antes de guardar");
         System.out.println("Id ubic: "+nuevaSustit.getCUbicId());
         System.out.println("ubicg: "+nuevaSustit.getCUbicId().getCUbicDesc());
-        System.out.println("jefeg: "+nuevaSustit.getCJefesdId().getCJefesdNombre());
-        System.out.println("depeng:"+nuevaSustit.getCDepenId().getCDepenDesc());
+//        System.out.println("jefeg: "+nuevaSustit.getCJefesdId().getCJefesdNombre());
+//        System.out.println("depeng:"+nuevaSustit.getCDepenId().getCDepenDesc());
         System.out.println("respong:"+nuevaSustit.getCRespId().getCRespNom1());
         
         getDaoSustit().create(nuevaSustit);

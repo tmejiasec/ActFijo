@@ -120,6 +120,12 @@ public class TSustit implements Serializable {
     private Integer tFechsustId;
     @Column(name = "t_fechres_id")   
     private Integer tFechresId;
+    @Column(name = "t_sust_horac")
+    @Temporal(TemporalType.TIME)
+    private Date tSustHorac;
+    @Column(name = "t_sust_horam")
+    @Temporal(TemporalType.TIME)
+    private Date tSustHoram;
     @JoinColumn(name = "t_tm_id", referencedColumnName = "t_tm_id")
     @ManyToOne(optional = false)
     private TTiempo tTmId;
@@ -333,6 +339,23 @@ public class TSustit implements Serializable {
         this.tSustFechm = tSustFechm;
     }
 
+    public Date getTSustHorac() {
+        return tSustHorac;
+    }
+
+    public void setTSustHorac(Date tSustHorac) {
+        this.tSustHorac = tSustHorac;
+    }
+
+    public Date getTSustHoram() {
+        return tSustHoram;
+    }
+
+    public void setTSustHoram(Date tSustHoram) {
+        this.tSustHoram = tSustHoram;
+    }
+
+    
   public TTiempo getTTmId() {
         return tTmId;
     }
@@ -455,6 +478,10 @@ public class TSustit implements Serializable {
     @Override
     public String toString() {
         return "entidades.TSustit[ tSustId=" + tSustId + " ]";
+    }
+
+    public void setTiempo(TTiempo tm) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
