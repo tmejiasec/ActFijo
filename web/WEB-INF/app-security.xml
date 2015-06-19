@@ -17,39 +17,40 @@
                                 
 <!--        <intercept-url pattern="/plantillas/**" access="hasRole('JEFE') OR hasRole('ADMINISTRADOR') OR hasRole('TECNICO')"/>
         <intercept-url pattern="/imagenes/**" access="isAuthenticated()"/>-->
-        <intercept-url pattern="/contenido/catsg_roles.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catsg_usuarios.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_munic.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_zonas.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_deptos.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_niveles.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_depend.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_jefesdep.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_respons.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_tecnicos.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_edificios.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_areas.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_ubic.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_zonas.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_deptos.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catg_munic.xhtml" access="hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catfn_formas.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catfn_fuentes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catfn_marcas.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catfn_provee.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catfn_proyec.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catfn_tipdoc.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catbm_rubros.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catbm_espec.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catbm_tipmov.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catbm_estproc.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catbm_estmov.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catbm_estbien.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/catbm_tipdesc.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/bm_registro.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/bm_movBienesT.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/bm_movBienesP.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
-        <intercept-url pattern="/contenido/bm_sustitucbienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')" />
+        <intercept-url pattern="/contenido/catsg_roles.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catsg_usuarios.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_munic.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_zonas.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_deptos.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_niveles.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_depend.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_jefesdep.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_respons.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR')OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_tecnicos.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_edificios.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_areas.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_ubic.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_zonas.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_deptos.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catg_munic.xhtml" access="hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catfn_formas.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catfn_fuentes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catfn_marcas.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catfn_provee.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catfn_proyec.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catfn_tipdoc.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catbm_rubros.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catbm_espec.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catbm_tipmov.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catbm_estproc.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catbm_estmov.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catbm_estbien.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/catbm_tipdesc.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/bm_registro.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/bm_movBienesT.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/bm_movBienesP.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/bm_movBienesR.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/bm_sustitucbienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
 
             
         <!-- Disable web URI authorization, as we're using <global-method-security> and have @Secured the services layer instead

@@ -31,6 +31,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CEstadoMov.findByCEstmovId", query = "SELECT c FROM CEstadoMov c WHERE c.cEstmovId = :cEstmovId"),
     @NamedQuery(name = "CEstadoMov.findByCEstmovDesc", query = "SELECT c FROM CEstadoMov c WHERE c.cEstmovDesc = :cEstmovDesc")})
 public class CEstadoMov implements Serializable {
+    @OneToMany(mappedBy = "cEstmovId")
+    private List<TSegMov> tSegMovList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -97,6 +99,14 @@ public class CEstadoMov implements Serializable {
     @Override
     public String toString() {
         return "entidades.CEstadoMov[ cEstmovId=" + cEstmovId + " ]";
+    }
+
+    public List<TSegMov> getTSegMovList() {
+        return tSegMovList;
+    }
+
+    public void setTSegMovList(List<TSegMov> tSegMovList) {
+        this.tSegMovList = tSegMovList;
     }
     
 }

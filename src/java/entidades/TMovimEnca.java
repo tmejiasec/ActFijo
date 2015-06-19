@@ -62,8 +62,13 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TMovimEnca.findByTMoveFeciId", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveFeciId = :tMoveFeciId"),
     @NamedQuery(name = "TMovimEnca.findByTMoveFecaId", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveFecaId = :tMoveFecaId"),
     @NamedQuery(name = "TMovimEnca.findByTMoveFeccId", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveFeccId = :tMoveFeccId"),
+    @NamedQuery(name = "TMovimEnca.findByCTipmId", query = "SELECT t FROM TMovimEnca t WHERE t.cTipmId.cTipmId = :cTipmId"),
+    @NamedQuery(name = "TMovimEnca.findByCEstmovId", query = "SELECT t FROM TMovimEnca t WHERE t.cEstmovId.cEstmovId = :cEstmovId"),
+    @NamedQuery(name = "TMovimEnca.findByMovyEst", query = "SELECT t FROM TMovimEnca t WHERE t.cTipmId.cTipmId = :cTipmId AND t.cEstmovId.cEstmovId = :cEstmovId"),
     @NamedQuery(name = "TMovimEnca.findByTMoveFecafId", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveFecafId = :tMoveFecafId")})
 public class TMovimEnca implements Serializable {
+    @OneToMany(mappedBy = "tMoveId")
+    private List<TSegMov> tSegMovList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -149,12 +154,6 @@ public class TMovimEnca implements Serializable {
     @Column(name = "t_move_horam")
     @Temporal(TemporalType.TIME)
     private Date tMoveHoram;
-    @JoinColumn(name = "t_repar_id", referencedColumnName = "t_repar_id")
-    @ManyToOne
-    private TRepar tReparId;
-    @JoinColumn(name = "t_prest_id", referencedColumnName = "t_prest_id")
-    @ManyToOne
-    private TPrest tPrestId;
     @JoinColumn(name = "c_tipm_id", referencedColumnName = "c_tipm_id")
     @ManyToOne(optional = false)
     private CTiposMov cTipmId;
@@ -438,23 +437,6 @@ public class TMovimEnca implements Serializable {
     public void setTMoveFecafId(Integer tMoveFecafId) {
         this.tMoveFecafId = tMoveFecafId;
     }
-
-    public TRepar getTReparId() {
-        return tReparId;
-    }
-
-    public void setTReparId(TRepar tReparId) {
-        this.tReparId = tReparId;
-    }
-
-    public TPrest getTPrestId() {
-        return tPrestId;
-    }
-
-    public void setTPrestId(TPrest tPrestId) {
-        this.tPrestId = tPrestId;
-    }
-
     public CTiposMov getCTipmId() {
         return cTipmId;
     }
@@ -496,19 +478,19 @@ public class TMovimEnca implements Serializable {
         this.tMovimDetaList = tMovimDetaList;
     }
 
-    public List<TRepar> getTReparList() {
+    public List<TRepar> gettReparList() {
         return tReparList;
     }
 
-    public void setTReparList(List<TRepar> tReparList) {
+    public void settReparList(List<TRepar> tReparList) {
         this.tReparList = tReparList;
     }
 
-    public List<TPrest> getTPrestList() {
+    public List<TPrest> gettPrestList() {
         return tPrestList;
     }
 
-    public void setTPrestList(List<TPrest> tPrestList) {
+    public void settPrestList(List<TPrest> tPrestList) {
         this.tPrestList = tPrestList;
     }
 
@@ -535,6 +517,14 @@ public class TMovimEnca implements Serializable {
     @Override
     public String toString() {
         return "entidades.TMovimEnca[ tMoveId=" + tMoveId + " ]";
+    }
+
+    public List<TSegMov> getTSegMovList() {
+        return tSegMovList;
+    }
+
+    public void setTSegMovList(List<TSegMov> tSegMovList) {
+        this.tSegMovList = tSegMovList;
     }
     
 }

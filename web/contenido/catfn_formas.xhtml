@@ -12,9 +12,9 @@
 
         <ui:define name="content" >
             <h:form id="formFormad" >
-                
+
                 <div class="table table-responsive table-bordered " >
-                    
+
                     <table id="tforma" class="table table-striped table-condensed">
                         <thead>
                             <tr>
@@ -41,7 +41,11 @@
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                              <a data-toggle="modal" href="#adicFma" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                                <!--<a data-toggle="modal" href="#adicFma" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicFma" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                    <p:ajax process="@this" update=":formFormad:displayFA1"/>
+                                </h:commandLink>                                   
+
                             </div>                              
                         </tbody>  
                     </table>
@@ -50,35 +54,32 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Adición de Formas de Adquisición</h4>
                             </div>
                             <div class="modal-body">
                                 <p:panelGrid id="displayFA1" columns="2" >  
-                        <h:outputLabel value="Código:" style="font-weight: bold"/>  
-                        <h:outputText value="#{catfnBean.nuevaForma.CFormadId}" /> 
-                       
-                        <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.nuevaForma.CFormadDesc}" style="width: 99%;" required="true"/> 
+                                    <h:outputLabel value="Código:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catfnBean.nuevaForma.CFormadId}" /> 
 
-                        <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catfnBean.guardarFa()}"  rendered="#{!catfnBean.edit}" update="@all" process="@this displayFA1"  oncomplete="handleRequest(xhr, status, args); ; adicFma.hide();" />
-                        <script type="text/javascript">
-                            function handleRequest(xhr, status, args) {
-                                if (args.validationFailed) {
-                                    alert('Ha ocurrido un error. Complete los datos necesarios');
-                                }else{
-                                    alert('Datos adicionados correctamente');
-                                    adicFma.hide();
-                                }
-                            }
-                        
-                        </script>
-                                    
+                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.nuevaForma.CFormadDesc}" style="width: 99%;" required="true"/> 
+
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catfnBean.guardarFa()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayFA1"  oncomplete="handleRequest(xhr, status, args); ; adicFma.hide();" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                                adicFma.hide();
+                                            }
+                                        }
+
+                                    </script>
+
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -88,28 +89,25 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Modificación de Forma de Adquisición</h4>
                             </div>
                             <div class="modal-body">
                                 <p:panelGrid id="displayFA2" columns="2" >  
-                        <h:outputLabel value="Código:" style="font-weight: bold"/>  
-                        <h:outputText value="#{catfnBean.formaSeleccionada.CFormadId}" /> 
-                       
-                        <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.formaSeleccionada.CFormadDesc}" style="width: 99%;" required="true"/> 
+                                    <h:outputLabel value="Código:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catfnBean.formaSeleccionada.CFormadId}" /> 
 
-                        <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catfnBean.actualFa()}" rendered="#{!catfnBean.edit}" update="@all" process="@this displayFA2"  oncomplete="modifFma.hide();"/>
+                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catfnBean.formaSeleccionada.CFormadDesc}" style="width: 99%;" required="true"/> 
+
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catfnBean.actualFa()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayFA2"  oncomplete="modifFma.hide();"/>
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
             </h:form>
         </ui:define>
         <ui:define name="scripts">
@@ -117,32 +115,32 @@
                 $(document).ready(function () {
                     $('#tforma').dataTable(
                             {
-                    "oLanguage": {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                }
-                            );
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
                 });
             </script>
         </ui:define>

@@ -29,6 +29,8 @@ public interface CUsuariosFacadeLocal {
     public CUsuarios getUsuario(Integer usuario);
     
     public CUsuarios traeUsuarioLogeado(String usuario);
+    
+    public Integer busLogin(String cod);
 
     CUsuarios find(Object id);
 

@@ -25,7 +25,6 @@
                             <p:growl id="growl" />
                             <legend>
                                 <div class="form-header">
-                                    <button type="button" class="close"  aria-hidden="true">Cancelar ×</button>
                                     <h4 class="modal-title">Adición de Movimientos de Bienes Muebles</h4>
                                 </div>
                             </legend>
@@ -143,6 +142,14 @@
                                             </p:calendar>
                                         </div>
                                     </div>  
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="using">Ingresado Por</label>
+                                        <div>
+                                            <h:outputText id="using" value="#{appSession.usuario.CUserNombre}"/>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <h:outputLabel value="Observaciones: " />
@@ -187,9 +194,9 @@
                                     </p:column>  
                                 </p:dataTable>
                                 <div class="form-group">
-                                  <div class="col-lg-6 col-lg-offset-9">
-                                    <p:commandButton id="agregaDet" value="Adicionar Bienes"  styleClass="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicDetmov" />
-                                  </div>
+                                    <div class="col-lg-6 col-lg-offset-9">
+                                        <p:commandButton id="agregaDet" value="Adicionar Bienes"  styleClass="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicDetmov" />
+                                    </div>
                                 </div>
                             </div>
                             <!--// probar aqui los botones -->
@@ -198,7 +205,7 @@
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                             <h4 class="modal-title">Seleccionar Bienes a Agregar a Movimiento</h4>
                                         </div>
                                         <div class="modal-body">
@@ -227,24 +234,24 @@
                                                     </p:column>                                                    
                                                 </p:dataTable>
                                                 <div class="form-group">
-                                                  <div>
-                                                    <p:commandButton icon="ui-icon-plusthick" value="Agregar" process="@this seleccionar_bienes" action="#{movBienesBean.updateDetalle()}" update=":adiMBien:encab" oncomplete="#adicDetmov.hide();" style="margin-top: 10px;"/>
-                                                  </div>
+                                                    <div>
+                                                        <p:commandButton icon="ui-icon-plusthick" value="Agregar" process="@this seleccionar_bienes" action="#{movBienesBean.updateDetalle()}" update=":adiMBien:encab" oncomplete="#adicDetmov.hide();" style="margin-top: 10px;"/>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-default">Cancelar</button>
-                                        </div>
+                                        <!--                                        <div class="modal-footer">
+                                                                                    <button class="btn btn-default">Cancelar</button>
+                                                                                </div>-->
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group">
-                              <div class="col-lg-12 col-lg-offset-9">
-                                <p:commandButton id="Nuevo" value="Agregar Otro Movimiento" class="btn btn-primary"
-                                             action="#{movBienesBean.limpiarE()}" process="@this" update=":adiMBien:adicMov encab">
-                                </p:commandButton>
-                              </div>
+                                <div class="col-lg-12 col-lg-offset-9">
+                                    <p:commandButton id="Nuevo" value="Agregar Otro Movimiento" class="btn btn-primary"
+                                                     action="#{movBienesBean.limpiarE()}" process="@this" update=":adiMBien:adicMov encab">
+                                    </p:commandButton>
+                                </div>
                             </div>
                         </h:form>
 
@@ -275,10 +282,10 @@
                                             <td>#{mbien.TMoveAnio}</td>
                                             <td>#{mbien.CEstmovId.CEstmovDesc}</td>
                                             <td>
-                                                <h:commandLink value="Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifMbien" >
+                                                <h:commandLink id="modi" value="Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifMbien" >
                                                     <f:setPropertyActionListener value="#{mbien}"
                                                                                  target="#{movBienesBean.encaSeleccionado}" />
-                                                    <p:ajax process="@this" update=":formMBien:modiMBien:displayB2"/>
+                                                    <p:ajax process="@this" listener="#{movBienesBean.limpiaNom()}" update=":formMBien:modiMBien:displayB2"/>
                                                 </h:commandLink>
                                             </td>
                                         </tr>
@@ -289,22 +296,183 @@
                         <div id="modifMbien" class="modal">
                             <div class="modal-dialog">
                                 <h:head></h:head>
-                                <h:form id="modiMBien" > 
+                                <h:form id="modiMBien" >
+                                    <p:growl id="growlm" />
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar ×</button>
-                                            <h4 class="modal-title">Modificación de Encabezado de Movimientos de Bienes Muebles</h4>
+                                            <h4 class="modal-title">Modificación de Movimientos de Bienes Muebles</h4>
                                         </div>
                                         <div class="modal-body">
                                             <div class="panel panel-default">
                                                 <div class="panel-body" id="modiPy2">
                                                     <h:panelGroup id="displayB2"> 
+                                                        <div class="form-group">
+                                                            <div class="col-md-6">
+                                                                <label >Tipo de Movimiento</label>
+                                                                <legend>TRASLADO</legend>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label >Estado del Movimiento</label>
+                                                                <legend>
+                                                                    <h:outputText value="#{movBienesBean.encaSeleccionado.CEstmovId.CEstmovDesc}"/>
+                                                                </legend>
+                                                            </div>              
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-6">
+                                                                <label>Año</label>
+                                                                <div>
+                                                                    <h:outputText value="#{movBienesBean.encaSeleccionado.TMoveAnio}"/> 
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label >Correlativo</label>
+                                                                <div>
+                                                                    <h:outputText id="corr" value="#{movBienesBean.encaSeleccionado.TMoveCorr}"/>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-6">
+                                                                <label >Nivel Organizativo Solicitante</label>
+                                                                <div >
+                                                                    <h:selectOneMenu id="nivelsm" value="#{movBienesBean.encaSeleccionado.TMoveNivs}" style="width: 100%;" >
+                                                                        <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{movBienesBean.niveles}" var="niv" itemLabel="#{niv.CNivelDescrip}" itemValue="#{niv.CNivelId}" />
+                                                                        <p:ajax  listener="#{movBienesBean.depSeleccionM()}" update="depenm"/>                         
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label >Dependencia Solicitante</label>
+                                                                <div >
+                                                                    <h:selectOneMenu id="depenm" value="#{movBienesBean.encaSeleccionado.TMoveDeps}" style="width: 100%" >
+                                                                        <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                                        <f:selectItems value="#{movBienesBean.depens}" var="depe" itemLabel="#{depe.CDepenDesc}" itemValue="#{depe.CDepenId}"/>
+                                                                    </h:selectOneMenu>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-6">
+                                                                <label for="respos" >Persona Solicitante</label>
+                                                                <h:selectOneMenu id="respos" value="#{movBienesBean.encaSeleccionado.TMovePers}" style="width: 100%" >
+                                                                    <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                    <f:selectItems value="#{movBienesBean.respons}" var="resp" itemLabel="#{resp.CRespApe1} #{resp.CRespApe2} #{resp.CRespApec} #{resp.CRespNom1} #{resp.CRespNom2}" itemValue="#{resp.CRespId}"/>
+                                                                </h:selectOneMenu>  
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="cargosm" >Cargo de Persona Solicitante</label>
+                                                                <h:outputText id="cargosm" value="#{resp.CRespCargo}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-6">
+                                                                <label >Nivel Organizativo Responsable</label>
+                                                                <div>
+                                                                    <h:outputText id="nivR" value="#{movBienesBean.nomNivE}" style="width: 100%;" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label >Dependencia Responsable</label>
+                                                                <div >
+                                                                    <h:outputText id="depR" value="#{movBienesBean.nomDepE}" style="width: 100%" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-6">
+                                                                <label >Persona Responsable del Bien</label>
+                                                                <h:outputText id="resR" value="#{movBienesBean.nomRespE}" style="width: 100%" />
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label >Cargo de Persona Responsable</label>
+                                                                <h:outputText id="carR" value="#{movBienesBean.cargoE}"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-6">
+                                                                <label for="fecs">Fecha de Salida del Bien</label>
+                                                                <div>
+                                                                    <p:calendar id="fecs"
+                                                                                value="#{movBienesBean.encaSeleccionado.TMoveFecsal}" locale="es"
+                                                                                pattern="dd/MM/yyyy" showOn="button" 
+                                                                                size="12" tabindex="2" style="width: 100%;">
+                                                                        <p:ajax event="dateSelect" />
+                                                                    </p:calendar>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label for="fecr">Fecha de Retorno del Bien</label>
+                                                                <div>
+                                                                    <p:calendar id="fecr"
+                                                                                value="#{movBienesBean.encaSeleccionado.TMoveFecret}" locale="es"
+                                                                                pattern="dd/MM/yyyy" showOn="button" 
+                                                                                size="12" tabindex="2" style="width: 100%;">
+                                                                        <p:ajax event="dateSelect" />
+                                                                    </p:calendar>
+                                                                </div>
+                                                            </div>  
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-md-12">
+                                                                <h:outputLabel value="Observaciones: " />
+                                                                <p:inputTextarea value="#{movBienesBean.encaSeleccionado.TMoveObser}"
+                                                                                 rows="3" style="width: 98%;" autoResize="false" tabindex="9"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="col-lg-10 col-lg-offset-4">
+                                                                <p:commandButton id="verDet" value="Ver Detalle"  styleClass="btn btn-primary" action="#{movBienesBean.genDeta()}" update=":formMBien:modiMBien:detam nivR depR resR carR"/>
+                                                                <p:commandButton id="actEnc" value="Actualizar Encabezado"  styleClass="btn btn-primary" action="#{movBienesBean.actualE()}" process=":formMBien:modiMBien" update="growlm" oncomplete="#modifMbien.hide();">
+                                                                </p:commandButton>	
 
+                                                            </div>
+                                                        </div>
                                                     </h:panelGroup>  
                                                 </div>
                                             </div>
+                                            <div class="table table-responsive table-bordered" >
+                                                <p:dataTable id="detam" var="detallem" value="#{movBienesBean.movdeta}" rowKey="#{detallem.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
+                                                    <p:column headerText="Codigo" filterBy="#{detallem.TMovdCodigo}"  style="width:125px;" >
+                                                        <h:outputText value="#{detallem.TMovdCodigo}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Descripción" >
+                                                        <h:outputText value="#{detallem.TBienId.TBienDesc}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Marca">
+                                                        <h:outputText value="#{detallem.TBienId.CMarcaId.CMarcaDesc}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Modelo">
+                                                        <h:outputText value="#{detallem.TBienId.TBienModelo}">
+                                                        </h:outputText>
+                                                    </p:column>   
+                                                    <p:column headerText="Serie">
+                                                        <h:outputText value="#{detallem.TBienId.TBienSerie}">
+                                                        </h:outputText>
+                                                    </p:column>  
+                                                </p:dataTable>
+                                            </div>
+
                                         </div>
+                                        <div class="modal-footer">
+                                            <div class="form-group">
+                                                <div class="col-md-8">
+                                                    <label >Modificado Por</label>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <h:outputText value="#{appSession.usuario.CUserNombre}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
+
+
                                 </h:form>
                             </div>
                         </div>
@@ -312,6 +480,265 @@
                 </div>
                 <div class="tab-pane fade" id="seguimiento">
                     <h:form id="formSeg" enctype="multipart/form-data" >
+                        <p:growl id="growls" />
+                        <legend>
+                            <div class="form-header">
+                                <h4 class="modal-title">Seguimiento de Movimientos de Bienes Muebles</h4>
+                            </div>
+                        </legend>
+                        <h:panelGroup id="adicSMov"> 
+                            <fieldset>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label>Tipo de Movimiento</label>
+                                        <legend style="color:#157ab5">TRASLADO</legend>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="anio" >Año</label>
+                                        <div>
+                                            <p:inputText id="anioS" value="#{movBienesBean.anio}" style="color:#157ab5"> 
+                                                <p:ajax listener="#{movBienesBean.asigAnio()}" update="@this"/>
+                                            </p:inputText>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label >Correlativo</label>
+                                        <div>
+                                            <p:inputText id="corrS" value="#{movBienesBean.correl}" style="color:#157ab5">
+                                                <p:ajax listener="#{movBienesBean.buscarMov}" update="@this :formSeg:growls :formSeg:adicSMov"/>
+                                            </p:inputText>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label >Estado del Movimiento</label>
+                                        <legend>
+                                            <h:outputText value="#{movBienesBean.encaSeleccionado.CEstmovId.CEstmovDesc}" style="color:#157ab5"/>
+                                        </legend>
+                                    </div>                                
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend></legend>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label >Nivel Organizativo Solicitante</label>
+                                        <div >
+                                            <h:outputText id="nivS" value="#{movBienesBean.nomNivS}" style="color:#157ab5"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label >Dependencia Solicitante</label>
+                                        <div >
+                                            <h:outputText id="depS" value="#{movBienesBean.nomDepS}" style="color:#157ab5"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label> Persona Solicitante</label>
+                                        <div>
+                                            <h:outputText id="resS" value="#{movBienesBean.nomRespS}" style="color:#157ab5"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Cargo de Persona Solicitante</label>
+                                        <h:outputText id="cargS" value="#{movBienesBean.cargoS}" style="color:#157ab5"/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend></legend>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label >Nivel Organizativo Responsable</label>
+                                        <div >
+                                            <h:outputText id="nivEr" value="#{movBienesBean.nomNivE}" style="color:#157ab5"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label >Dependencia Responsable</label>
+                                        <div >
+                                            <h:outputText id="depEr" value="#{movBienesBean.nomDepE}" style="color:#157ab5"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Persona Responsable del Bien</label>
+                                        <div>
+                                            <h:outputText id="RespSr" value="#{movBienesBean.nomRespE}" style="color:#157ab5"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Cargo de Persona Responsable</label>
+                                        <div>
+                                            <h:outputText id="cargEr" value="#{movBienesBean.cargoE}" style="color:#157ab5"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend></legend>
+                                <div class="form-group">
+                                    <div class="col-md-3">
+                                        <label for="fecse">Fecha de Salida del Bien</label>
+                                        <div>
+                                            <h:outputText value="#{movBienesBean.encaSeleccionado.TMoveFecsal}" style="color:#157ab5">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" locale="es" />
+                                            </h:outputText>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Fecha de Retorno del Bien</label>
+                                        <div>
+                                            <h:outputText id="fecrSe" value="#{movBienesBean.encaSeleccionado.TMoveFecret}" style="color:#157ab5">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" locale="es" />
+                                            </h:outputText>
+                                        </div>
+                                    </div>  
+                                    <div class="col-md-3">
+                                        <label>Fecha Ingreso</label>
+                                        <div>
+                                            <h:outputText value="#{movBienesBean.encaSeleccionado.TMoveFechc}" style="color:#157ab5">
+                                                <f:convertDateTime pattern="dd/MM/yyyy" locale="es" />
+                                            </h:outputText>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Ingresado Por</label>
+                                        <div>
+                                            <h:outputText value="#{movBienesBean.nomUs}" style="color:#157ab5"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset>
+                                <legend></legend>
+                                <div class="form-group">
+                                    <h:outputLabel value="Observaciones: " />
+                                    <p:inputTextarea value="#{movBienesBean.encaSeleccionado.TMoveObser}"
+                                                     rows="3" style="width: 98%;" autoResize="false" tabindex="9"/>
+                                </div>
+                            </fieldset>
+                            <div class="form-group">
+                                <div class="col-lg-12 col-lg-offset-8">
+                                    <p:commandButton id="verDeta" value="Ver Detalle de Bienes"  styleClass="btn btn-primary" action="#{movBienesBean.genDetaS()}" pt:data-toggle="modal" pt:data-target="#verDetaC" update=":formSeg:detaSeg" />
+                                    <p:commandButton id="agregaDet" value="Agregar Seguimiento"  styleClass="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicDetseg" />
+                                </div>
+                            </div>
+                        </h:panelGroup>
+                        <!--aqui agregar dialogo para adicionar datos complementarios-->
+                        <div class="table table-responsive table-bordered" >
+                            <p:dataTable id="seguim" var="seg" value="#{movBienesBean.seguim}" rowKey="#{seg.TSegId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay seguimientos registrados">
+                                <p:column headerText="Estado"  style="width:125px;" >
+                                    <h:outputText value="#{seg.CEstmovId.CEstmovDesc}"/>
+                                </p:column>
+                                <p:column headerText="Observación" >
+                                    <h:outputText value="#{seg.TSegObserv}"/>
+                                </p:column>
+                                <p:column headerText="Fecha">
+                                    <h:outputText value="#{seg.TSegFecha}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy" locale="es" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="Hora">
+                                    <h:outputText value="#{seg.TSegHora}">
+                                    </h:outputText>
+                                </p:column>   
+                                <p:column headerText="Usuario">
+                                    <h:outputText value="#{seg.CUserId.CUserNombre}">
+                                    </h:outputText>
+                                </p:column>  
+                            </p:dataTable>
+
+                        </div>
+
+                        <!--aqui agregar tabla de detalle de movimientos-->
+                        <div id="verDetaC" class="modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title">Bienes incluídos en este Movimiento</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="table table-responsive table-bordered" >
+                                            <p:dataTable id="detaSeg" var="detalle" value="#{movBienesBean.movdeta}" rowKey="#{detalle.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
+                                                <p:column headerText="Codigo" filterBy="#{detalle.TBienId.TBienCodigo}"  style="width:125px;" >
+                                                    <h:outputText value="#{detalle.TMovdCodigo}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Descripción" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienDesc}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Marca">
+                                                    <h:outputText value="#{detalle.TBienId.CMarcaId.CMarcaDesc}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Modelo">
+                                                    <h:outputText value="#{detalle.TBienId.TBienModelo}">
+                                                    </h:outputText>
+                                                </p:column>   
+                                                <p:column headerText="Serie">
+                                                    <h:outputText value="#{detalle.TBienId.TBienSerie}">
+                                                    </h:outputText>
+                                                </p:column>  
+                                            </p:dataTable>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--// probar aqui los botones -->
+
+                        <div id="adicDetseg" class="modal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
+                                        <h4 class="modal-title">Adición de Seguimiento a Traslado</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h:panelGroup id="adiSeg"> 
+                                            <fieldset>
+                                                <legend></legend>
+                                                <div class="form-group">
+                                                    <div class="col-md-4">
+                                                        <label >Estado del Movimiento</label>
+                                                        <div >
+                                                            <h:selectOneMenu id="depen" value="#{movBienesBean.nuevoSeg.CEstmovId}" style="width: 100%" >
+                                                                <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
+                                                                <f:selectItems value="#{movBienesBean.estmovs}" var="estmove" itemLabel="#{estmove.CEstmovDesc}" itemValue="#{estmove.CEstmovId}"/>
+                                                            </h:selectOneMenu>
+                                                        </div>                                                        
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <label>Observación</label>
+                                                        <div>
+                                                            <p:inputTextarea value="#{movBienesBean.nuevoSeg.TSegObserv}"
+                                                                             rows="3" style="width: 98%;" autoResize="false" tabindex="9"/>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+
+                                            <div class="form-group">
+                                                <div>
+                                                    <p:commandButton icon="ui-icon-plusthick" value="Guardar Seguimiento" process="@this" action="#{movBienesBean.guardarS()}" update=":formSeg:seguim" oncomplete="#adicDetseg.hide();" style="margin-top: 10px;"/>
+                                                </div>
+                                            </div>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12 col-lg-offset-9">
+                                <p:commandButton id="Nuevo" value="Limpiar Datos" class="btn btn-primary"
+                                                 action="#{movBienesBean.limpiarS()}" process="@this" update=":formSeg:adicSMov detaSeg">
+                                </p:commandButton>
+                            </div>
+                        </div>
+
                     </h:form>
                 </div>
 

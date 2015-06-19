@@ -13,7 +13,7 @@
         <ui:define name="content" >
             <h:form id="formZonas" >
                 <div class="table table-responsive table-bordered" >
-                    
+
                     <table id="tzonas" class="table table-striped table-condensed">
                         <thead>
                             <tr>
@@ -37,12 +37,16 @@
                                                                          target="#{catgeBean.zonaSeleccionada}" />
                                             <p:ajax process="@this" update=":formZonas:displayZ2"/>
                                         </h:commandLink>
-                                           <!--<a data-toggle="modal" href="#modifNiv" class="btn btn-link glyphicon glyphicon-edit" >Modificar</a>--> 
+                                        <!--<a data-toggle="modal" href="#modifNiv" class="btn btn-link glyphicon glyphicon-edit" >Modificar</a>--> 
                                     </td>
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                              <a data-toggle="modal" href="#adicZona" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                                <!--<a data-toggle="modal" href="#adicZona" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicZona" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                    <p:ajax process="@this" update=":formZonas:displayZ1"/>
+                                </h:commandLink>                                   
+
                             </div>                              
                         </tbody>  
                     </table>
@@ -51,34 +55,31 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Adición de Zona</h4>
                             </div>
                             <div class="modal-body">
                                 <p:panelGrid id="displayZ1" columns="2" >  
-                        <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
-                        <h:outputText value="#{catgeBean.nuevaZona.CZonaId}" /> 
+                                    <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nuevaZona.CZonaId}" /> 
 
-                        <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaZona.CZonaDesc}" style="width: 99%;" required="true" /> 
+                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaZona.CZonaDesc}" style="width: 99%;" required="true" /> 
 
-                        <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarZn()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayZ1"  oncomplete="handleRequest(xhr, status, args); ; adicZona.hide();" />
-                        <script type="text/javascript">
-                            function handleRequest(xhr, status, args) {
-                                if (args.validationFailed) {
-                                    alert('Ha ocurrido un error. Complete los datos necesarios');
-                                }else{
-                                    alert('Datos adicionados correctamente');
-                                    adicZona.hide();
-                                }
-                            }
-                        </script>
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarZn()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayZ1"  oncomplete="handleRequest(xhr, status, args); ; adicZona.hide();" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                                adicZona.hide();
+                                            }
+                                        }
+                                    </script>
 
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -88,24 +89,21 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Modificación de Zonas</h4>
                             </div>
                             <div class="modal-body">
                                 <p:panelGrid id="displayZ2" columns="2" >  
-                        <h:outputLabel value="Corr. Nivel:" style="font-weight: bold"/>  
-                        <h:outputText value="#{catgeBean.zonaSeleccionada.CZonaId}" />    
+                                    <h:outputLabel value="Corr. Nivel:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.zonaSeleccionada.CZonaId}" />    
 
-                        <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.zonaSeleccionada.CZonaDesc}" /> 
+                                    <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.zonaSeleccionada.CZonaDesc}" /> 
 
-                        <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualZn()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayZ2"  oncomplete="modifZona.hide();"/>
-                                    
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualZn()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayZ2"  oncomplete="modifZona.hide();"/>
+
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -117,36 +115,36 @@
                 $(document).ready(function () {
                     $('#tzonas').dataTable(
                             {
-                    "oLanguage": {
-                        "sProcessing": "Procesando...",
-                        "sLengthMenu": "Mostrar _MENU_ registros",
-                        "sZeroRecords": "No se encontraron resultados",
-                        "sEmptyTable": "Ningún dato disponible en esta tabla",
-                        "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-                        "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
-                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
-                        "sInfoPostFix": "",
-                        "sSearch": "Buscar:",
-                        "sUrl": "",
-                        "sInfoThousands": ",",
-                        "sLoadingRecords": "Cargando...",
-                        "oPaginate": {
-                            "sFirst": "Primero",
-                            "sLast": "Último",
-                            "sNext": "Siguiente",
-                            "sPrevious": "Anterior"
-                        },
-                        "oAria": {
-                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                        }
-                    }
-                }
-                            );
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
                 });
             </script>
         </ui:define>
-        
+
 
     </ui:composition>
 </html>

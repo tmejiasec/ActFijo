@@ -48,67 +48,68 @@
                         <ul class="dropdown-menu" >
                             <li><a>Catálogos Generales</a>
                                 <ul class="dropdown-menu">
-                                    <li><h:link value="Niveles Organizativos" outcome="Niveles" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Dependencias" outcome="Dependencias" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Jefes por Dependencia" outcome="Jefes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Responsables" outcome="Responsables" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Técnicos AF" outcome="Tecnicos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR')}"/></li>
-                                    <li><h:link value="Edificios" outcome="Edificios" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Areas por Edificio" outcome="Areas" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Ubicaciones por Area" outcome="Ubicaciones" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Zonas" outcome="Zonas" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR')}"/></li>
-                                    <li><h:link value="Departamentos" outcome="Deptos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR')}"/></li>
-                                    <li><h:link value="Municipios" outcome="Munic" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR')}"/></li>
+                                    <li><h:link value="Niveles Organizativos" outcome="Niveles" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF') }" /></li>
+                                    <li><h:link value="Dependencias" outcome="Dependencias" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Jefes por Dependencia" outcome="Jefes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Responsables" outcome="Responsables" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Técnicos AF" outcome="Tecnicos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Edificios" outcome="Edificios" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Dependencias por Edificio" outcome="Areas" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Areas por Dependencia" outcome="Ubicaciones" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Zonas" outcome="Zonas" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Departamentos" outcome="Deptos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Municipios" outcome="Munic" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
                                 </ul>
                             </li>
                             <li><a>Catálogos Financieros</a>
                                 <ul class="dropdown-menu">
-                                    <li><h:link value="Fuentes de Financiamiento" outcome="Fuentes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Formas de Adquisición" outcome="Formas" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Tipos de Documento" outcome="TipDoc" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Proveedores" outcome="Proveedores" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Proyectos" outcome="Proyectos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Marcas de Bienes" outcome="Marcas" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
+                                    <li><h:link value="Fuentes de Financiamiento" outcome="Fuentes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Formas de Adquisición" outcome="Formas" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Tipos de Documento" outcome="TipDoc" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Proveedores" outcome="Proveedores" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Proyectos" outcome="Proyectos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Marcas de Bienes" outcome="Marcas" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
                                 </ul>
                             </li>
                             <li><a>Catálogos Bienes Muebles</a>
                                 <ul class="dropdown-menu">
-                                    <li><h:link value="Rubros" outcome="Rubros" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Específicos" outcome="Especificos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Estado Físico del Bien" outcome="EstFis" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Condición del Bien" outcome="CondBien" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Estado de Proceso" outcome="EstProc" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Tipos de Movimiento" outcome="TipMov" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Estado del Movimiento" outcome="EstMov" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Tipos de Descargo" outcome="TipDesc" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
+                                    <li><h:link value="Rubros" outcome="Rubros" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Específicos" outcome="Especificos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Estado Físico del Bien" outcome="EstFis" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Condición del Bien" outcome="CondBien" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Estado de Proceso" outcome="EstProc" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Tipos de Movimiento" outcome="TipMov" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Estado del Movimiento" outcome="EstMov" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Tipos de Descargo" outcome="TipDesc" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
                                 </ul>
                             </li>
                             <li class="divider" ></li>
                             <li class="dropdown-header">Seguridad</li>
-                            <li ><h:link value="Roles" outcome="Roles" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR')}"/></li>
-                            <li><h:link value="Usuarios" outcome="Usuarios" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR')}"/></li>
+                            <li ><h:link value="Roles" outcome="Roles" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                            <li><h:link value="Usuarios" outcome="Usuarios" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
                             
                         </ul> 
                     </li>
                     <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Bienes Muebles</a>
                         <ul class="dropdown-menu" >
-                            <li><h:link value="Registro de Bienes Muebles" outcome="Bienes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
+                            <li><h:link value="Registro de Bienes Muebles" outcome="Bienes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
                             <li><a>Movimientos de Bienes</a>
                                 <ul class="dropdown-menu">
-                                    <li><h:link value="Traslados" outcome="Traslados" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
-                                    <li><h:link value="Préstamos/Reparaciones" outcome="Prestamos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
+                                    <li><h:link value="Traslados" outcome="Traslados" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Préstamos" outcome="Prestamos" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
+                                    <li><h:link value="Reparaciones" outcome="Repar" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
                                 </ul>
                             </li>
                             <li><a href="#">Asignaciones</a></li>
                             <li><a href="#">Recepciones</a></li>
                             <li><a href="#">Robo/Hurto</a></li>
-                            <li><h:link value="Sustituciones" outcome="Sustituciones" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
+                            <li><h:link value="Sustituciones" outcome="Sustituciones" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
                             <li><a href="#">Descargo de Bienes</a></li>
                         </ul> 
                     </li>
                     <li><a href="#" class="dropdown-toggle" data-toggle="dropdown">Reportes Bienes Muebles</a>
                         <ul class="dropdown-menu" >
-                            <li><h:link value="Reporte de Bienes" outcome="RepBienes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"/></li>
+                            <li><h:link value="Reporte de Bienes" outcome="RepBienes" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO') or appSession.usuario.CRolId.CRolNombre.equals('JEFE AF')}"/></li>
                             <li><a href="#">Bienes por Responsable</a></li>
                             <li><a href="#">Individual de Bienes</a></li>
                             <li><a href="#">Para Codificación Física de Bienes</a></li>

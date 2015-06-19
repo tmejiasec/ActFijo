@@ -47,7 +47,11 @@
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                              <a data-toggle="modal" href="#adicDep" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                              <!--<a data-toggle="modal" href="#adicDep" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicDep" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                   <p:ajax process="@this" update=":formDepen:displayD1"/>
+                                </h:commandLink>
+
                             </div>                              
                         </tbody>  
                     </table>
@@ -57,7 +61,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar×</button>
                                 <h4 class="modal-title">Adición de Dependencias</h4>
                             </div>
                             <div class="modal-body">
@@ -81,7 +85,7 @@
 
                                     <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
                                     <h:inputText value="#{catgeBean.nuevaDep.CDepenJerar}" /> 
-                                    <p:commandButton value="Guardar" id="guarde" icon="ui-icon-disk" action="#{catgeBean.guardarDp()}"  rendered="#{!catgeBean.edit}" disabled="#{catgeBean.estadoD}" update="@all" process="@this displayD1"  oncomplete="handleRequest(xhr, status, args); ; adicDep.hide();" />
+                                    <p:commandButton value="Guardar" id="guarde" icon="ui-icon-disk" action="#{catgeBean.guardarDp()}"  rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" disabled="#{catgeBean.estadoD}" update="@all" process="@this displayD1"  oncomplete="handleRequest(xhr, status, args); ; adicDep.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -95,9 +99,6 @@
                                 </p:panelGrid>  
 
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -106,7 +107,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar×</button>
                                 <h4 class="modal-title">Modificación de Dependencias</h4>
                             </div>
                             <div class="modal-body">
@@ -129,12 +130,9 @@
 
                                     <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
                                     <h:inputText value="#{catgeBean.depSeleccionada.CDepenJerar}" /> 
-                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualDp()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayD2"  oncomplete="modifDep.hide();"/>
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualDp()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayD2"  oncomplete="modifDep.hide();"/>
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>

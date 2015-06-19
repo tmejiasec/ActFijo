@@ -44,7 +44,11 @@
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                                <a data-toggle="modal" href="#adicProy" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                                <!--<a data-toggle="modal" href="#adicProy" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicProy" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                    <p:ajax process="@this" update=":formProyec:displayPy1"/>
+                                </h:commandLink>                                   
+                                
                             </div>                              
                         </tbody>  
                     </table>
@@ -53,7 +57,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar ×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Adición de Proyectos</h4>
                             </div>
                             <div class="modal-body">
@@ -187,7 +191,7 @@
                                                     </h:selectOneMenu>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catfnBean.guardarPy()}"  rendered="#{!catfnBean.edit}" update="@all" process="@this displayPy1"  oncomplete="handleRequest(xhr, status, args); ; adicProy.hide();" />
+                                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catfnBean.guardarPy()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"  update="@all" process="@this displayPy1"  oncomplete="handleRequest(xhr, status, args); ; adicProy.hide();" />
                                                     <script type="text/javascript">
                                                         function handleRequest(xhr, status, args) {
                                                             if (args.validationFailed) {
@@ -212,7 +216,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar ×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Modificación de Proyectos</h4>
                             </div>
                             <div class="modal-body">
@@ -345,7 +349,7 @@
                                                     </h:selectOneMenu>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catfnBean.actualPy()}" rendered="#{!catfnBean.edit}" update="@all" process="@this displayPy2"  oncomplete="modifProy.hide();"/>
+                                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catfnBean.actualPy()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayPy2"  oncomplete="modifProy.hide();"/>
                                                 </div>
                                             </div>
                                         </h:panelGroup>

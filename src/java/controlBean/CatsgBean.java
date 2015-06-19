@@ -5,8 +5,6 @@
  */
 package controlBean;
 
-
-
 import dao.CDependenciasFacadeLocal;
 import dao.CRolesFacadeLocal;
 import dao.CUsuariosFacadeLocal;
@@ -14,10 +12,15 @@ import entidades.CDependencias;
 import entidades.CRoles;
 import entidades.CUsuarios;
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 import util.FacesUtil;
 
@@ -28,10 +31,13 @@ import util.FacesUtil;
 @ManagedBean
 @SessionScoped
 public class CatsgBean implements Serializable {
+
     protected Integer tabIndex = 1;
     protected Boolean edit = false;
-    private String desc;	
-   
+    private String desc;
+    private Boolean estado = false;
+
+
     private List<CRoles> roles = new ArrayList<>();
     private CRoles rol;
     private CRoles nuevoRol = new CRoles();
@@ -42,19 +48,22 @@ public class CatsgBean implements Serializable {
     private CUsuarios usuarioSeleccionado = new CUsuarios();
     private Integer roleSeleccionado;
     private List<CDependencias> depens = new ArrayList<>();
-    private Integer depSeleccionada;   
+    private Integer depSeleccionada;
+    private Date fech = new Date();
+    SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
+
     /**
-    /**
-    /**
-    /**
-     * Creates a new instance 
+     * /**
+     * /**
+     * /**
+     * Creates a new instance
      */
     public CatsgBean() {
-	roles  =  getDaoRol().getList();
-        usuarios  =  getDaoUsuario().getList();
+        roles = getDaoRol().getList();
+        usuarios = getDaoUsuario().getList();
         depens = getDaoDepen().getList();
     }
-    
+
     public String buscarRl() throws NamingException {
 
         roles = getDaoRol().busqueda(desc);
@@ -65,7 +74,7 @@ public class CatsgBean implements Serializable {
         getDaoRol().create(nuevoRol);
         FacesUtil.addMensaje("Dato Guardado");
         nuevoRol = new CRoles();
-        roles  =  getDaoRol().getList();
+        roles = getDaoRol().getList();
         return null;
     }
 
@@ -79,34 +88,59 @@ public class CatsgBean implements Serializable {
         return null;
     }
 
-
     public String limpiarRl() {
-        rol= new CRoles();
+        rol = new CRoles();
         return null;
     }
 
-    public String guardarUs() throws NamingException {
+    public String guardarUs() throws NamingException, ParseException {
         nuevoUsuario.setCRolId(getDaoRol().getRol(roleSeleccionado));
         nuevoUsuario.setCDepenId(getDaoDepen().getDepend(depSeleccionada));
-        getDaoUsuario().create(nuevoUsuario);
-        FacesUtil.addMensaje("Dato Guardado");
+//        System.out.println("nom " + nuevoUsuario.getCUserNombre());
+//        System.out.println("pass " + nuevoUsuario.getCUserPass());
+//        System.out.println("log " + nuevoUsuario.getCUserLogin());
+//        System.out.println("est " + nuevoUsuario.getCUserEstado());
+//        System.out.println("rol " + nuevoUsuario.getCRolId());
+//        System.out.println("dep " + nuevoUsuario.getCDepenId());
+        nuevoUsuario.setCUserFeca(fech);
+        nuevoUsuario.setCUserHora(formatoHora.parse(formatoHora.format(fech)));
+
+        try {
+            getDaoUsuario().create(nuevoUsuario);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario Agregado correctamente"));
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario NO se agregó"));
+
+        }
+//        FacesUtil.addMensaje("Dato Guardado");
         nuevoUsuario = new CUsuarios();
-        usuarios  =  getDaoUsuario().getList();
+        usuarios = getDaoUsuario().getList();
         return null;
     }
 
-    public String actualUs() throws NamingException {
+    public String actualUs() throws NamingException, ParseException {
+        System.out.println("entrando a actualizar");
         usuarioSeleccionado.setCRolId(getDaoRol().getRol(roleSeleccionado));
         usuarioSeleccionado.setCDepenId(getDaoDepen().getDepend(depSeleccionada));
-        getDaoUsuario().edit(usuarioSeleccionado);
-        FacesUtil.addMensaje("Dato Actualizado");
+        usuarioSeleccionado.setCUserFecm(fech);
+        usuarioSeleccionado.setCUserHorm(formatoHora.parse(formatoHora.format(fech)));
+        try {
+            getDaoUsuario().edit(usuarioSeleccionado);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario modificado correctamente"));
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Usuario NO se modificó"));
+
+        }
+        usuarioSeleccionado = new CUsuarios();
+        usuarios = getDaoUsuario().getList();
         return null;
     }
 
     public String borrarUs() throws NamingException {
         return null;
     }
-
 
     public String limpiarUs() {
         usuario = new CUsuarios();
@@ -127,8 +161,8 @@ public class CatsgBean implements Serializable {
     private CUsuariosFacadeLocal getDaoUsuario() {
         return (CUsuariosFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CUsuariosFacade!dao.CUsuariosFacadeLocal");
     }
-    
-     private CDependenciasFacadeLocal getDaoDepen() {
+
+    private CDependenciasFacadeLocal getDaoDepen() {
         return (CDependenciasFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CDependenciasFacade!dao.CDependenciasFacadeLocal");
     }
 
@@ -146,6 +180,22 @@ public class CatsgBean implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public Boolean getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
+    }
+
+    public Date getFech() {
+        return fech;
+    }
+
+    public void setFech(Date fech) {
+        this.fech = fech;
     }
 
     public List<CRoles> getRoles() {
@@ -235,12 +285,35 @@ public class CatsgBean implements Serializable {
     public void setDepSeleccionada(Integer depSeleccionada) {
         this.depSeleccionada = depSeleccionada;
     }
-    
-    public void asignarRolDep(){
-        roleSeleccionado=usuarioSeleccionado.getCRolId().getCRolId();
-        depSeleccionada=usuarioSeleccionado.getCDepenId().getCDepenId();
+
+    public void asignarRolDep() {
+        roleSeleccionado = usuarioSeleccionado.getCRolId().getCRolId();
+        depSeleccionada = usuarioSeleccionado.getCDepenId().getCDepenId();
     }
     
-    
-}
+      public Date ParseFecha(String fecha) {
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechaDate = null;
+        try {
+            fechaDate = formato.parse(fecha);
+        } catch (ParseException ex) {
+            System.out.println(ex);
+        }
+        return fechaDate;}
+      
+    public void buscarLogin() throws NamingException {
+        int resul = 0;
+        String cod;
+        cod = nuevoUsuario.getCUserLogin();
+        resul = getDaoUsuario().busLogin(cod);
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok"));
+            estado = false;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Código ya existe. No puede adicionarlo: "));
+            estado = true;
+        }
+    }
+      
 
+}

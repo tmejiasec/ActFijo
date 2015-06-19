@@ -61,55 +61,65 @@ public class TDescargEnca implements Serializable {
     @Basic(optional = false)
     @Column(name = "t_descenc_id")
     private Integer tDescencId;
-    @Column(name = "t_descenc_corr")
-    private Short tDescencCorr;
-    @Column(name = "t_descenc_anio")
-    private Short tDescencAnio;
     @Column(name = "t_descenc_fechsol")
     @Temporal(TemporalType.DATE)
     private Date tDescencFechsol;
-    @Column(name = "t_descenc_estado")
-    private Short tDescencEstado;
-    @Column(name = "t_descenc_tidoc")
-    private Short tDescencTidoc;
     @Column(name = "t_descenc_copiadoc")
     private Boolean tDescencCopiadoc;
     @Column(name = "t_descenc_fechaut")
     @Temporal(TemporalType.DATE)
     private Date tDescencFechaut;
-    @Column(name = "t_descenc_codaut")
-    private Short tDescencCodaut;
     @Column(name = "t_descenc_fechpro")
     @Temporal(TemporalType.DATE)
     private Date tDescencFechpro;
-    @Column(name = "t_descenc_codpro")
-    private Short tDescencCodpro;
     @Column(name = "t_descenc_fechres")
     @Temporal(TemporalType.DATE)
     private Date tDescencFechres;
-    @Column(name = "t_descenc_codres")
-    private Short tDescencCodres;
     @Column(name = "t_descenc_fechdes")
     @Temporal(TemporalType.DATE)
     private Date tDescencFechdes;
-    @Column(name = "t_descenc_coddes")
-    private Short tDescencCoddes;
-    @Column(name = "t_descenc_usec")
-    private Short tDescencUsec;
     @Column(name = "t_descenc_fechc")
     @Temporal(TemporalType.DATE)
     private Date tDescencFechc;
-    @Column(name = "t_descenc_usem")
-    private Short tDescencUsem;
     @Column(name = "t_descenc_fechm")
     @Temporal(TemporalType.DATE)
     private Date tDescencFechm;
+    @Column(name = "t_descenc_corr")
+    private Integer tDescencCorr;
+    @Column(name = "t_descenc_anio")
+    private Integer tDescencAnio;
+    @Column(name = "t_descenc_estado")
+    private Integer tDescencEstado;
+    @Column(name = "t_descenc_tidoc")
+    private Integer tDescencTidoc;
+    @Column(name = "t_descenc_codaut")
+    private Integer tDescencCodaut;
+    @Column(name = "t_descenc_codpro")
+    private Integer tDescencCodpro;
+    @Column(name = "t_descenc_codres")
+    private Integer tDescencCodres;
+    @Column(name = "t_descenc_coddes")
+    private Integer tDescencCoddes;
+    @Column(name = "t_descenc_usec")
+    private Integer tDescencUsec;
+    @Column(name = "t_descenc_usem")
+    private Integer tDescencUsem;
     @Column(name = "t_descenc_fechsol_id")
-    private Short tDescencFechsolId;
+    private Integer tDescencFechsolId;
     @Column(name = "t_descenc_fechdes_id")
-    private Short tDescencFechdesId;
+    private Integer tDescencFechdesId;
     @Column(name = "t_descenc_fechaut_id")
-    private Short tDescencFechautId;
+    private Integer tDescencFechautId;
+    @Column(name = "t_descenc_horac")
+    @Temporal(TemporalType.TIME)
+    private Date tDescencHorac;
+    @Column(name = "t_descenc_horam")
+    @Temporal(TemporalType.TIME)
+    private Date tDescencHoram;
+    @Column(name = "t_descenc_horaut")
+    @Temporal(TemporalType.TIME)
+    private Date tDescencHoraut;
+    
     @JoinColumn(name = "c_jefesd_id", referencedColumnName = "c_jefesd_id")
     @ManyToOne(optional = false)
     private CJefesDep cJefesdId;
@@ -137,19 +147,19 @@ public class TDescargEnca implements Serializable {
         this.tDescencId = tDescencId;
     }
 
-    public Short getTDescencCorr() {
+    public Integer getTDescencCorr() {
         return tDescencCorr;
     }
 
-    public void setTDescencCorr(Short tDescencCorr) {
+    public void setTDescencCorr(Integer tDescencCorr) {
         this.tDescencCorr = tDescencCorr;
     }
 
-    public Short getTDescencAnio() {
+    public Integer getTDescencAnio() {
         return tDescencAnio;
     }
 
-    public void setTDescencAnio(Short tDescencAnio) {
+    public void setTDescencAnio(Integer tDescencAnio) {
         this.tDescencAnio = tDescencAnio;
     }
 
@@ -161,19 +171,19 @@ public class TDescargEnca implements Serializable {
         this.tDescencFechsol = tDescencFechsol;
     }
 
-    public Short getTDescencEstado() {
+    public Integer getTDescencEstado() {
         return tDescencEstado;
     }
 
-    public void setTDescencEstado(Short tDescencEstado) {
+    public void setTDescencEstado(Integer tDescencEstado) {
         this.tDescencEstado = tDescencEstado;
     }
 
-    public Short getTDescencTidoc() {
+    public Integer getTDescencTidoc() {
         return tDescencTidoc;
     }
 
-    public void setTDescencTidoc(Short tDescencTidoc) {
+    public void setTDescencTidoc(Integer tDescencTidoc) {
         this.tDescencTidoc = tDescencTidoc;
     }
 
@@ -193,11 +203,11 @@ public class TDescargEnca implements Serializable {
         this.tDescencFechaut = tDescencFechaut;
     }
 
-    public Short getTDescencCodaut() {
+    public Integer getTDescencCodaut() {
         return tDescencCodaut;
     }
 
-    public void setTDescencCodaut(Short tDescencCodaut) {
+    public void setTDescencCodaut(Integer tDescencCodaut) {
         this.tDescencCodaut = tDescencCodaut;
     }
 
@@ -209,11 +219,11 @@ public class TDescargEnca implements Serializable {
         this.tDescencFechpro = tDescencFechpro;
     }
 
-    public Short getTDescencCodpro() {
+    public Integer getTDescencCodpro() {
         return tDescencCodpro;
     }
 
-    public void setTDescencCodpro(Short tDescencCodpro) {
+    public void setTDescencCodpro(Integer tDescencCodpro) {
         this.tDescencCodpro = tDescencCodpro;
     }
 
@@ -225,11 +235,11 @@ public class TDescargEnca implements Serializable {
         this.tDescencFechres = tDescencFechres;
     }
 
-    public Short getTDescencCodres() {
+    public Integer getTDescencCodres() {
         return tDescencCodres;
     }
 
-    public void setTDescencCodres(Short tDescencCodres) {
+    public void setTDescencCodres(Integer tDescencCodres) {
         this.tDescencCodres = tDescencCodres;
     }
 
@@ -241,19 +251,19 @@ public class TDescargEnca implements Serializable {
         this.tDescencFechdes = tDescencFechdes;
     }
 
-    public Short getTDescencCoddes() {
+    public Integer getTDescencCoddes() {
         return tDescencCoddes;
     }
 
-    public void setTDescencCoddes(Short tDescencCoddes) {
+    public void setTDescencCoddes(Integer tDescencCoddes) {
         this.tDescencCoddes = tDescencCoddes;
     }
 
-    public Short getTDescencUsec() {
+    public Integer getTDescencUsec() {
         return tDescencUsec;
     }
 
-    public void setTDescencUsec(Short tDescencUsec) {
+    public void setTDescencUsec(Integer tDescencUsec) {
         this.tDescencUsec = tDescencUsec;
     }
 
@@ -265,11 +275,11 @@ public class TDescargEnca implements Serializable {
         this.tDescencFechc = tDescencFechc;
     }
 
-    public Short getTDescencUsem() {
+    public Integer getTDescencUsem() {
         return tDescencUsem;
     }
 
-    public void setTDescencUsem(Short tDescencUsem) {
+    public void setTDescencUsem(Integer tDescencUsem) {
         this.tDescencUsem = tDescencUsem;
     }
 
@@ -281,27 +291,27 @@ public class TDescargEnca implements Serializable {
         this.tDescencFechm = tDescencFechm;
     }
 
-    public Short getTDescencFechsolId() {
+    public Integer getTDescencFechsolId() {
         return tDescencFechsolId;
     }
 
-    public void setTDescencFechsolId(Short tDescencFechsolId) {
+    public void setTDescencFechsolId(Integer tDescencFechsolId) {
         this.tDescencFechsolId = tDescencFechsolId;
     }
 
-    public Short getTDescencFechdesId() {
+    public Integer getTDescencFechdesId() {
         return tDescencFechdesId;
     }
 
-    public void setTDescencFechdesId(Short tDescencFechdesId) {
+    public void setTDescencFechdesId(Integer tDescencFechdesId) {
         this.tDescencFechdesId = tDescencFechdesId;
     }
 
-    public Short getTDescencFechautId() {
+    public Integer getTDescencFechautId() {
         return tDescencFechautId;
     }
 
-    public void setTDescencFechautId(Short tDescencFechautId) {
+    public void setTDescencFechautId(Integer tDescencFechautId) {
         this.tDescencFechautId = tDescencFechautId;
     }
 
@@ -360,6 +370,32 @@ public class TDescargEnca implements Serializable {
     @Override
     public String toString() {
         return "entidades.TDescargEnca[ tDescencId=" + tDescencId + " ]";
+    }
+
+   
+
+    public Date getTDescencHorac() {
+        return tDescencHorac;
+    }
+
+    public void setTDescencHorac(Date tDescencHorac) {
+        this.tDescencHorac = tDescencHorac;
+    }
+
+    public Date getTDescencHoram() {
+        return tDescencHoram;
+    }
+
+    public void setTDescencHoram(Date tDescencHoram) {
+        this.tDescencHoram = tDescencHoram;
+    }
+
+    public Date getTDescencHoraut() {
+        return tDescencHoraut;
+    }
+
+    public void setTDescencHoraut(Date tDescencHoraut) {
+        this.tDescencHoraut = tDescencHoraut;
     }
     
 }

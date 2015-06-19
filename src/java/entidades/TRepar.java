@@ -61,8 +61,6 @@ public class TRepar implements Serializable {
     @Size(max = 100)
     @Column(name = "t_repar_pret_cargo")
     private String tReparPretCargo;
-    @OneToMany(mappedBy = "tReparId")
-    private List<TMovimEnca> tMovimEncaList;
     @JoinColumn(name = "t_move_id", referencedColumnName = "t_move_id")
     @ManyToOne
     private TMovimEnca tMoveId;
@@ -130,14 +128,7 @@ public class TRepar implements Serializable {
         this.tReparPretCargo = tReparPretCargo;
     }
 
-    public List<TMovimEnca> getTMovimEncaList() {
-        return tMovimEncaList;
-    }
-
-    public void setTMovimEncaList(List<TMovimEnca> tMovimEncaList) {
-        this.tMovimEncaList = tMovimEncaList;
-    }
-
+    
     public TMovimEnca getTMoveId() {
         return tMoveId;
     }

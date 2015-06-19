@@ -56,7 +56,7 @@ public class CUsuariosFacade extends AbstractFacade<CUsuarios> implements CUsuar
     
     @Override
 	public CUsuarios getUsuario(Integer usuario){		
-		return (CUsuarios) em.createNamedQuery("CUsuarios.findByCUsuarioId").setParameter("cUsuarioId",usuario).getSingleResult();
+		return (CUsuarios) em.createNamedQuery("CUsuarios.findByCUserId").setParameter("cUserId",usuario).getSingleResult();
 	}
     
         public CUsuarios traeUsuarioLogeado(String nombre){
@@ -72,5 +72,14 @@ public class CUsuariosFacade extends AbstractFacade<CUsuarios> implements CUsuar
 	            return usuarioC;
 	        }
 	    }
-	
+
+ @Override
+    public Integer busLogin(String cod) {
+        Integer resul;
+        String consuld = "SELECT count (s) from c_usuarios AS s WHERE s.c_user_login = ?1";
+        Query qconsuld = em.createNativeQuery(consuld).setParameter(1, cod);
+        resul = ((Long) qconsuld.getSingleResult()).intValue();
+//    	System.out.println("query ejecutada en busDoc");
+        return resul;
+    }        
 }

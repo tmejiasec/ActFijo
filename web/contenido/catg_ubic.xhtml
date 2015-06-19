@@ -44,7 +44,11 @@
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                                <a data-toggle="modal" href="#adicUbic" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                                <!--<a data-toggle="modal" href="#adicUbic" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicUbic" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                    <p:ajax process="@this" update=":formUbic:displayU1"/>
+                                </h:commandLink>                                   
+                                
                             </div>                              
                         </tbody>  
                     </table>
@@ -53,7 +57,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Adición de Ubicación por Area</h4>
                             </div>
                             <div class="modal-body">
@@ -77,7 +81,7 @@
                                     <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaUbic.CUbicDesc}" style="width: 99%;" required="true"/> 
 
-                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarUb()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayU1"  oncomplete="handleRequest(xhr, status, args); ; adicUbic.hide();" />
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarUb()}"  rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayU1"  oncomplete="handleRequest(xhr, status, args); ; adicUbic.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -92,9 +96,6 @@
                                 </p:panelGrid>  
 
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,7 +104,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Modificación de Ubicación por Area</h4>
                             </div>
                             <div class="modal-body">
@@ -127,13 +128,10 @@
                                     <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.ubicSeleccionada.CUbicDesc}" style="width: 99%;"/> 
 
-                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualUb()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayU2"  oncomplete="modifUbic.hide();"/>
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualUb()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayU2"  oncomplete="modifUbic.hide();"/>
 
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>

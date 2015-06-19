@@ -51,6 +51,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TAsigEnca.findByTAsigeUsem", query = "SELECT t FROM TAsigEnca t WHERE t.tAsigeUsem = :tAsigeUsem"),
     @NamedQuery(name = "TAsigEnca.findByTAsigeFechm", query = "SELECT t FROM TAsigEnca t WHERE t.tAsigeFechm = :tAsigeFechm")})
 public class TAsigEnca implements Serializable {
+    @Column(name = "t_asige_horac")
+    @Temporal(TemporalType.TIME)
+    private Date tAsigeHorac;
+    @Column(name = "t_asige_horam")
+    @Temporal(TemporalType.TIME)
+    private Date tAsigeHoram;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -318,6 +324,22 @@ public class TAsigEnca implements Serializable {
     @Override
     public String toString() {
         return "entidades.TAsigEnca[ tAsigeId=" + tAsigeId + " ]";
+    }
+
+    public Date getTAsigeHorac() {
+        return tAsigeHorac;
+    }
+
+    public void setTAsigeHorac(Date tAsigeHorac) {
+        this.tAsigeHorac = tAsigeHorac;
+    }
+
+    public Date getTAsigeHoram() {
+        return tAsigeHoram;
+    }
+
+    public void setTAsigeHoram(Date tAsigeHoram) {
+        this.tAsigeHoram = tAsigeHoram;
     }
     
 }

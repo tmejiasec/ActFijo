@@ -51,6 +51,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TRobHur.findByTRhUsem", query = "SELECT t FROM TRobHur t WHERE t.tRhUsem = :tRhUsem"),
     @NamedQuery(name = "TRobHur.findByTRhFechm", query = "SELECT t FROM TRobHur t WHERE t.tRhFechm = :tRhFechm")})
 public class TRobHur implements Serializable {
+    @Column(name = "t_rh_horac")
+    @Temporal(TemporalType.TIME)
+    private Date tRhHorac;
+    @Column(name = "t_rh_horam")
+    @Temporal(TemporalType.TIME)
+    private Date tRhHoram;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -348,6 +354,22 @@ public class TRobHur implements Serializable {
     @Override
     public String toString() {
         return "entidades.TRobHur[ tRhId=" + tRhId + " ]";
+    }
+
+    public Date getTRhHorac() {
+        return tRhHorac;
+    }
+
+    public void setTRhHorac(Date tRhHorac) {
+        this.tRhHorac = tRhHorac;
+    }
+
+    public Date getTRhHoram() {
+        return tRhHoram;
+    }
+
+    public void setTRhHoram(Date tRhHoram) {
+        this.tRhHoram = tRhHoram;
     }
     
 }

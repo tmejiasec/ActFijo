@@ -41,7 +41,11 @@
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                                <a data-toggle="modal" href="#adicEstmov" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                                <!--<a data-toggle="modal" href="#adicEstmov" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicEstmov" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                    <p:ajax process="@this" update=":formEstmov:displayEm1"/>
+                                </h:commandLink>                                   
+                                
                             </div>                              
                         </tbody>  
                     </table>
@@ -50,7 +54,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Adición de Estado de Movimiento</h4>
                             </div>
                             <div class="modal-body">
@@ -61,7 +65,7 @@
                                     <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.nuevoEstmov.CEstmovDesc}" style="width: 99%;" required="true"/> 
 
-                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catbmBean.guardarEm()}"  rendered="#{!catbmBean.edit}" update="@all" process="@this displayEm1"  oncomplete="handleRequest(xhr, status, args); ; adicEstmov.hide();" />
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catbmBean.guardarEm()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayEm1"  oncomplete="handleRequest(xhr, status, args); ; adicEstmov.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -75,9 +79,6 @@
 
                                 </p:panelGrid>  
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,7 +87,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Modificación de Tipos de Movimiento</h4>
                             </div>
                             <div class="modal-body">
@@ -97,13 +98,10 @@
                                     <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.estMovSeleccionado.CEstmovDesc}" /> 
 
-                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catbmBean.actualEm()}" rendered="#{!catbmBean.edit}" update="@all" process="@this displayEm2"  oncomplete="modifEstmov.hide();"/>
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catbmBean.actualEm()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayEm2"  oncomplete="modifEstmov.hide();"/>
 
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>

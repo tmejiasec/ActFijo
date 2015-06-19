@@ -38,7 +38,7 @@
                                     <td>#{nivel.CNivelDescrip}</td>
                                     <td>#{nivel.CNivelJerar}</td>
                                     <td>
-                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifNiv">
+                                        <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifNiv" >
                                             <f:setPropertyActionListener value="#{nivel}"
                                              target="#{catgeBean.nivelSeleccionado}" />
                                             <p:ajax process="@this" update=":formNiveles:displayN2"/>
@@ -47,8 +47,12 @@
                                     </td>
                                 </tr>
                             </ui:repeat>
-                            <div class="col-md-6" align="center" >
-                              <a data-toggle="modal" href="#adicNiv" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                            <div class="col-md-6" align="center">
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicNiv" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+<!--                                <span aria-hidden="true"></span>-->
+                                   <p:ajax process="@this" update=":formNiveles:displayN1"/>
+                                </h:commandLink>
+                              <!--<a data-toggle="modal" href="#adicNiv" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
                             </div>                              
                         </tbody>  
                     </table>
@@ -80,7 +84,7 @@
 
                                     <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
                                     <h:inputText value="#{catgeBean.nuevoNivel.CNivelJerar}" /> 
-                                    <p:commandButton value="Guardar" id="guardn" icon="ui-icon-disk" action="#{catgeBean.guardarNv()}"  rendered="#{!catgeBean.edit}" disabled="#{catgeBean.estado}" update="@all" process="@this displayN1"  oncomplete="handleRequest(xhr, status, args); ; adicNiv.hide();" />
+                                    <p:commandButton value="Guardar" id="guardn" icon="ui-icon-disk" action="#{catgeBean.guardarNv()}"  rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" disabled="#{catgeBean.estado}" update="@all" process="@this displayN1"  oncomplete="handleRequest(xhr, status, args); ; adicNiv.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -105,7 +109,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar×</button>
                                 <h4 class="modal-title">Modificación de Niveles Organizativos</h4>
                             </div>
                             <div class="modal-body">
@@ -121,12 +125,9 @@
 
                                     <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
                                     <h:inputText value="#{catgeBean.nivelSeleccionado.CNivelJerar}" /> 
-                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualNv()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayN2"  oncomplete="modifNiv.hide();"/>
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualNv()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayN2"  oncomplete="modifNiv.hide();"/>
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>

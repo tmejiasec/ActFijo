@@ -35,8 +35,13 @@ public class TMovimEncaFacade extends AbstractFacade<TMovimEnca> implements TMov
     }
     
     @Override
-    public List getListM(Short correl, Short anio) {			
-	return em.createNamedQuery("TMovimEnca.findByT<TMoveCorr").setParameter("tMoveCorr",correl).getResultList();
+    public List getListM(Integer correl, Integer anio) {			
+	return em.createNamedQuery("TMovimEnca.findByTMoveCorr").setParameter("tMoveCorr",correl).getResultList();
+    }
+
+    @Override
+    public List getListT(Integer tipm,Integer estm) {			
+	return em.createNamedQuery("TMovimEnca.findByMovyEst").setParameter("cTipmId",tipm).setParameter("cEstmovId",estm).getResultList();
     }
     
     @Override
@@ -44,5 +49,9 @@ public class TMovimEncaFacade extends AbstractFacade<TMovimEnca> implements TMov
 		return (TMovimEnca) em.createNamedQuery("TMovimEnca.findByTMoveId").setParameter("tMoveId",move).getSingleResult();
 	}
 
+   @Override
+	public TMovimEnca getCorrel(Integer anio, Integer correl){		
+		return  (TMovimEnca) em.createNamedQuery("TMovimEnca.findByTMoveCorr").setParameter("tMoveCorr",correl).setParameter("tMoveAnio",anio).getSingleResult();
+	}        
     
 }

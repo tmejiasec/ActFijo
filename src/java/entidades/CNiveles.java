@@ -34,10 +34,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CNiveles.findByCNivelDescrip", query = "SELECT c FROM CNiveles c WHERE c.cNivelDescrip = :cNivelDescrip"),
     @NamedQuery(name = "CNiveles.findByCNivelJerar", query = "SELECT c FROM CNiveles c WHERE c.cNivelJerar = :cNivelJerar")})
 public class CNiveles implements Serializable {
-    @OneToMany(mappedBy = "cNivelId")
-    private List<CProyectos> cProyectosList;
-    @OneToMany(mappedBy = "cNivelId")
-    private List<TBienes> tBienesList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,7 +42,7 @@ public class CNiveles implements Serializable {
     private Integer cNivelId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 2)
+    @Size(min = 1, max = 4)
     @Column(name = "c_nivel_codigo")
     private String cNivelCodigo;
     @Basic(optional = false)
@@ -54,10 +50,13 @@ public class CNiveles implements Serializable {
     @Size(min = 1, max = 200)
     @Column(name = "c_nivel_descrip")
     private String cNivelDescrip;
-    @Basic(optional = false)
-    @NotNull
+    @Size(max = 8)
     @Column(name = "c_nivel_jerar")
-    private short cNivelJerar;
+    private String cNivelJerar;
+    @OneToMany(mappedBy = "cNivelId")
+    private List<CProyectos> cProyectosList;
+    @OneToMany(mappedBy = "cNivelId")
+    private List<TBienes> tBienesList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cNivelId")
     private List<CDependencias> cDependenciasList;
     @OneToMany(mappedBy = "cNivelId")
@@ -70,7 +69,7 @@ public class CNiveles implements Serializable {
         this.cNivelId = cNivelId;
     }
 
-    public CNiveles(Integer cNivelId, String cNivelCodigo, String cNivelDescrip, short cNivelJerar) {
+    public CNiveles(Integer cNivelId, String cNivelCodigo, String cNivelDescrip, String cNivelJerar) {
         this.cNivelId = cNivelId;
         this.cNivelCodigo = cNivelCodigo;
         this.cNivelDescrip = cNivelDescrip;
@@ -101,11 +100,11 @@ public class CNiveles implements Serializable {
         this.cNivelDescrip = cNivelDescrip;
     }
 
-    public short getCNivelJerar() {
+    public String getCNivelJerar() {
         return cNivelJerar;
     }
 
-    public void setCNivelJerar(short cNivelJerar) {
+    public void setCNivelJerar(String cNivelJerar) {
         this.cNivelJerar = cNivelJerar;
     }
 
@@ -165,5 +164,6 @@ public class CNiveles implements Serializable {
     public void setTBienesList(List<TBienes> tBienesList) {
         this.tBienesList = tBienesList;
     }
-    
+
+   
 }

@@ -30,32 +30,24 @@
                                     <h4 class="modal-title">Adicion de ficha de Sustitucion de Bienes</h4>
                                 </div>
                             </legend>
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <label>Correlativo</label>
-                                    <div>
-                                        <h:outputText value="#{sustitucionBienesBean.nuevaSustit.TSustCorr}"/>
-                                    </div>
-                                </div>
 
-                                <div class="col-md-6">
-                                    <label for="using">Elaborado por</label>
-                                    <div>
-                                        <h:outputText id="using" value="#{sustitucionBienesBean.nuevaSustit.TSustUsec}"/>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- Fila 1 -->
                             <div class="form-group">
-                                <div class="col-md-6">
-                                    <label for="cod" >Codigo del Bien a sustituir</label>
+                                <div class="col-md-3">
+                                    <label for="anio" >Año</label>
                                     <div>
-                                        <p:inputMask id="cod" value="#{sustitucionBienesBean.cod}" mask="99-9999-9999"> 
-                                            <p:ajax listener="#{sustitucionBienesBean.datosCodigo()}" update="@this rubro espec descm marcaant modelant seriant respob fecaqq valnt"/>
-                                        </p:inputMask>
+                                        <p:inputText id="anio" value="#{sustitucionBienesBean.nuevaSustit.TSustAnio}"> 
+                                            <p:ajax listener="#{sustitucionBienesBean.buscarCorr}" update=":adiSBien:growl :adiSBien:corrS"/>
+                                        </p:inputText>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
+                                <div class="col-md-3">
+                                    <label >Correlativo</label>
+                                    <div>
+                                        <h:outputText id="corrS" value="#{sustitucionBienesBean.nuevaSustit.TSustCorr}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <label >Tipo de Sustitución</label>
                                     <div >
                                         <h:selectOneRadio value="#{sustitucionBienesBean.nuevaSustit.TSustTipo}" required="true">
@@ -64,114 +56,108 @@
                                         </h:selectOneRadio>
                                     </div>
                                 </div>
+                                <div class="col-md-3">
+                                    <label for="using">Elaborado por</label>
+                                    <div>
+                                        <h:outputText id="using" value="#{appSession.usuario.CUserNombre}"/>
+                                    </div>
+                                </div>
                             </div>
+                            <!-- Fila 2 -->
                             <div class="form-group">
-
-                                <div class="col-md-6">
+                                <div class="col-md-3">
+                                    <label for="cod" >Código del Bien a sustituir</label>
+                                    <div>
+                                        <p:inputMask id="cod" value="#{sustitucionBienesBean.cod}" mask="99-9999-9999"> 
+                                            <p:ajax listener="#{sustitucionBienesBean.datosCodigo()}"  update="rubro espec descm marcaant modelant seriant respob fecaqq valnt corrS"/>
+                                        </p:inputMask>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <label>Rubro</label>
                                     <div>
                                         <h:outputText id="rubro" value="#{sustitucionBienesBean.codSeleccionado.CRubroId.CRubroDesc}"/>
                                     </div>
                                 </div>    
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label >Especifico</label>
                                     <div>
                                         <h:outputText id="espec" value="#{sustitucionBienesBean.codSeleccionado.CEspecId.CEspecDesc}"/>
                                     </div>
                                 </div> 
 
-                            </div>
-                            <!-- Fin Fila 3 -->
-
-                            <!-- Fila 4 -->
-                            <div class="form-group">
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label for="descm" >Descripción</label>
                                     <div>
                                         <h:outputText id="descm" value="#{sustitucionBienesBean.codSeleccionado.TBienDesc}"  style="width: 100%;"/> 
                                     </div>
                                 </div> 
 
-                                <div class="col-md-6">
+                            </div>
+                            <!-- Fila 3 -->
+                            <div class="form-group">
+
+                                <div class="col-md-3">
                                     <label for="marcaant">Marca anterior</label>
                                     <div>
                                         <h:outputText id="marcaant" value="#{sustitucionBienesBean.codSeleccionado.CMarcaId.CMarcaDesc}"/>
                                     </div>
                                 </div> 
-
-                            </div>
-                            <!-- Fin Fila 4 -->
-
-                            <!-- Fila 5 -->
-                            <div class="form-group">
-
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label for="modelant">Modelo anterior</label>
                                     <div>
                                         <h:outputText id="modelant" value="#{sustitucionBienesBean.codSeleccionado.TBienModelo}"/>
                                     </div>
                                 </div> 
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label for="seriant">Serie anterior</label>
                                     <div>
                                         <h:outputText id="seriant" value="#{sustitucionBienesBean.codSeleccionado.TBienSerie}"/>
                                     </div>
                                 </div> 
-
-                            </div>
-                            <!-- Fin Fila 5 -->
-
-
-                            <!-- Fila 5 -->
-                            <div class="form-group">
-
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label for="respob">Responsable del Bien</label>
                                     <div>
                                         <h:outputText id="respob" value="#{sustitucionBienesBean.codSeleccionado.CRespId.CRespApe1}"/>
                                     </div>
                                 </div> 
 
-                                <div class="col-md-6">
+                            </div>
+                            <!-- Fila 4 -->
+                            <div class="form-group">
+                                <div class="col-md-3">
                                     <label for="depenb">Dependencia</label>
                                     <div>
                                         <h:outputText id="depenb" value="#{sustitucionBienesBean.codSeleccionado.CDepenId.CDepenDesc}"/>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label for="estdfis">Estado Fisico del bien</label>
                                     <div>
                                         <h:outputText id="estdfis" value="#{sustitucionBienesBean.codSeleccionado.CEstadbId.CEstadbDesc}"/>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+
+
+                                <div class="col-md-3">
                                     <label >Fecha de adquisicion</label>
                                     <div>
                                         <h:outputText id="fecaqq" value="#{sustitucionBienesBean.codSeleccionado.TBienFechadq}"/>
 
                                     </div>
                                 </div>
-
-                            </div>
-                            <div class="form-group">
-
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label>Valor del Bien</label>
                                     <div>
                                         <h:outputText id="valnt" value="#{sustitucionBienesBean.codSeleccionado.TBienValoradq}"/>
                                     </div>
-                                </div> 
+                                </div>
                             </div>
-                            <!-- Fin Fila 5 -->
-
+                            <!-- Fila 5 -->
                             <div class="form-group">
-
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label for="fechres">Fecha de Resolucion</label>
                                     <div>
                                         <p:calendar id="fechres"
@@ -183,16 +169,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label for="docres" >Copia de Resolucion</label>
-                                    <div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Fin Fila 6 -->
-                            <div class="form-group">
-
-                                <div class="col-md-6">
+                                <div class="col-md-3">
                                     <label for="fecidt">Fecha de Dictamen Tecnico</label>
                                     <div>
                                         <p:calendar id="fecidt"
@@ -203,22 +180,6 @@
                                         </p:calendar>
                                     </div>
                                 </div>
-
-                                <div class="col-md-6">
-                                    <label for="guardic" >Copia de Dictamen</label>
-                                    <div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <label for="nvadesc" >Nueva Descripcion</label>
-                                    <div>
-                                        <h:inputText id="nvadesc" value="#{sustitucionBienesBean.nuevaSustit.TSustDescNew}" required="true" style="width: 100%;"/>  
-                                    </div>
-                                </div>
-
                                 <div class="col-md-6">
                                     <label for="fechsus">Fecha de Sustitucion</label>
                                     <div>
@@ -232,69 +193,72 @@
                                 </div>
 
                             </div>
-
+                            <!-- Fila 6 -->
                             <div class="form-group">
-                                <div class="col-md-6">
-                                    <label for="nvamarc" >Marca</label>
+                                <div class="col-md-3">
+                                    <label for="nvadesc" >Nueva Descripcion</label>
                                     <div>
-                                        <h:selectOneMenu id="nvamarc" value="#{sustitucionBienesBean.nuevaSustit.TSustMarcNew}" style="width: 100%;">
-                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca.CMarcaId}"/>
-                                            <p:ajax  listener="#{sustitucionBienesBean.marcaSeleccion()}" update="nvamarc"/>                         
-                                        </h:selectOneMenu>
+                                        <h:inputText id="nvadesc" value="#{sustitucionBienesBean.nuevaSustit.TSustDescNew}" required="true" style="width: 100%;"/>  
                                     </div>
                                 </div>
 
-                                <div class="col-md-6">
+                                <div class="col-md-3">
+                                    <label for="nvamarc" >Nueva Marca</label>
+                                    <div>
+                                        <h:selectOneMenu id="nvamarc" value="#{sustitucionBienesBean.nuevaSustit.TSustMarcNew}" style="width: 100%;">
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
                                     <label for="nvomod" >Nuevo Modelo</label>
                                     <div>
                                         <h:inputText id="nvomod" value="#{sustitucionBienesBean.nuevaSustit.TSustModeNew}" required="true" style="width: 100%;"/>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="form-group">
-                                <div class="col-md-6">
-                                    <label for="vnserie" >Nuevo Serie</label>
-                                     <div>
+                                <div class="col-md-3">
+                                    <label for="vnserie" >Nueva Serie</label>
+                                    <div>
                                         <h:inputText id="vnserie" value="#{sustitucionBienesBean.nuevaSustit.TSustSerieNew}" required="true" style="width: 100%;"/>
                                     </div>
                                 </div>
                             </div>
-                            <!--Tabla-->
-
-
-                            <!--Fin Tabla-->
-
                             <!-- Botones -->
                             <div class="form-group">
                                 <div class="col-lg-10 col-lg-offset-8">
-                                    <p:commandButton id="guard" class="btn btn-primary" value="Guardar "  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}" disabled="#{sustitucionBienesBean.estado}" update="guard"  oncomplete="handleRequest(xhr, status, args);" >
-                                        <script type="text/javascript">
-                                            function handleRequest(xhr, status, args) {
-                                                if (args.validationFailed) {
-                                                    alert('Ha ocurrido un error. Complete los datos necesarios');
-                                                } else {
-                                                    alert('Datos adicionados correctamente');
-                                                }
-                                            }
-                                        </script>
-                                    </p:commandButton>                              
-                                    <p:commandButton id="Nuevo" value="Agregar Otro" class="btn btn-primary"
+                                       <h:commandButton id="guardS" value="Guardar"  styleClass="btn btn-primary" >
+                                           <f:setPropertyActionListener value="#{sustitucionBienesBean.sustituc}" target="#{sustitucionBienesBean.nuevaSustit}" />
+                                           <p:ajax listener="#{sustitucionBienesBean.guardarSustit()}" rendered="#{!sustitucionBienesBean.edit}" process="@this :adiSBien" update="growl guardS" />
+                                        </h:commandButton>	
+
+                                    <!--<p:commandButton id="guardS" styleClass="btn btn-primary" value="Guardar "  action="{sustitucionBienesBean.guardarSustit()}"  rendered="{!sustitucionBienesBean.edit}" disabled="{sustitucionBienesBean.estado}" update="@this"  process="@this adiSBien" />-->
+<!--                                    <script type="text/javascript">
+                                                function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                        alert('Datos adicionados correctamente');
+        }
+                                        }
+                                    </script>-->
+                                    <p:commandButton id="Nuevo" value="Agregar Otro" styleClass="btn btn-primary"
                                                      action="#{sustitucionBienesBean.limpiarTSutit()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
                                         <script type="text/javascript">
-                                            function refrescar(xhr, status, args) {
+                                                    function refrescar(xhr, status, args) {
                                                 if (args.validationFailed) {
                                                     alert('Ha ocurrido un error');
-                                                } else {
-                                                    alert('nuevo');
-                                                    location.reload(true);
-                                                }
+                                                    } else {
+                                                alert('nuevo');
+                                            location.reload(true);
+        }
                                             }
                                         </script>
                                     </p:commandButton>
+
                                 </div>
                             </div>
+                            <!-- Botones -->
                         </h:form>
                     </div>
                 </div>
@@ -374,10 +338,10 @@
         </ui:define>
         <ui:define name="scripts">
             <script>
-                $(document).ready(function () {
-                    $('.paginada').dataTable(
+                                $(document).ready(function () {
+                                    $('.paginada').dataTable(
                             {
-                                "oLanguage": {
+                                    "oLanguage": {
                                     "sProcessing": "Procesando...",
                                     "sLengthMenu": "Mostrar _MENU_ registros",
                                     "sZeroRecords": "No se encontraron resultados",
@@ -389,18 +353,18 @@
                                     "sSearch": "Buscar:",
                                     "sUrl": "",
                                     "sInfoThousands": ",",
-                                    "sLoadingRecords": "Cargando...",
-                                    "oPaginate": {
+                                        "sLoadingRecords": "Cargando...",
+                                        "oPaginate": {
                                         "sFirst": "Primero",
                                         "sLast": "Último",
-                                        "sNext": "Siguiente",
+                                    "sNext": "Siguiente",
                                         "sPrevious": "Anterior"
                                     },
                                     "oAria": {
                                         "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                                    }
-                                }
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                }
+                    }
                             }
                     );
                 });

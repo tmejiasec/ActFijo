@@ -41,7 +41,11 @@
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                                <a data-toggle="modal" href="#adicEstb" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                                <!--<a data-toggle="modal" href="#adicEstb" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicEstb" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                    <p:ajax process="@this" update=":formEstbien:displayEb2"/>
+                                </h:commandLink>                                   
+                                
                             </div>                              
                         </tbody>  
                     </table>
@@ -50,7 +54,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Adición de Estado de los Bienes</h4>
                             </div>
                             <div class="modal-body">
@@ -61,7 +65,7 @@
                                     <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.nuevoEstbien.CEstadbDesc}" style="width: 99%;" required="true"/> 
 
-                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catbmBean.guardarEb()}"  rendered="#{!catbmBean.edit}" update="@all" process="@this displayEb1"  oncomplete="handleRequest(xhr, status, args); ; adicEstb.hide();" />
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catbmBean.guardarEb()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayEb1"  oncomplete="handleRequest(xhr, status, args); ; adicEstb.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -75,9 +79,6 @@
 
                                 </p:panelGrid>  
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -86,7 +87,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Modificación de Estado de los Bienes</h4>
                             </div>
                             <div class="modal-body">
@@ -97,13 +98,10 @@
                                     <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.estBienSeleccionado.CEstadbDesc}" /> 
 
-                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catbmBean.actualEb()}" rendered="#{!catbmBean.edit}" update="@all" process="@this displayEb2"  oncomplete="modifEstb.hide();"/>
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catbmBean.actualEb()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayEb2"  oncomplete="modifEstb.hide();"/>
 
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>

@@ -1236,6 +1236,9 @@ public class BienesBean implements Serializable {
 //        areas = getDaoArea().getListM(edifSeleccionado);
     }
 
+    public void asignarDatos() {
+        this.bienSeleccionado=getBienSeleccionado();
+    }
     public void asignarNivDep() {
         nuevoBien.setCRespId(getDaoResp().getResp(respSeleccionado));
         nivSeleccionado = nuevoBien.getCRespId().getCNivelId().getCNivelId();

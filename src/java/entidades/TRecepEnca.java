@@ -48,6 +48,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TRecepEnca.findByTReceUsem", query = "SELECT t FROM TRecepEnca t WHERE t.tReceUsem = :tReceUsem"),
     @NamedQuery(name = "TRecepEnca.findByTReceFechm", query = "SELECT t FROM TRecepEnca t WHERE t.tReceFechm = :tReceFechm")})
 public class TRecepEnca implements Serializable {
+    @Column(name = "t_rece_horac")
+    @Temporal(TemporalType.TIME)
+    private Date tReceHorac;
+    @Column(name = "t_rece_horam")
+    @Temporal(TemporalType.TIME)
+    private Date tReceHoram;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -272,6 +278,22 @@ public class TRecepEnca implements Serializable {
     @Override
     public String toString() {
         return "entidades.TRecepEnca[ tReceId=" + tReceId + " ]";
+    }
+
+    public Date getTReceHorac() {
+        return tReceHorac;
+    }
+
+    public void setTReceHorac(Date tReceHorac) {
+        this.tReceHorac = tReceHorac;
+    }
+
+    public Date getTReceHoram() {
+        return tReceHoram;
+    }
+
+    public void setTReceHoram(Date tReceHoram) {
+        this.tReceHoram = tReceHoram;
     }
     
 }

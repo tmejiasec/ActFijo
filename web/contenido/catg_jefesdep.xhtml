@@ -45,7 +45,11 @@
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                                <a data-toggle="modal" href="#adicJefe" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicJefe" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                   <p:ajax process="@this" update=":formJefes:displayJ1"/>
+                                </h:commandLink>
+                                
+                                <!--<a data-toggle="modal" href="#adicJefe" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
                             </div>                              
                         </tbody>  
                     </table>
@@ -55,7 +59,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Adición de Jefe por Dependencia</h4>
                             </div>
                             <div class="modal-body">
@@ -93,7 +97,7 @@
                                         <f:selectItem itemValue="I" itemLabel="Inactivo" />
                                     </h:selectOneMenu>
 
-                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarJd()}"  rendered="#{!catgeBean.edit}" process="@this displayJ1"  oncomplete="handleRequest(xhr, status, args); ; adicJefe.hide();" />
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarJd()}"  rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" process="@this displayJ1"  oncomplete="handleRequest(xhr, status, args); ; adicJefe.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -107,9 +111,6 @@
                                     </script>
                                 </p:panelGrid>  
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -118,7 +119,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Modificación de Jefe por Dependencia</h4>
                             </div>
                             <div class="modal-body">
@@ -136,7 +137,7 @@
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.jefeSeleccionado.CJefesdCargo}" /> 
 
                                     <h:outputLabel value="Dependencia: *" style="font-weight: bold"/>
-                                    <h:selectOneMenu id="depenm" value="#{catgeBean.depenSeleccionada}" required="true">
+                                    <h:selectOneMenu value="#{catgeBean.depenSeleccionada}" >
                                         <f:selectItem itemLabel="Seleccione una..." itemValue="0"/>
                                         <f:selectItems value="#{catgeBean.depens}" var="depen" itemLabel="#{depen.CDepenDesc}" itemValue="#{depen.CDepenId}"/>
                                     </h:selectOneMenu>
@@ -157,13 +158,10 @@
                                     </h:selectOneMenu>
 
 
-                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualJd()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayJ2"  oncomplete="modifJefe.hide();"/>
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualJd()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayJ2"  oncomplete="modifJefe.hide();"/>
 
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>

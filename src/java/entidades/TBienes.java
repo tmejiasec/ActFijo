@@ -7,6 +7,7 @@ package entidades;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -60,6 +62,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TBienes.findByResponsable", query = "SELECT t FROM TBienes t WHERE t.cRespId.cRespId = :cRespId"),
     @NamedQuery(name = "TBienes.findByTBienFinidId", query = "SELECT t FROM TBienes t WHERE t.tBienFinidId = :tBienFinidId")})
     public class TBienes implements Serializable {
+    @OneToMany(mappedBy = "tBienId")
+    private List<TSustit> tSustitList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,6 +73,10 @@ import javax.validation.constraints.Size;
     @Size(max = 12)
     @Column(name = "t_bien_codigo")
     private String tBienCodigo;
+    @Size(max = 1)
+    @Column(name = "t_bien_tipinv")
+    private String tBienTipinv;
+
     @Size(max = 100)
     @Column(name = "t_bien_desc")
     private String tBienDesc;
@@ -78,8 +86,6 @@ import javax.validation.constraints.Size;
     @Size(max = 20)
     @Column(name = "t_bien_serie")
     private String tBienSerie;
-    @Column(name = "t_bien_tipinv")
-    private String tBienTipinv;
     @Column(name = "t_bien_fechadq")
     @Temporal(TemporalType.DATE)
     private Date tBienFechadq;
@@ -689,6 +695,15 @@ import javax.validation.constraints.Size;
     @Override
     public String toString() {
         return "entidades.TBienes[ tBienId=" + tBienId + " ]";
+    }
+
+
+    public List<TSustit> getTSustitList() {
+        return tSustitList;
+    }
+
+    public void setTSustitList(List<TSustit> tSustitList) {
+        this.tSustitList = tSustitList;
     }
     
     

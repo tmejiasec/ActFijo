@@ -37,12 +37,6 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CDependencias.findByCNivelId", query="SELECT m FROM CDependencias m WHERE m.cNivelId.cNivelId = :cNivelId"),
     @NamedQuery(name = "CDependencias.findByCDepenJerar", query = "SELECT c FROM CDependencias c WHERE c.cDepenJerar = :cDepenJerar")})
 public class CDependencias implements Serializable {
-    @OneToMany(mappedBy = "cDepenId")
-    private List<CTecnicosAf> cTecnicosAfList;
-    @OneToMany(mappedBy = "cDepenId")
-    private List<CProyectos> cProyectosList;
-    @OneToMany(mappedBy = "cDepenId")
-    private List<TBienes> tBienesList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +45,7 @@ public class CDependencias implements Serializable {
     private Integer cDepenId;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 4)
+    @Size(min = 1, max = 6)
     @Column(name = "c_depen_codigo")
     private String cDepenCodigo;
     @Basic(optional = false)
@@ -59,8 +53,16 @@ public class CDependencias implements Serializable {
     @Size(min = 1, max = 150)
     @Column(name = "c_depen_desc")
     private String cDepenDesc;
+    @Size(max = 8)
     @Column(name = "c_depen_jerar")
-    private Short cDepenJerar;
+    private String cDepenJerar;
+    @OneToMany(mappedBy = "cDepenId")
+    private List<CTecnicosAf> cTecnicosAfList;
+    @OneToMany(mappedBy = "cDepenId")
+    private List<CProyectos> cProyectosList;
+    @OneToMany(mappedBy = "cDepenId")
+    private List<TBienes> tBienesList;
+
     @JoinColumn(name = "c_nivel_id", referencedColumnName = "c_nivel_id")
     @ManyToOne(optional = false)
     private CNiveles cNivelId;
@@ -114,14 +116,6 @@ public class CDependencias implements Serializable {
 
     public void setCDepenDesc(String cDepenDesc) {
         this.cDepenDesc = cDepenDesc;
-    }
-
-    public Short getCDepenJerar() {
-        return cDepenJerar;
-    }
-
-    public void setCDepenJerar(Short cDepenJerar) {
-        this.cDepenJerar = cDepenJerar;
     }
 
     public CNiveles getCNivelId() {
@@ -235,6 +229,14 @@ public class CDependencias implements Serializable {
 
     public void setCTecnicosAfList(List<CTecnicosAf> cTecnicosAfList) {
         this.cTecnicosAfList = cTecnicosAfList;
+    }
+
+    public String getCDepenJerar() {
+        return cDepenJerar;
+    }
+
+    public void setCDepenJerar(String cDepenJerar) {
+        this.cDepenJerar = cDepenJerar;
     }
     
 }

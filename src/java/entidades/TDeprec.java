@@ -60,40 +60,43 @@ public class TDeprec implements Serializable {
     @Column(name = "t_dep_fecha")
     @Temporal(TemporalType.DATE)
     private Date tDepFecha;
-    @Column(name = "t_dep_fecha_id")
-    private Short tDepFechaId;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    @Column(name = "t_dep_valor_ad")
-    private BigDecimal tDepValorAd;
-    @Column(name = "t_dep_factor_an")
-    private BigDecimal tDepFactorAn;
-    @Column(name = "t_dep_plazo")
-    private Short tDepPlazo;
-    @Column(name = "t_dep_valor_res")
-    private BigDecimal tDepValorRes;
-    @Column(name = "t_dep_valor_adep")
-    private BigDecimal tDepValorAdep;
-    @Column(name = "t_dep_depanual")
-    private BigDecimal tDepDepanual;
-    @Column(name = "t_dep_depacum")
-    private BigDecimal tDepDepacum;
-    @Column(name = "t_dep_valor_ac")
-    private BigDecimal tDepValorAc;
     @Column(name = "t_dep_fech_calc")
     @Temporal(TemporalType.DATE)
     private Date tDepFechCalc;
     @Column(name = "t_dep_fech_ant")
     @Temporal(TemporalType.DATE)
     private Date tDepFechAnt;
-    @Column(name = "t_dep_fechant_id")
-    private Short tDepFechantId;
     @Column(name = "t_dep_depreciado")
     private Character tDepDepreciado;
-    @Column(name = "t_dep_usec")
-    private Short tDepUsec;
     @Column(name = "t_dep_fechc")
     @Temporal(TemporalType.DATE)
     private Date tDepFechc;
+    @Column(name = "t_dep_fecha_id")
+    private Integer tDepFechaId;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "t_dep_valor_ad")
+    private Double tDepValorAd;
+    @Column(name = "t_dep_factor_an")
+    private Double tDepFactorAn;
+    @Column(name = "t_dep_plazo")
+    private Integer tDepPlazo;
+    @Column(name = "t_dep_valor_res")
+    private Double tDepValorRes;
+    @Column(name = "t_dep_valor_adep")
+    private Double tDepValorAdep;
+    @Column(name = "t_dep_depanual")
+    private Double tDepDepanual;
+    @Column(name = "t_dep_depacum")
+    private Double tDepDepacum;
+    @Column(name = "t_dep_valor_ac")
+    private Double tDepValorAc;
+    @Column(name = "t_dep_fechant_id")
+    private Integer tDepFechantId;
+    @Column(name = "t_dep_usec")
+    private Integer tDepUsec;
+    @Column(name = "t_dep_horac")
+    @Temporal(TemporalType.TIME)
+    private Date tDepHorac;
 
     public TDeprec() {
     }
@@ -126,78 +129,6 @@ public class TDeprec implements Serializable {
         this.tDepFecha = tDepFecha;
     }
 
-    public Short getTDepFechaId() {
-        return tDepFechaId;
-    }
-
-    public void setTDepFechaId(Short tDepFechaId) {
-        this.tDepFechaId = tDepFechaId;
-    }
-
-    public BigDecimal getTDepValorAd() {
-        return tDepValorAd;
-    }
-
-    public void setTDepValorAd(BigDecimal tDepValorAd) {
-        this.tDepValorAd = tDepValorAd;
-    }
-
-    public BigDecimal getTDepFactorAn() {
-        return tDepFactorAn;
-    }
-
-    public void setTDepFactorAn(BigDecimal tDepFactorAn) {
-        this.tDepFactorAn = tDepFactorAn;
-    }
-
-    public Short getTDepPlazo() {
-        return tDepPlazo;
-    }
-
-    public void setTDepPlazo(Short tDepPlazo) {
-        this.tDepPlazo = tDepPlazo;
-    }
-
-    public BigDecimal getTDepValorRes() {
-        return tDepValorRes;
-    }
-
-    public void setTDepValorRes(BigDecimal tDepValorRes) {
-        this.tDepValorRes = tDepValorRes;
-    }
-
-    public BigDecimal getTDepValorAdep() {
-        return tDepValorAdep;
-    }
-
-    public void setTDepValorAdep(BigDecimal tDepValorAdep) {
-        this.tDepValorAdep = tDepValorAdep;
-    }
-
-    public BigDecimal getTDepDepanual() {
-        return tDepDepanual;
-    }
-
-    public void setTDepDepanual(BigDecimal tDepDepanual) {
-        this.tDepDepanual = tDepDepanual;
-    }
-
-    public BigDecimal getTDepDepacum() {
-        return tDepDepacum;
-    }
-
-    public void setTDepDepacum(BigDecimal tDepDepacum) {
-        this.tDepDepacum = tDepDepacum;
-    }
-
-    public BigDecimal getTDepValorAc() {
-        return tDepValorAc;
-    }
-
-    public void setTDepValorAc(BigDecimal tDepValorAc) {
-        this.tDepValorAc = tDepValorAc;
-    }
-
     public Date getTDepFechCalc() {
         return tDepFechCalc;
     }
@@ -214,13 +145,6 @@ public class TDeprec implements Serializable {
         this.tDepFechAnt = tDepFechAnt;
     }
 
-    public Short getTDepFechantId() {
-        return tDepFechantId;
-    }
-
-    public void setTDepFechantId(Short tDepFechantId) {
-        this.tDepFechantId = tDepFechantId;
-    }
 
     public Character getTDepDepreciado() {
         return tDepDepreciado;
@@ -230,14 +154,7 @@ public class TDeprec implements Serializable {
         this.tDepDepreciado = tDepDepreciado;
     }
 
-    public Short getTDepUsec() {
-        return tDepUsec;
-    }
-
-    public void setTDepUsec(Short tDepUsec) {
-        this.tDepUsec = tDepUsec;
-    }
-
+   
     public Date getTDepFechc() {
         return tDepFechc;
     }
@@ -246,6 +163,102 @@ public class TDeprec implements Serializable {
         this.tDepFechc = tDepFechc;
     }
 
+    public Integer getTDepFechaId() {
+        return tDepFechaId;
+    }
+
+    public void setTDepFechaId(Integer tDepFechaId) {
+        this.tDepFechaId = tDepFechaId;
+    }
+
+    public Double getTDepValorAd() {
+        return tDepValorAd;
+    }
+
+    public void setTDepValorAd(Double tDepValorAd) {
+        this.tDepValorAd = tDepValorAd;
+    }
+
+    public Double getTDepFactorAn() {
+        return tDepFactorAn;
+    }
+
+    public void setTDepFactorAn(Double tDepFactorAn) {
+        this.tDepFactorAn = tDepFactorAn;
+    }
+
+    public Integer getTDepPlazo() {
+        return tDepPlazo;
+    }
+
+    public void setTDepPlazo(Integer tDepPlazo) {
+        this.tDepPlazo = tDepPlazo;
+    }
+
+    public Double getTDepValorRes() {
+        return tDepValorRes;
+    }
+
+    public void setTDepValorRes(Double tDepValorRes) {
+        this.tDepValorRes = tDepValorRes;
+    }
+
+    public Double getTDepValorAdep() {
+        return tDepValorAdep;
+    }
+
+    public void setTDepValorAdep(Double tDepValorAdep) {
+        this.tDepValorAdep = tDepValorAdep;
+    }
+
+    public Double getTDepDepanual() {
+        return tDepDepanual;
+    }
+
+    public void setTDepDepanual(Double tDepDepanual) {
+        this.tDepDepanual = tDepDepanual;
+    }
+
+    public Double getTDepDepacum() {
+        return tDepDepacum;
+    }
+
+    public void setTDepDepacum(Double tDepDepacum) {
+        this.tDepDepacum = tDepDepacum;
+    }
+
+    public Double getTDepValorAc() {
+        return tDepValorAc;
+    }
+
+    public void setTDepValorAc(Double tDepValorAc) {
+        this.tDepValorAc = tDepValorAc;
+    }
+
+    public Integer getTDepFechantId() {
+        return tDepFechantId;
+    }
+
+    public void setTDepFechantId(Integer tDepFechantId) {
+        this.tDepFechantId = tDepFechantId;
+    }
+
+    public Integer getTDepUsec() {
+        return tDepUsec;
+    }
+
+    public void setTDepUsec(Integer tDepUsec) {
+        this.tDepUsec = tDepUsec;
+    }
+
+    public Date getTDepHorac() {
+        return tDepHorac;
+    }
+
+    public void setTDepHorac(Date tDepHorac) {
+        this.tDepHorac = tDepHorac;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -266,9 +279,11 @@ public class TDeprec implements Serializable {
         return true;
     }
 
+    
     @Override
     public String toString() {
         return "entidades.TDeprec[ tDepId=" + tDepId + " ]";
     }
+
     
 }

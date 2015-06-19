@@ -48,6 +48,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name=TTiempo.BUSCAR_FECHA, query="SELECT t FROM TTiempo t where t.tTmFecha = :tTmFecha"),    
     @NamedQuery(name = "TTiempo.findByTTmDiasem", query = "SELECT t FROM TTiempo t WHERE t.tTmDiasem = :tTmDiasem")})
 public class TTiempo implements Serializable {
+    @OneToMany(mappedBy = "tTmId")
+    private List<TSegMov> tSegMovList;
     public static final String BUSCAR_TODOS = "TTiempo.buscarTodos";
     public static final String BUSCAR_UNA = "TTiempo.buscarUna"; 
     public static final String BUSCAR_FECHA = "TTiempo.buscarFecha"; 
@@ -251,6 +253,14 @@ public class TTiempo implements Serializable {
     @Override
     public String toString() {
         return "entidades.TTiempo[ tTmId=" + tTmId + " ]";
+    }
+
+    public List<TSegMov> getTSegMovList() {
+        return tSegMovList;
+    }
+
+    public void setTSegMovList(List<TSegMov> tSegMovList) {
+        this.tSegMovList = tSegMovList;
     }
     
 }

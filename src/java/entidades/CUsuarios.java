@@ -6,6 +6,7 @@
 package entidades;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
 /**
@@ -50,6 +53,19 @@ public class CUsuarios implements Serializable {
     private String cUserPass;
     @Column(name = "c_user_estado")
     private Integer cUserEstado;
+    
+    @Column(name = "c_user_feca")
+    @Temporal(TemporalType.DATE)
+    private Date cUserFeca;
+    @Column(name = "c_user_fecm")
+    @Temporal(TemporalType.DATE)
+    private Date cUserFecm;
+    @Column(name = "c_user_hora")
+    @Temporal(TemporalType.TIME)
+    private Date cUserHora;
+    @Column(name = "c_user_horm")
+    @Temporal(TemporalType.TIME)
+    private Date cUserHorm;
     @JoinColumn(name = "c_rol_id", referencedColumnName = "c_rol_id")
     @ManyToOne(optional = false)
     private CRoles cRolId;
@@ -102,6 +118,38 @@ public class CUsuarios implements Serializable {
 
     public void setCUserEstado(Integer cUserEstado) {
         this.cUserEstado = cUserEstado;
+    }
+
+    public Date getCUserFeca() {
+        return cUserFeca;
+    }
+
+    public void setCUserFeca(Date cUserFeca) {
+        this.cUserFeca = cUserFeca;
+    }
+
+    public Date getCUserFecm() {
+        return cUserFecm;
+    }
+
+    public void setCUserFecm(Date cUserFecm) {
+        this.cUserFecm = cUserFecm;
+    }
+
+    public Date getCUserHora() {
+        return cUserHora;
+    }
+
+    public void setCUserHora(Date cUserHora) {
+        this.cUserHora = cUserHora;
+    }
+
+    public Date getCUserHorm() {
+        return cUserHorm;
+    }
+
+    public void setCUserHorm(Date cUserHorm) {
+        this.cUserHorm = cUserHorm;
     }
 
    

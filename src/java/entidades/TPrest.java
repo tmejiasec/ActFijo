@@ -53,8 +53,6 @@ public class TPrest implements Serializable {
     @Size(max = 20)
     @Column(name = "t_prest_telef")
     private String tPrestTelef;
-    @OneToMany(mappedBy = "tPrestId")
-    private List<TMovimEnca> tMovimEncaList;
     @JoinColumn(name = "t_move_id", referencedColumnName = "t_move_id")
     @ManyToOne
     private TMovimEnca tMoveId;
@@ -104,14 +102,6 @@ public class TPrest implements Serializable {
 
     public void setTPrestTelef(String tPrestTelef) {
         this.tPrestTelef = tPrestTelef;
-    }
-
-    public List<TMovimEnca> getTMovimEncaList() {
-        return tMovimEncaList;
-    }
-
-    public void setTMovimEncaList(List<TMovimEnca> tMovimEncaList) {
-        this.tMovimEncaList = tMovimEncaList;
     }
 
     public TMovimEnca getTMoveId() {

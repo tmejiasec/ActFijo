@@ -20,6 +20,8 @@ import dao.TTiempoFacadeLocal;
 import dao.TCorrMovFacadeLocal;
 import dao.TPrestFacadeLocal;
 import dao.TReparFacadeLocal;
+import dao.TSegMovFacadeLocal;
+import dao.CUsuariosFacadeLocal;
 import entidades.CEstadoMov;
 import entidades.CNiveles;
 import entidades.CResponsables;
@@ -31,6 +33,8 @@ import entidades.TMovimDeta;
 import entidades.TCorrMov;
 import entidades.TPrest;
 import entidades.TRepar;
+import entidades.TSegMov;
+import entidades.CUsuarios;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
@@ -71,19 +75,22 @@ public class MovBienesBean implements Serializable {
 
     protected Integer tabIndex = 1;
     private List<CResponsables> respons = new ArrayList<>();
+    private CResponsables respoSeleccionado = new CResponsables();
     private List<CDependencias> depens = new ArrayList<>();
     private List<CDependencias> depense = new ArrayList<>();
     private CDependencias depeSeleccionada = new CDependencias();
     private List<CNiveles> niveles = new ArrayList<>();
     private CNiveles nivelSeleccionado = new CNiveles();
     private List<CEstadoMov> estmovs = new ArrayList<>();
+    private List<CUsuarios> usuars = new ArrayList<>();
+    private CUsuarios usuarSeleccionado = new CUsuarios();
 
     List<TArchivos> docums = new ArrayList<>();
     private TArchivos archSeleccionado = new TArchivos();
     private TArchivos nuevoArch = new TArchivos();
 
     private Integer respSeleccionado, depSeleccionada, nivSeleccionado,nivSeleccionadoE,estmoSeleccionado,estmo,tipmSeleccionado;
-    private Integer tiempoSeleccionado, idFecs, idFecr, idFeci, idFeca, idFecc, idFecaf, idUs;
+    private Integer tiempoSeleccionado, idFecs, idFecr, idFeci, idFeca, idFecc, idFecaf, idUs, nivE, depE, respE, nivS, depS, respS;
 
     private CResponsablesFacadeLocal respFacade;
     private CDependenciasFacadeLocal depeFacade;
@@ -103,7 +110,9 @@ public class MovBienesBean implements Serializable {
     private String tipom = "I";
     private Integer traslad=1;
     private Integer estini=1;
-
+    private String nomNivE, nomDepE, nomRespE, cargoE, nomNivS, nomDepS, nomRespS, cargoS, nomUs;
+    private Integer anio, correl;
+    
     
     private List<TBienes> bienes = new ArrayList<>();
     private List<TBienes> lotes = new ArrayList<>();
@@ -120,7 +129,12 @@ public class MovBienesBean implements Serializable {
     private TMovimDeta nuevoDeta = new TMovimDeta();
     private TMovimDeta detaSeleccionado = new TMovimDeta();
     private Integer detSeleccionado;
-    private List<TMovimDeta> movdeta;
+    private List<TMovimDeta> movdeta = new ArrayList<>();
+    private TSegMov segui;
+    private TSegMov nuevoSeg = new TSegMov();
+    private TSegMov segSeleccionado = new TSegMov();
+    private Integer seguiSel;
+    private List<TSegMov> seguim;
     private TPrest nuevoPrest = new TPrest();
     private TPrest prestSeleccionado = new TPrest();
     private Integer prestSelec;
@@ -154,13 +168,12 @@ public class MovBienesBean implements Serializable {
         depense = getDaoDepen().getList();
         respons = getDaoResp().getList();
         docums = getDaoArchiv().getListT(tipref);
-        movenca = getDaoEnca().getList(); 
-        movdeta = getDaoDeta().getListM(m_id);       
+        movenca = getDaoEnca().getListT(1,1); 
         tiposm = getDaoTipMov().getList();
         correls = getDaoCorrel().getList();
         niveles = getDaoNivel().getList();
         estmovs = getDaoEstmo().getList();
-        bienes = getDaoBienes().getListM(respo);
+//        bienes = getDaoBienes().getListM(respo);
     }
 
     public String guardarE() throws NamingException, ParseException {
@@ -169,8 +182,6 @@ public class MovBienesBean implements Serializable {
         System.out.println("entrando a guardar datos");
         fecs = nuevoEnca.getTMoveFecsal();
         fecr = nuevoEnca.getTMoveFecret();
-        feci = nuevoEnca.getTMoveFecretr();
-        feca = nuevoEnca.getTMoveFechaut();
         if (fecs == null) {
         } else {
             idFecs = getDaoTiempo().getFecha(fecs).getTTmId();
@@ -180,16 +191,6 @@ public class MovBienesBean implements Serializable {
         } else {
             idFecr = getDaoTiempo().getFecha(fecr).getTTmId();
             nuevoEnca.setTMoveFecrId(idFecr);
-        }
-        if (feci == null) {
-        } else {
-            idFeci = getDaoTiempo().getFecha(feci).getTTmId();
-            nuevoEnca.setTMoveFeciId(idFeci);
-        }
-        if (feca == null) {
-        } else {
-            idFeca = getDaoTiempo().getFecha(feca).getTTmId();
-            nuevoEnca.setTMoveFecafId(idFecaf);
         }
         idUs = appSession.getUsuario().getCUserId();
         nuevoEnca.setTMoveUsec(idUs);
@@ -218,18 +219,62 @@ public class MovBienesBean implements Serializable {
         System.out.println("corr actualizado");
         // habilitando para datos complementarios si aplica.
         m_id=nuevoEnca.getTMoveId();
-//        respo=nuevoEnca.getTMovePere();
-//        //        FacesUtil.addMensaje("Bien Guardado");
-//        System.out.println("resp: "+respo);
-//        bienes = getDaoBienes().getListM(respo);
-//        System.out.println("lista vacía: "+bienes.isEmpty());
-//        movenca = getDaoEnca().getList();
         movdeta = getDaoDeta().getListM(m_id);
         estado = true;
         return null;
     }
 
     public String actualE() throws NamingException, ParseException {
+// buscar id por si cambiaron o agregaron fechas
+        System.out.println("entrando a modificación");
+        Date fecha = new Date();
+        fecs = encaSeleccionado.getTMoveFecsal();
+        fecr = encaSeleccionado.getTMoveFecret();
+        if (fecr == null) {
+        } else {
+            idFecr = getDaoTiempo().getFecha(fecr).getTTmId();
+            encaSeleccionado.setTMoveFecrId(idFecr);
+        }
+        if (fecs == null) {
+        } else {
+            idFecs = getDaoTiempo().getFecha(fecs).getTTmId();
+            encaSeleccionado.setTMoveFecsId(idFecs);
+        }
+        //actualizando cambios en la tabla
+        encaSeleccionado.setTMoveFechm(fecha);
+        encaSeleccionado.setTMoveHoram(formatoHora.parse(formatoHora.format(fecha)));
+        idUs = appSession.getUsuario().getCUserId();
+        encaSeleccionado.setTMoveUsem(idUs);        
+        getDaoEnca().edit(encaSeleccionado);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Datos actualizados"));
+//        bienSeleccionado = new TBienes();
+        return null;
+
+    }
+    
+        public String guardarS() throws NamingException, ParseException {
+        Date fecha = new Date();
+        idUs = appSession.getUsuario().getCUserId();
+//        nuevoSeg.setCUserId(idUs);
+        nuevoSeg.setTSegFechp(fecha);
+        nuevoSeg.setTSegHorap(formatoHora.parse(formatoHora.format(fecha)));
+        nuevoSeg.setCTipmId(null);
+        nuevoSeg.setTMoveId(enca);
+//        nuevoSeg.setCTipmId(1);
+//        System.out.println("est mov: "+estmoSeleccionado);
+        try {
+             getDaoSeguim().create(nuevoSeg);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Seguimiento Agregado correctamente"));
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Seguimiento NO se agregó"));
+        }
+        return null;
+        
+    }
+
+    
+        public String actualSeg() throws NamingException, ParseException {
 // buscar id por si cambiaron o agregaron fechas
         Date fecha = new Date();
         feca = encaSeleccionado.getTMoveFechaut();
@@ -265,12 +310,15 @@ public class MovBienesBean implements Serializable {
         respo=encaSeleccionado.getTMovePere();
         //generando tabla de nuevo
         bienes = getDaoBienes().getListM(respo);
-        movenca = getDaoEnca().getList();
+        // aqui deberá cambiar probablemente.
+        movenca = getDaoEnca().getListT(1,1);
 //        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Datos actualizados"));
 //        bienSeleccionado = new TBienes();
         return null;
 
     }
+
+
 
     public List genTabla() throws NamingException {
         System.out.println("entrando a generar tabla");
@@ -281,7 +329,45 @@ public class MovBienesBean implements Serializable {
         return bienes;
     }
     
+    public List genDeta() throws NamingException {
+        System.out.println("entrando a generar detalle");
+        this.encaSeleccionado=getEncaSeleccionado();
+        m_id=encaSeleccionado.getTMoveId();
+        System.out.println("id : "+m_id);
+        movdeta = getDaoDeta().getListM(m_id); 
+//        System.out.println("niv enca "+encaSeleccionado.getTMoveNive());
+        nivE=encaSeleccionado.getTMoveNive();
+        depE=encaSeleccionado.getTMoveDepe();
+        respE=encaSeleccionado.getTMovePere();
+//        System.out.println("niv: "+nivE);
+//        System.out.println("dep: "+depE);
+//        System.out.println("resp: "+respE);
+        nivelSeleccionado=getDaoNivel().getNivel(nivE);
+        depeSeleccionada=getDaoDepen().getDepend(depE);
+        respoSeleccionado=getDaoResp().getResp(respE);
+        nomNivE = nivelSeleccionado.getCNivelDescrip();
+        nomDepE = depeSeleccionada.getCDepenDesc();
+        nomRespE = (respoSeleccionado.getCRespApe1()+" "+respoSeleccionado.getCRespApe2()+", "+respoSeleccionado.getCRespNom1()+" "+respoSeleccionado.getCRespNom2());
+        cargoE = respoSeleccionado.getCRespCargo();
+        return movdeta;
+    }
     
+        public List genDetaS() throws NamingException {
+        System.out.println("entrando a generar detalle seguimiento");
+        this.encaSeleccionado=getEncaSeleccionado();
+        m_id=encaSeleccionado.getTMoveId();
+        movdeta = getDaoDeta().getListM(m_id); 
+        return movdeta;
+    }
+
+    
+    public String limpiaNom(){
+        nomNivE=" ";
+        nomDepE=" ";
+        nomRespE=" ";
+        cargoE=" ";
+    return null;
+    }
     public String borrarE() throws NamingException {
         return null;
     }
@@ -294,11 +380,28 @@ public class MovBienesBean implements Serializable {
         estado = false;
         estadoC = true;
         estadoR = true;
-        movenca = getDaoEnca().getList();
+        movenca = getDaoEnca().getListT(1,1);
         m_id=0;
         movdeta = getDaoDeta().getListM(m_id);
         respo=9999;
         bienes = getDaoBienes().getListM(respo);
+        return null;
+    }
+    
+    public String limpiarS() {
+        enca = new TMovimEnca();
+        deta = new TMovimDeta();
+        nuevoSeg = new TSegMov();
+        encaSeleccionado = new TMovimEnca();
+        m_id=0;
+        movdeta = getDaoDeta().getListM(m_id);
+        limpiaNom();
+        nomNivS=" ";
+        nomDepS=" ";
+        nomRespS=" ";
+        cargoS=" ";
+        anio=0;
+        correl=0;
         return null;
     }
     
@@ -409,7 +512,13 @@ public class MovBienesBean implements Serializable {
         return (TReparFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TReparFacade!dao.TReparFacadeLocal");
     }
 
+    private TSegMovFacadeLocal getDaoSeguim() {
+        return (TSegMovFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TSegMovFacade!dao.TSegMovFacadeLocal");
+    }
     
+    private CUsuariosFacadeLocal getDaoUsuar() {
+        return (CUsuariosFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CUsuariosFacade!dao.CUsuariosFacadeLocal");
+    }    
     public Boolean getEdit() {
         return edit;
     }
@@ -424,6 +533,102 @@ public class MovBienesBean implements Serializable {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getNomNivE() {
+        return nomNivE;
+    }
+
+    public void setNomNivE(String nomNivE) {
+        this.nomNivE = nomNivE;
+    }
+
+    public String getNomDepE() {
+        return nomDepE;
+    }
+
+    public void setNomDepE(String nomDepE) {
+        this.nomDepE = nomDepE;
+    }
+
+    public String getNomRespE() {
+        return nomRespE;
+    }
+
+    public void setNomRespE(String nomRespE) {
+        this.nomRespE = nomRespE;
+    }
+
+    public Integer getNivS() {
+        return nivS;
+    }
+
+    public void setNivS(Integer nivS) {
+        this.nivS = nivS;
+    }
+
+    public Integer getDepS() {
+        return depS;
+    }
+
+    public void setDepS(Integer depS) {
+        this.depS = depS;
+    }
+
+    public Integer getRespS() {
+        return respS;
+    }
+
+    public void setRespS(Integer respS) {
+        this.respS = respS;
+    }
+
+    public String getNomNivS() {
+        return nomNivS;
+    }
+
+    public void setNomNivS(String nomNivS) {
+        this.nomNivS = nomNivS;
+    }
+
+    public String getNomDepS() {
+        return nomDepS;
+    }
+
+    public void setNomDepS(String nomDepS) {
+        this.nomDepS = nomDepS;
+    }
+
+    public String getNomRespS() {
+        return nomRespS;
+    }
+
+    public void setNomRespS(String nomRespS) {
+        this.nomRespS = nomRespS;
+    }
+
+    public String getCargoS() {
+        return cargoS;
+    }
+
+    public void setCargoS(String cargoS) {
+        this.cargoS = cargoS;
+    }
+
+    public Integer getAnio() {
+        return anio;
+    }
+
+    public void setAnio(Integer anio) {
+        this.anio = anio;
+    }
+
+    public Integer getCorrel() {
+        return correl;
+    }
+
+    public void setCorrel(Integer correl) {
+        this.correl = correl;
     }
 
     public List<CResponsables> getRespons() {
@@ -483,6 +688,14 @@ public class MovBienesBean implements Serializable {
         this.nivSeleccionadoE = nivSeleccionadoE;
     }
 
+    public CDependencias getDepeSeleccionada() {
+        return depeSeleccionada;
+    }
+
+    public void setDepeSeleccionada(CDependencias depeSeleccionada) {
+        this.depeSeleccionada = depeSeleccionada;
+    }
+
     public List<CEstadoMov> getEstmovs() {
         return estmovs;
     }
@@ -499,6 +712,30 @@ public class MovBienesBean implements Serializable {
         this.estmoSeleccionado = estmoSeleccionado;
     }
 
+    public List<CUsuarios> getUsuars() {
+        return usuars;
+    }
+
+    public void setUsuars(List<CUsuarios> usuars) {
+        this.usuars = usuars;
+    }
+
+    public CUsuarios getUsuarSeleccionado() {
+        return usuarSeleccionado;
+    }
+
+    public void setUsuarSeleccionado(CUsuarios usuarSeleccionado) {
+        this.usuarSeleccionado = usuarSeleccionado;
+    }
+
+    public String getNomUs() {
+        return nomUs;
+    }
+
+    public void setNomUs(String nomUs) {
+        this.nomUs = nomUs;
+    }
+
 
     public List<TBienes> getBienes() {
         return bienes;
@@ -506,6 +743,14 @@ public class MovBienesBean implements Serializable {
 
     public void setBienes(List<TBienes> bienes) {
         this.bienes = bienes;
+    }
+
+    public CResponsables getRespoSeleccionado() {
+        return respoSeleccionado;
+    }
+
+    public void setRespoSeleccionado(CResponsables respoSeleccionado) {
+        this.respoSeleccionado = respoSeleccionado;
     }
 
     
@@ -1021,6 +1266,78 @@ public class MovBienesBean implements Serializable {
         this.appSession = appSession;
     }
 
+    public Integer getNivE() {
+        return nivE;
+    }
+
+    public void setNivE(Integer nivE) {
+        this.nivE = nivE;
+    }
+
+    public Integer getDepE() {
+        return depE;
+    }
+
+    public void setDepE(Integer depE) {
+        this.depE = depE;
+    }
+
+    public Integer getRespE() {
+        return respE;
+    }
+
+    public void setRespE(Integer RespE) {
+        this.respE = RespE;
+    }
+
+    public String getCargoE() {
+        return cargoE;
+    }
+
+    public void setCargoE(String cargoE) {
+        this.cargoE = cargoE;
+    }
+
+    public TSegMov getSegui() {
+        return segui;
+    }
+
+    public void setSegui(TSegMov segui) {
+        this.segui = segui;
+    }
+
+    public TSegMov getNuevoSeg() {
+        return nuevoSeg;
+    }
+
+    public void setNuevoSeg(TSegMov nuevoSeg) {
+        this.nuevoSeg = nuevoSeg;
+    }
+
+    public TSegMov getSegSeleccionado() {
+        return segSeleccionado;
+    }
+
+    public void setSegSeleccionado(TSegMov segSeleccionado) {
+        this.segSeleccionado = segSeleccionado;
+    }
+
+    public Integer getSeguiSel() {
+        return seguiSel;
+    }
+
+    public void setSeguiSel(Integer seguiSel) {
+        this.seguiSel = seguiSel;
+    }
+
+    public List<TSegMov> getSeguim() {
+        return seguim;
+    }
+
+    public void setSeguim(List<TSegMov> seguim) {
+        this.seguim = seguim;
+    }
+
     
     public void depSeleccionA() {
         nivSeleccionado = nuevoEnca.getTMoveNivs();
@@ -1031,9 +1348,13 @@ public class MovBienesBean implements Serializable {
         nivSeleccionadoE = nuevoEnca.getTMoveNive();
         depense = getDaoDepen().getListM(nivSeleccionadoE);
     }
-    
+
+    public void depSeleccionM() {
+        nivSeleccionado = encaSeleccionado.getTMoveNivs();
+        depens = getDaoDepen().getListM(nivSeleccionado);
+    }    
     public void nivDepSeleccion() {
-//        nuevoBien.setCRespId(getDaoResp().getResp(respSeleccionado));
+//        encaSeleccionado..setCRespId(getDaoResp().getResp(respSeleccionado));
 //        nivSeleccionado=nuevoBien.getCRespId().getCNivelId().getCNivelId();
 //        depSeleccionada=nuevoBien.getCRespId().getCDepenId().getCDepenId();
 //        nuevoBien.setCNivelId(getDaoNivel().getNivel(nivSeleccionado));
@@ -1061,7 +1382,10 @@ public class MovBienesBean implements Serializable {
     }
     
     
-    
+     public void asigAnio() {
+        System.out.println("año: "+anio);
+        this.anio = anio;
+    }    
     
     public void buscarCorr() throws NamingException {
         
@@ -1085,6 +1409,53 @@ public class MovBienesBean implements Serializable {
 //        System.out.println("resul "+resul);
         nuevoEnca.setTMoveCorr(resul);
 //        System.out.println("correl: "+nuevoEnca.getTMoveCorr());
+    }
+    
+    
+    public void buscarMov() throws NamingException {
+        int resul = 0;
+        this.anio=anio;
+        this.correl=correl;
+        tipmo=traslad;
+//        estmoSeleccionado=estini;
+//        System.out.println("anio: "+anio);
+//        System.out.println("correl: "+correl);
+        resul = getDaoEnca().getCorrel(anio, correl).getTMoveId();
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No puede encontrar correlativo"));
+            estado = false;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok."));
+            estado = true;
+        }
+//        System.out.println("resul "+resul);
+        encaSeleccionado = getDaoEnca().getMove(resul);
+        m_id=encaSeleccionado.getTMoveId();
+//        System.out.println("id : "+m_id);
+        movdeta = getDaoDeta().getListM(m_id); 
+        nivE=encaSeleccionado.getTMoveNive();
+        depE=encaSeleccionado.getTMoveDepe();
+        respE=encaSeleccionado.getTMovePere();
+        nivelSeleccionado=getDaoNivel().getNivel(nivE);
+        depeSeleccionada=getDaoDepen().getDepend(depE);
+        respoSeleccionado=getDaoResp().getResp(respE);
+        nomNivE = nivelSeleccionado.getCNivelDescrip();
+        nomDepE = depeSeleccionada.getCDepenDesc();
+        nomRespE = (respoSeleccionado.getCRespApe1()+" "+respoSeleccionado.getCRespApe2()+", "+respoSeleccionado.getCRespNom1()+" "+respoSeleccionado.getCRespNom2());
+        cargoE = respoSeleccionado.getCRespCargo();
+        nivS = encaSeleccionado.getTMoveNivs();
+        depS = encaSeleccionado.getTMoveDeps();
+        respS = encaSeleccionado.getTMovePers();
+        nivelSeleccionado=getDaoNivel().getNivel(nivS);
+        depeSeleccionada=getDaoDepen().getDepend(depS);
+        respoSeleccionado=getDaoResp().getResp(respS);
+        nomNivS = nivelSeleccionado.getCNivelDescrip();
+        nomDepS = depeSeleccionada.getCDepenDesc();
+        nomRespS = (respoSeleccionado.getCRespApe1()+" "+respoSeleccionado.getCRespApe2()+", "+respoSeleccionado.getCRespNom1()+" "+respoSeleccionado.getCRespNom2());
+        cargoS = respoSeleccionado.getCRespCargo();
+        idUs = encaSeleccionado.getTMoveUsec();
+        usuarSeleccionado=getDaoUsuar().getUsuario(idUs);
+        nomUs=usuarSeleccionado.getCUserNombre();
     }
     
     public void tipSelec() {

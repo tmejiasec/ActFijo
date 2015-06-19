@@ -43,7 +43,11 @@
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                                <a data-toggle="modal" href="#adicRub" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                                <!--<a data-toggle="modal" href="#adicRub" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicRub" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                    <p:ajax process="@this" update=":formRubros:displayRu1"/>
+                                </h:commandLink>                                   
+                                
                             </div>                              
                         </tbody>  
                     </table>
@@ -52,7 +56,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Adición de Rubros</h4>
                             </div>
                             <div class="modal-body">
@@ -68,7 +72,7 @@
                                     <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.nuevoRubro.CRubroDesc}" size="80" required="true"/> 
 
-                                    <p:commandButton value="Guardar" id="guardr" icon="ui-icon-disk" action="#{catbmBean.guardarRb()}"  rendered="#{!catbmBean.edit}" disabled="#{catbmBean.estado}" update="@all" process="@this displayRu1"  oncomplete="handleRequest(xhr, status, args); ; adicRub.hide();" />
+                                    <p:commandButton value="Guardar" id="guardr" icon="ui-icon-disk" action="#{catbmBean.guardarRb()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}"  disabled="#{catbmBean.estado}" update="@all" process="@this displayRu1"  oncomplete="handleRequest(xhr, status, args); ; adicRub.hide();" />
                                     <script type="text/javascript">
                                         function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
@@ -81,9 +85,6 @@
                                     </script>
                                 </p:panelGrid>  
                             </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -92,7 +93,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Modificación de Rubros</h4>
                             </div>
                             <div class="modal-body">
@@ -106,12 +107,9 @@
                         <h:outputLabel value="Descripción:" style="font-weight: bold" />  
                         <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catbmBean.rubroSeleccionado.CRubroDesc}" size="50" /> 
 
-                        <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catbmBean.actualRb()}" rendered="#{!catbmBean.edit}" update="@all" process="@this displayRu2"  oncomplete="modifRub.hide();"/>
+                        <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catbmBean.actualRb()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayRu2"  oncomplete="modifRub.hide();"/>
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>

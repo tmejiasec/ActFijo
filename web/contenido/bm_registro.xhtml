@@ -33,10 +33,10 @@
                                 <div class="col-md-4">
                                     <label for="inv">Tipo de Inventario</label>
                                     <div>
-                                      <p:selectOneMenu id="inv" value="#{bienesBean.nuevoBien.TBienTipinv}" style="width: 50%;" >
-                                        <f:selectItem itemValue="C" itemLabel="Contable" />
-                                        <f:selectItem itemValue="A" itemLabel="Administrativo" />
-                                      </p:selectOneMenu>  
+                                        <p:selectOneMenu id="inv" value="#{bienesBean.nuevoBien.TBienTipinv}" style="width: 50%;" >
+                                            <f:selectItem itemValue="C" itemLabel="Contable" />
+                                            <f:selectItem itemValue="A" itemLabel="Administrativo" />
+                                        </p:selectOneMenu>  
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -403,19 +403,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ui:repeat value="#{bienesBean.bienes}" var="bien" >
+                                    <ui:repeat value="#{bienesBean.bienes}" var="bienA" >
                                         <tr>
-                                            <td>#{bien.CNivelId.CNivelDescrip}</td>
-                                            <td>#{bien.CDepenId.CDepenDesc}</td>
-                                            <td>#{bien.TBienCodigo}</td>
-                                            <td>#{bien.CRubroId.CRubroDesc}</td>
-                                            <td>#{bien.CEspecId.CEspecDesc}</td>
-                                            <td>#{bien.TBienDesc}</td>
+                                            <td>#{bienA.CNivelId.CNivelDescrip}</td>
+                                            <td>#{bienA.CDepenId.CDepenDesc}</td>
+                                            <td>#{bienA.TBienCodigo}</td>
+                                            <td>#{bienA.CRubroId.CRubroDesc}</td>
+                                            <td>#{bienA.CEspecId.CEspecDesc}</td>
+                                            <td>#{bienA.TBienDesc}</td>
                                             <td>
                                                 <h:commandLink value="Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifBien" >
-                                                    <f:setPropertyActionListener value="#{bienesBean.bien}"
+                                                    <f:setPropertyActionListener value="#{bienA}"
                                                                                  target="#{bienesBean.bienSeleccionado}" />
-                                                    <p:ajax process="@this" update=":formBien:modiBien:displayB2"/>
+                                                    <p:ajax process="@this" update=":formBien:modiBien:displayB2" />
                                                 </h:commandLink>
                                             </td>
                                         </tr>
@@ -453,7 +453,7 @@
                                                             <div class="col-md-4">
                                                                 <label for="usingm">Modificado Por</label>
                                                                 <div>
-                                                                    <h:outputText id="usingm" value="#{bienesBean.bienSeleccionado.TBienUsmodif}"/>
+                                                                    <h:outputText id="usingm" value="#{appSession.usuario.CUserNombre}"/>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -1295,19 +1295,19 @@
                                                     </table>
                                                     <p:commandButton id="ConsolButtonCa" value="Actualizar Códigos" icon="ui-icon-folder-open" action="#{bienesBean.generarI2()}" update=":formLotes:lisIngre" process="@this datIngL" />				 
                                                     <p:commandButton id="GuarButtonCa" value="Guardar Datos" icon="ui-icon-folder-save" action="#{bienesBean.guardarI()}" update=":formLotes:lisIngre" process="@this datIngL" oncomplete="refrescarIl(xhr, status, args); ;mosIngre.hide();" />				 
-                                                        <script type="text/javascript">
-                                                            function refrescarIl(xhr, status, args) {
-                                                                if (args.validationFailed) {
-                                                                    alert('Ha ocurrido un error');
-                                                                } else {
-                                                                    alert('Datos guardados correctamente');
-                                                                    location.reload(true);
-                                                                    mosIngre.hide();
-                                                                }
+                                                    <script type="text/javascript">
+                                                        function refrescarIl(xhr, status, args) {
+                                                            if (args.validationFailed) {
+                                                                alert('Ha ocurrido un error');
+                                                            } else {
+                                                                alert('Datos guardados correctamente');
+                                                                location.reload(true);
+                                                                mosIngre.hide();
                                                             }
-                                                        </script>                                                    
-                                                        <!--<p:growl id="mensaj" showDetail="true" />-->
-                                                    </div>
+                                                        }
+                                                    </script>                                                    
+                                                    <!--<p:growl id="mensaj" showDetail="true" />-->
+                                                </div>
                                             </h:panelGroup>
                                         </div>
                                         <div class="modal-footer">

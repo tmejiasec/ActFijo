@@ -32,9 +32,12 @@ public interface TMovimEncaFacadeLocal {
     
     public List getList();
        
-    public List<TMovimEnca> getListM(Short correl, Short anio);
+    public List<TMovimEnca> getListM(Integer correl, Integer anio);
     
     public TMovimEnca getMove(Integer move);
+    
+    public List<TMovimEnca> getListT(Integer tipm,Integer estm);
 
+    public TMovimEnca getCorrel(Integer anio,Integer correl);
     
 }

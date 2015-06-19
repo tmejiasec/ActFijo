@@ -34,6 +34,7 @@ import dao.CUbicFacadeLocal;
 import entidades.TArchivos;
 import dao.TArchivosFacade;
 import dao.TArchivosFacadeLocal;
+import dao.TCorrOtrFacadeLocal;
 import dao.TTiempoFacadeLocal;
 import entidades.CAreas;
 import entidades.CEdificios;
@@ -41,6 +42,7 @@ import entidades.CJefesDep;
 import entidades.CMarcasBm;
 import entidades.CUbic;
 import entidades.TTiempo;
+import entidades.TCorrOtr;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -86,7 +88,8 @@ public class SustitucionBienesBean implements Serializable {
     protected Integer tabIndex = 1;
     protected Boolean edit = false;
     private String desc;
-    private List<TSustit> sutit = new ArrayList<>();
+    private List<TCorrOtr> correlat = new ArrayList<>();
+    private List<TSustit> sustit = new ArrayList<>();
     private TSustit sustituc;
     private TSustit nuevaSustit = new TSustit();
     private List<CResponsables> respon = new ArrayList<>();
@@ -106,18 +109,18 @@ public class SustitucionBienesBean implements Serializable {
     private TArchivos nuevoArch = new TArchivos();
     private TBienes codSeleccionado = new TBienes();
 
-    private Integer respoSeleccionado, especSeleccionada, rubSeleccionado, depenSeleccionado, sustitSeleccionada;
-    private Integer estadSeleccionado, bienseleccionado, ducumseleccionado, ubicacionSeleccionada, jefeSeleccionado, areaSeleccionada, edificioSeleccionado,marcaSeleccionada;
+    private Integer respoSeleccionado, especSeleccionada, rubSeleccionado, depenSeleccionado, sustitSeleccionada, correlativo;
+    private Integer estadSeleccionado, bienseleccionado, ducumseleccionado, ubicacionSeleccionada, jefeSeleccionado, areaSeleccionada, edificioSeleccionado, marcaSeleccionada;
     private double valBien;
     private Date fech = new Date();
     private SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm:ss");
 
     //Variables intermedias
-    private Integer marcaAntInter=0;
-    private Integer marcaNewInter=0; 
+    private Integer marcaAntInter = 0;
+    private Integer marcaNewInter = 0;
     private Integer marcaAntSeleccionada;
     private Integer marcaNewSeleccionada;
-    
+
     private Boolean estado = false;
     private Boolean estadoI = false;
     private Boolean estadoIn = false;
@@ -125,16 +128,16 @@ public class SustitucionBienesBean implements Serializable {
     private Integer especif;
     private String serieAnt;
     private Date fechres, fechdic, fechsut;
+    private int anio, nvoCorr;
 
     private String nomResp, nomDep, regBien, especi;
     private String cod, modelo, serie;
     private Integer reparSelec, codSelec, marca;
     private Integer idFdic, idFres, idFsus, idUs;
-    private int idFec,idCod;
+    private int idFec, idCod;
     @ManagedProperty(value = "#{appSession}")
     private AppSession appSession;
 
-    
     public SustitucionBienesBean() {
 
         respon = getDaoResp().getList();
@@ -219,6 +222,10 @@ public class SustitucionBienesBean implements Serializable {
         return (CAreasFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CAreasFacade!dao.CAreasFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
     }
 
+    private TCorrOtrFacadeLocal getDaoCorrel() {
+        return (TCorrOtrFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TCorrOtrFacade!dao.TCorrOtrFacadeLocal"); //To change body of generated methods, choose Tools | Templates.
+    }
+
     public Boolean getEdit() {
         return edit;
     }
@@ -235,10 +242,7 @@ public class SustitucionBienesBean implements Serializable {
         this.desc = desc;
     }
 
-    public List<TSustit> getSustituc() {
-        return sutit;
-    }
-
+   
     public String getCod() {
         return cod;
     }
@@ -343,7 +347,6 @@ public class SustitucionBienesBean implements Serializable {
         this.areaSeleccionada = areaSeleccionada;
     }
 
-
     public Integer getMarcaAntSeleccionada() {
         return marcaAntSeleccionada;
     }
@@ -407,9 +410,25 @@ public class SustitucionBienesBean implements Serializable {
     public void setIdUs(Integer idUs) {
         this.idUs = idUs;
     }
+
+    public List<TSustit> getSustit() {
+        return sustit;
+    }
+
+    public void setSustit(List<TSustit> sustit) {
+        this.sustit = sustit;
+    }
+
+    public TSustit getSustituc() {
+        return sustituc;
+    }
+
+    public void setSustituc(TSustit sustituc) {
+        this.sustituc = sustituc;
+    }
     
     
-    
+
 //    public String buscarSusti() throws NamingException {
 //
 //        sutit = getDaoSustit().busqueda(desc);
@@ -442,8 +461,6 @@ public class SustitucionBienesBean implements Serializable {
         this.sustitSeleccionada = sustitSeleccionada;
     }
 
-   
-
     public CJefesDep getJefSelec() {
         return jefSelec;
     }
@@ -451,8 +468,15 @@ public class SustitucionBienesBean implements Serializable {
     public void setJefSelec(CJefesDep jefSelec) {
         this.jefSelec = jefSelec;
     }
-    
-    
+
+    public Integer getCorrelativo() {
+        return correlativo;
+    }
+
+    public void setCorrelativo(Integer correlativo) {
+        this.correlativo = correlativo;
+    }
+
     public AppSession getAppSession() {
         return appSession;
     }
@@ -461,9 +485,12 @@ public class SustitucionBienesBean implements Serializable {
         this.appSession = appSession;
     }
 
-
     public String limpiarTSutit() {
+        
+        codSeleccionado = new TBienes();
+        nuevaSustit = new TSustit();
         sustituc = new TSustit();
+        estado=false;
         return null;
     }
 
@@ -473,111 +500,112 @@ public class SustitucionBienesBean implements Serializable {
 //        cod = detaSeleccionado.getTMovdCodigo();
         codSeleccionado = getDaoBienes().getCodBien(cod);
 //        System.out.println("despues de query" + codSeleccionado);
-        if ( codSeleccionado.getCDepenId() != null  ){
+        if (codSeleccionado.getCDepenId() != null) {
             depenSeleccionado = codSeleccionado.getCDepenId().getCDepenId();
+            
+            System.out.println("cod dig: " + cod);
             jefSelec = getDaoJefes().getDep(depenSeleccionado);
-            jefeSeleccionado=jefSelec.getCJefesdId();
+            jefeSeleccionado = jefSelec.getCJefesdId();
             nuevaSustit.setCDepenId(getDaoDepen().getDepend(depenSeleccionado));
             nuevaSustit.setCJefesdId(getDaoJefes().getJefeDep(jefeSeleccionado));
+        } else {
+            depenSeleccionado = 0;
         }
-        else{
-            depenSeleccionado=0;}
-        if (codSeleccionado.getCUbicId() != null){
-        ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();
-        nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));  
+        if (codSeleccionado.getCUbicId() != null) {
+            ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();
+            nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));
+        } else {
+            ubicacionSeleccionada = 0;
         }
-        else{
-                ubicacionSeleccionada = 0;
-                }
-        if (codSeleccionado.getCAreaId() != null){
-        areaSeleccionada = codSeleccionado.getCAreaId().getCAreaId();}
-        else{
+        if (codSeleccionado.getCAreaId() != null) {
+            areaSeleccionada = codSeleccionado.getCAreaId().getCAreaId();
+        } else {
             areaSeleccionada = 0;
         }
-        if (codSeleccionado.getCEdifId() != null){
-        edificioSeleccionado = codSeleccionado.getCEdifId().getCEdifId();}
-        else{
+        if (codSeleccionado.getCEdifId() != null) {
+            edificioSeleccionado = codSeleccionado.getCEdifId().getCEdifId();
+        } else {
             edificioSeleccionado = 0;
         }
-        if (codSeleccionado.getCEstadbId() !=null ){
-        estadSeleccionado = codSeleccionado.getCEstadbId().getCEstadbId();}
-        else
-        {
+        if (codSeleccionado.getCEstadbId() != null) {
+            estadSeleccionado = codSeleccionado.getCEstadbId().getCEstadbId();
+        } else {
             estadSeleccionado = 0;
         }
-         if (codSeleccionado.getCRespId()!=null ){
-        respoSeleccionado = codSeleccionado.getCRespId().getCRespId();
-        nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
-        }
-        else
-        {
+        if (codSeleccionado.getCRespId() != null) {
+            respoSeleccionado = codSeleccionado.getCRespId().getCRespId();
+            nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
+        } else {
             respoSeleccionado = 0;
         }
-        
-        if (codSeleccionado.getCMarcaId() != null ){
-        marcaAntSeleccionada = codSeleccionado.getCMarcaId().getCMarcaId();}
-        else
-        {
+
+        if (codSeleccionado.getCMarcaId() != null) {
+            marcaAntSeleccionada = codSeleccionado.getCMarcaId().getCMarcaId();
+        } else {
             marcaAntSeleccionada = 0;
         }
 //        marcaNewSeleccionada = codSeleccionado.getCMarcaId().getCMarcaId();
-        if (codSeleccionado.getTBienValoradq() != null ){
-            valBien = codSeleccionado.getTBienValoradq();}
-        else{
-            valBien=0;
+        if (codSeleccionado.getTBienValoradq() != null) {
+            valBien = codSeleccionado.getTBienValoradq();
+        } else {
+            valBien = 0;
         }
         //jefeSeleccionado=codSeleccionado.
 //        System.out.println("codsel: " + codSeleccionado);
+        System.out.println("codsel: " + codSeleccionado);
         return codSeleccionado;
-    }
-    
-     public void buscarJefe() {
-        jefSelec = getDaoJefes().getDep(depenSeleccionado);
+        
+        
     }
 
+    public void buscarJefe() {
+        jefSelec = getDaoJefes().getDep(depenSeleccionado);
+    }
+    
+
     public String guardarSustit() throws NamingException, ParseException {
-        if ( codSeleccionado.getCDepenId() != null  ){
+        System.out.println("depen "+codSeleccionado.getCDepenId());
+        if (codSeleccionado.getCDepenId() != null) {
             depenSeleccionado = codSeleccionado.getCDepenId().getCDepenId();
             jefSelec = getDaoJefes().getDep(depenSeleccionado);
-            jefeSeleccionado=jefSelec.getCJefesdId();
+            if((jefeSeleccionado = jefSelec.getCJefesdId())!= null){
+                nuevaSustit.setCJefesdId(getDaoJefes().getJefeDep(jefeSeleccionado));
+            }else{
+                jefeSeleccionado = 0;
+            }
+            
             nuevaSustit.setCDepenId(getDaoDepen().getDepend(depenSeleccionado));
-            nuevaSustit.setCJefesdId(getDaoJefes().getJefeDep(jefeSeleccionado));
+            
+        } else {
+            depenSeleccionado = 0;
         }
-        else{
-            depenSeleccionado=0;}
-        if (codSeleccionado.getCUbicId() != null){
-        ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();
-        nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));  
+        if (codSeleccionado.getCUbicId() != null) {
+            ubicacionSeleccionada = codSeleccionado.getCUbicId().getCUbicId();
+            nuevaSustit.setCUbicId(getDaoUbica().getUbic(ubicacionSeleccionada));
+        } else {
+            ubicacionSeleccionada = 0;
         }
-        else{
-                ubicacionSeleccionada = 0;
-                }
-        if (codSeleccionado.getCAreaId() != null){
-        areaSeleccionada = codSeleccionado.getCAreaId().getCAreaId();
-        nuevaSustit.setCAreaId(getDaoAreas().getArea(areaSeleccionada));
-}
-        else{
+        if (codSeleccionado.getCAreaId() != null) {
+            areaSeleccionada = codSeleccionado.getCAreaId().getCAreaId();
+            nuevaSustit.setCAreaId(getDaoAreas().getArea(areaSeleccionada));
+        } else {
             areaSeleccionada = 0;
         }
-        if (codSeleccionado.getCEdifId() != null){
-        edificioSeleccionado = codSeleccionado.getCEdifId().getCEdifId();
-        nuevaSustit.setCEdifId(getDaoEdificio().getEdif(edificioSeleccionado));
-}
-        else{
+        if (codSeleccionado.getCEdifId() != null) {
+            edificioSeleccionado = codSeleccionado.getCEdifId().getCEdifId();
+            nuevaSustit.setCEdifId(getDaoEdificio().getEdif(edificioSeleccionado));
+        } else {
             edificioSeleccionado = 0;
         }
-        if (codSeleccionado.getCEstadbId() !=null ){
-        estadSeleccionado = codSeleccionado.getCEstadbId().getCEstadbId();}
-        else
-        {
+        if (codSeleccionado.getCEstadbId() != null) {
+            estadSeleccionado = codSeleccionado.getCEstadbId().getCEstadbId();
+        } else {
             estadSeleccionado = 0;
         }
-         if (codSeleccionado.getCRespId()!=null ){
-        respoSeleccionado = codSeleccionado.getCRespId().getCRespId();
-        nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
-        }
-        else
-        {
+        if (codSeleccionado.getCRespId() != null) {
+            respoSeleccionado = codSeleccionado.getCRespId().getCRespId();
+            nuevaSustit.setCRespId(getDaoResp().getResp(respoSeleccionado));
+        } else {
             respoSeleccionado = 0;
         }
         fechres = nuevaSustit.getTSustFechres();
@@ -600,22 +628,21 @@ public class SustitucionBienesBean implements Serializable {
             nuevaSustit.setTFechsustId(idFsus);
 
         }
-        
+
         nuevaSustit.setTSustFechc(fech);
         idFec = getDaoTiempo().getFecha(fech).getTTmId();
-   	nuevaSustit.setTTmId(getDaoTiempo().getTm(idFec));
-        if(marcaAntSeleccionada == null){
-        } else{
-           nuevaSustit.setTSustMarcAnt(marcaAntSeleccionada);
+        nuevaSustit.setTTmId(getDaoTiempo().getTm(idFec));
+        if (marcaAntSeleccionada == null) {
+        } else {
+            nuevaSustit.setTSustMarcAnt(marcaAntSeleccionada);
         }
-       
-        if(marcaNewInter == null){
-        }
-        else {
+
+        if (marcaNewInter == null) {
+        } else {
             nuevaSustit.setTSustMarcNew(marcaNewSeleccionada);
         }
         nuevaSustit.setTSustCodigo(codSeleccionado.getTBienCodigo());
-        idCod=codSeleccionado.getTBienId();
+        idCod = codSeleccionado.getTBienId();
         nuevaSustit.setTBienId(getDaoBienes().getBien(idCod));
         nuevaSustit.setTSustDescAnt(codSeleccionado.getTBienDesc());
         nuevaSustit.setTSustModeAnt(codSeleccionado.getTBienModelo());
@@ -624,20 +651,41 @@ public class SustitucionBienesBean implements Serializable {
         idUs = appSession.getUsuario().getCUserId();
         nuevaSustit.setTSustUsec(idUs);
         System.out.println("verificar antes de guardar");
-        System.out.println("Id ubic: "+nuevaSustit.getCUbicId());
-        System.out.println("ubicg: "+nuevaSustit.getCUbicId().getCUbicDesc());
-//        System.out.println("jefeg: "+nuevaSustit.getCJefesdId().getCJefesdNombre());
-//        System.out.println("depeng:"+nuevaSustit.getCDepenId().getCDepenDesc());
-        System.out.println("respong:"+nuevaSustit.getCRespId().getCRespNom1());
+        System.out.println("Id ubic: " + nuevaSustit.getCUbicId());
+        System.out.println("ubicg: " + nuevaSustit.getCUbicId().getCUbicDesc());
+
+        System.out.println("respong:" + nuevaSustit.getCRespId().getCRespNom1());
+        anio=nuevaSustit.getTSustAnio();
+        nvoCorr=nuevaSustit.getTSustCorr();
+        nvoCorr = nvoCorr+1;
+        System.out.println("nuevo corr: "+nvoCorr);
+        getDaoCorrel().updateC(anio, nvoCorr);
+        System.out.println("corr actualizado");
         
         getDaoSustit().create(nuevaSustit);
-        
+        estado=true;
         System.out.println("Se guardo");
         return null;
     }
 
-        public void marcaSeleccion() {
+    public void marcaSeleccion() {
         marcaNewSeleccionada = nuevaSustit.getTSustMarcNew();
-    }    
-    
+    }
+
+    public void buscarCorr() throws NamingException {
+
+        int resul = 0;
+        int anio;
+        anio = nuevaSustit.getTSustAnio();
+        resul = getDaoCorrel().getCorrel(5, anio).getTOtrocCorrel();
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No puede encontrar correlativo"));
+            estado = false;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok."));
+            estado = true;
+        }
+        nuevaSustit.setTSustCorr(resul);
+
+    }
 }

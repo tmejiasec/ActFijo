@@ -13,7 +13,7 @@
         <ui:define name="content" >
             <h:form id="formAreas" >
                 <div class="table table-responsive table-bordered " >
-                    
+
                     <table id="tarea" class="table table-striped table-condensed">
                         <thead>
                             <tr>
@@ -42,7 +42,10 @@
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
-                              <a data-toggle="modal" href="#adicArea" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
+                                <!--<a data-toggle="modal" href="#adicArea" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
+                                <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicArea" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
+                                    <p:ajax process="@this" update=":formAreas:displayA1"/>
+                                </h:commandLink>                                   
                             </div>                              
                         </tbody>  
                     </table>
@@ -51,40 +54,37 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Adición de Areas por Edificio</h4>
                             </div>
                             <div class="modal-body">
                                 <p:panelGrid id="displayA1" columns="2" >  
-                                                            <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
-                        <h:outputText value="#{catgeBean.nuevaArea.CAreaId}" /> 
-                        
-                        <h:outputLabel value="Edificio: *" style="font-weight: bold"/>
-                        <h:selectOneMenu id="edifa" value="#{catgeBean.ediSeleccionado}" required="true" style="width: 99%;">
-                                <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
-                                <f:selectItems value="#{catgeBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif.CEdifId}"/>
-                            </h:selectOneMenu>
+                                    <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nuevaArea.CAreaId}" /> 
 
-                        <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaArea.CAreaDesc}" size="65" required="true"/> 
+                                    <h:outputLabel value="Edificio: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="edifa" value="#{catgeBean.ediSeleccionado}" required="true" style="width: 99%;">
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catgeBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif.CEdifId}"/>
+                                    </h:selectOneMenu>
 
-                        <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarAr()}"  rendered="#{!catgeBean.edit}" update="@all" process="@this displayA1"  oncomplete="handleRequest(xhr, status, args); ; adicArea.hide();" />
-                        <script type="text/javascript">
-                            function handleRequest(xhr, status, args) {
-                                if (args.validationFailed) {
-                                    alert('Ha ocurrido un error. Complete los datos necesarios');
-                                }else{
-                                    alert('Datos adicionados correctamente');
-                                    adicArea.hide();
-                                }
-                            }
-                        </script>
+                                    <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaArea.CAreaDesc}" size="65" required="true"/> 
+
+                                    <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarAr()}"  rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayA1"  oncomplete="handleRequest(xhr, status, args); ; adicArea.hide();" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                                adicArea.hide();
+                                            }
+                                        }
+                                    </script>
 
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>
@@ -94,30 +94,27 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                 <h4 class="modal-title">Modificación de Areas por Edificio</h4>
                             </div>
                             <div class="modal-body">
                                 <p:panelGrid id="displayA2" columns="2" >  
-                        <h:outputLabel value="Corr. Dependencia:" style="font-weight: bold"/>  
-                        <h:outputText value="#{catgeBean.areaSeleccionada.CAreaId}" />    
+                                    <h:outputLabel value="Corr. Dependencia:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.areaSeleccionada.CAreaId}" />    
 
-                           <h:outputLabel value="Edificio: *" style="font-weight: bold"/>
-                           <h:selectOneMenu id="edifm" value="#{catgeBean.ediSeleccionado}" required="true" style="width: 99%;">
-                                <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
-                                <f:selectItems value="#{catgeBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif.CEdifId}"/>
-                            </h:selectOneMenu>
+                                    <h:outputLabel value="Edificio: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="edifm" value="#{catgeBean.ediSeleccionado}" required="true" style="width: 99%;">
+                                        <f:selectItem itemLabel="Seleccione uno..." itemValue="0"/>
+                                        <f:selectItems value="#{catgeBean.edificios}" var="edif" itemLabel="#{edif.CEdifDesc}" itemValue="#{edif.CEdifId}"/>
+                                    </h:selectOneMenu>
 
-                        <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
-                        <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.areaSeleccionada.CAreaDesc}" size="65"/> 
+                                    <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.areaSeleccionada.CAreaDesc}" size="65"/> 
 
-                        <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualAr()}" rendered="#{!catgeBean.edit}" update="@all" process="@this displayA2"  oncomplete="modifAarea.hide();"/>
-                                    
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualAr()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayA2"  oncomplete="modifAarea.hide();"/>
+
                                 </p:panelGrid>  
 
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-default">Cancelar</button>
                             </div>
                         </div>
                     </div>

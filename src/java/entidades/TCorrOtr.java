@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -27,9 +29,12 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TCorrOtr.findAll", query = "SELECT t FROM TCorrOtr t"),
     @NamedQuery(name = "TCorrOtr.findByTOtrocId", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocId = :tOtrocId"),
     @NamedQuery(name = "TCorrOtr.findByTOtrocDesc", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocDesc = :tOtrocDesc"),
-    @NamedQuery(name = "TCorrOtr.findByTOtrocAnio", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocAnio = :tOtrocAnio"),
+    @NamedQuery(name = "TCorrOtr.findByTOtrocAnio", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocId = :tOtrocId AND t.tOtrocAnio = :tOtrocAnio"),
     @NamedQuery(name = "TCorrOtr.findByTOtrocCorrel", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocCorrel = :tOtrocCorrel")})
 public class TCorrOtr implements Serializable {
+    @JoinColumn(name = "c_otrosm_id", referencedColumnName = "c_otrosm_id")
+    @ManyToOne
+    private COtrosMov cOtrosmId;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -106,6 +111,14 @@ public class TCorrOtr implements Serializable {
     @Override
     public String toString() {
         return "entidades.TCorrOtr[ tOtrocId=" + tOtrocId + " ]";
+    }
+
+    public COtrosMov getCOtrosmId() {
+        return cOtrosmId;
+    }
+
+    public void setCOtrosmId(COtrosMov cOtrosmId) {
+        this.cOtrosmId = cOtrosmId;
     }
     
 }
