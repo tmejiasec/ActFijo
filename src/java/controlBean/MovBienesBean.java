@@ -35,6 +35,7 @@ import entidades.TPrest;
 import entidades.TRepar;
 import entidades.TSegMov;
 import entidades.CUsuarios;
+import entidades.TTiempo;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileInputStream;
@@ -57,6 +58,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ValueChangeEvent;
 import javax.naming.NamingException;
 import javax.servlet.ServletContext;
 import org.primefaces.event.FileUploadEvent;
@@ -74,6 +76,7 @@ import util.FacesUtil;
 public class MovBienesBean implements Serializable {
 
     protected Integer tabIndex = 1;
+    private StreamedContent imagen;
     private List<CResponsables> respons = new ArrayList<>();
     private CResponsables respoSeleccionado = new CResponsables();
     private List<CDependencias> depens = new ArrayList<>();
@@ -84,6 +87,7 @@ public class MovBienesBean implements Serializable {
     private List<CEstadoMov> estmovs = new ArrayList<>();
     private List<CUsuarios> usuars = new ArrayList<>();
     private CUsuarios usuarSeleccionado = new CUsuarios();
+    private TTiempo timeSeleccionado = new TTiempo();
 
     List<TArchivos> docums = new ArrayList<>();
     private TArchivos archSeleccionado = new TArchivos();
@@ -105,13 +109,13 @@ public class MovBienesBean implements Serializable {
     Date fecs, fecr, feci, feca;
     private Integer iniCorr=0;
     private Integer espec,m_id=0;
-    private String tipref = "MOV";
+    private String tipref = "TRA";
     private String tipo = "D";
     private String tipom = "I";
     private Integer traslad=1;
     private Integer estini=1;
     private String nomNivE, nomDepE, nomRespE, cargoE, nomNivS, nomDepS, nomRespS, cargoS, nomUs;
-    private Integer anio, correl;
+    private Integer anio, correl, moveSelec;
     
     
     private List<TBienes> bienes = new ArrayList<>();
@@ -254,12 +258,22 @@ public class MovBienesBean implements Serializable {
     
         public String guardarS() throws NamingException, ParseException {
         Date fecha = new Date();
+        Date fecse = nuevoSeg.getTSegFecha();
+        m_id = encaSeleccionado.getTMoveId();
+        System.out.println("id enca:"+m_id);
+        System.out.println("id tipmo: "+tipmo);
         idUs = appSession.getUsuario().getCUserId();
-//        nuevoSeg.setCUserId(idUs);
+        Integer idFecse = getDaoTiempo().getFecha(fecse).getTTmId();
+        usuarSeleccionado.setCUserId(idUs);
+        nuevoSeg.setCUserId(usuarSeleccionado);
         nuevoSeg.setTSegFechp(fecha);
         nuevoSeg.setTSegHorap(formatoHora.parse(formatoHora.format(fecha)));
-        nuevoSeg.setCTipmId(null);
-        nuevoSeg.setTMoveId(enca);
+        nuevoSeg.setCTipmId(getDaoTipMov().getTipmov(tipmo));
+        nuevoSeg.setCEstmovId(getDaoEstmo().getEstMov(estmoSeleccionado));
+        timeSeleccionado.setTTmId(idFecse);
+        nuevoSeg.setTTmId(timeSeleccionado);
+       
+        nuevoSeg.setTMoveId(getDaoEnca().getMove(m_id));
 //        nuevoSeg.setCTipmId(1);
 //        System.out.println("est mov: "+estmoSeleccionado);
         try {
@@ -269,6 +283,7 @@ public class MovBienesBean implements Serializable {
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Seguimiento NO se agregó"));
         }
+        seguim = getDaoSeguim().getListM(m_id);
         return null;
         
     }
@@ -360,7 +375,13 @@ public class MovBienesBean implements Serializable {
         return movdeta;
     }
 
-    
+    public String llevaDatS() throws NamingException {
+        System.out.println("llevaDats id encabezado");
+        this.encaSeleccionado=getEncaSeleccionado();
+        m_id=encaSeleccionado.getTMoveId();
+        seguim = getDaoSeguim().getListM(m_id);
+        return null;
+    }
     public String limpiaNom(){
         nomNivE=" ";
         nomDepE=" ";
@@ -395,6 +416,7 @@ public class MovBienesBean implements Serializable {
         encaSeleccionado = new TMovimEnca();
         m_id=0;
         movdeta = getDaoDeta().getListM(m_id);
+        seguim = getDaoSeguim().getListM(m_id);
         limpiaNom();
         nomNivS=" ";
         nomDepS=" ";
@@ -734,6 +756,22 @@ public class MovBienesBean implements Serializable {
 
     public void setNomUs(String nomUs) {
         this.nomUs = nomUs;
+    }
+
+    public TTiempo getTimeSeleccionado() {
+        return timeSeleccionado;
+    }
+
+    public void setTimeSeleccionado(TTiempo timeSeleccionado) {
+        this.timeSeleccionado = timeSeleccionado;
+    }
+
+    public Integer getMoveSelec() {
+        return moveSelec;
+    }
+
+    public void setMoveSelec(Integer moveSelec) {
+        this.moveSelec = moveSelec;
     }
 
 
@@ -1361,6 +1399,14 @@ public class MovBienesBean implements Serializable {
 //        nuevoBien.setCDepenId(getDaoDepen().getDepend(depSeleccionada));
     }
 
+     public StreamedContent getImagen() throws FileNotFoundException {  
+        prepararImagen();
+        return imagen;
+    }
+
+    public void setImagen(StreamedContent imagen) {
+        this.imagen = imagen;
+    }
 
 
     public void asignarEdifArea() {
@@ -1456,7 +1502,51 @@ public class MovBienesBean implements Serializable {
         idUs = encaSeleccionado.getTMoveUsec();
         usuarSeleccionado=getDaoUsuar().getUsuario(idUs);
         nomUs=usuarSeleccionado.getCUserNombre();
+        seguim = getDaoSeguim().getListM(m_id);
     }
+
+    public void buscarMovI() throws NamingException {
+        int resul = 0;
+        this.anio=anio;
+        this.correl=correl;
+        tipmo=traslad;
+        resul = getDaoEnca().getCorrel(anio, correl).getTMoveId();
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No puede encontrar correlativo"));
+            estado = false;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok."));
+            estado = true;
+        }
+        encaSeleccionado = getDaoEnca().getMove(resul);
+        m_id=encaSeleccionado.getTMoveId();
+        movdeta = getDaoDeta().getListM(m_id); 
+//        nivE=encaSeleccionado.getTMoveNive();
+//        depE=encaSeleccionado.getTMoveDepe();
+//        respE=encaSeleccionado.getTMovePere();
+//        nivelSeleccionado=getDaoNivel().getNivel(nivE);
+//        depeSeleccionada=getDaoDepen().getDepend(depE);
+//        respoSeleccionado=getDaoResp().getResp(respE);
+//        nomNivE = nivelSeleccionado.getCNivelDescrip();
+//        nomDepE = depeSeleccionada.getCDepenDesc();
+//        nomRespE = (respoSeleccionado.getCRespApe1()+" "+respoSeleccionado.getCRespApe2()+", "+respoSeleccionado.getCRespNom1()+" "+respoSeleccionado.getCRespNom2());
+//        cargoE = respoSeleccionado.getCRespCargo();
+//        nivS = encaSeleccionado.getTMoveNivs();
+//        depS = encaSeleccionado.getTMoveDeps();
+//        respS = encaSeleccionado.getTMovePers();
+//        nivelSeleccionado=getDaoNivel().getNivel(nivS);
+//        depeSeleccionada=getDaoDepen().getDepend(depS);
+//        respoSeleccionado=getDaoResp().getResp(respS);
+//        nomNivS = nivelSeleccionado.getCNivelDescrip();
+//        nomDepS = depeSeleccionada.getCDepenDesc();
+//        nomRespS = (respoSeleccionado.getCRespApe1()+" "+respoSeleccionado.getCRespApe2()+", "+respoSeleccionado.getCRespNom1()+" "+respoSeleccionado.getCRespNom2());
+//        cargoS = respoSeleccionado.getCRespCargo();
+        idUs = encaSeleccionado.getTMoveUsec();
+        usuarSeleccionado=getDaoUsuar().getUsuario(idUs);
+        nomUs=usuarSeleccionado.getCUserNombre();
+//        seguim = getDaoSeguim().getListM(m_id);
+    }
+    
     
     public void tipSelec() {
         tipmo=tipmSeleccionado;
@@ -1488,6 +1578,8 @@ public class MovBienesBean implements Serializable {
         this.estini = estini;
     }
     
+     public void cambiodeHoraInicio(ValueChangeEvent e) {
+    }
     
     public void buscarCodI() throws NamingException {
         int resul = 0;
@@ -1496,6 +1588,20 @@ public class MovBienesBean implements Serializable {
         resul = getDaoBienes().busCod(cod);
         if (resul == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Código no Existe....no puede adicionar imagen"));
+            estado = true;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok."));
+            estado = false;
+        }
+    }
+    
+     public void buscarCodIT() throws NamingException {
+        int resul = 0;
+        String cod;
+        cod = nuevoArch.getTArchCodref();
+        resul = getDaoDeta().busCod(cod,m_id);
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Código no Existe en traslado....no puede adicionar imagen"));
             estado = true;
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok."));
@@ -1558,7 +1664,7 @@ public class MovBienesBean implements Serializable {
             inputStream.close();
             nuevoArch.setTArchNombre(picture.getFileName());
             nuevoArch.setTArchTipref(tipref);
-            nuevoArch.setTArchUrl("/adjuntos/" + nuevoArch.getTArchCodref() + "/" + picture.getFileName());
+            nuevoArch.setTArchUrl(nuevoArch.getTArchCodref() + "/" + picture.getFileName());
             getDaoArchiv().create(nuevoArch);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Archivo cargado"));
             nuevoArch = new TArchivos();
@@ -1576,7 +1682,22 @@ public class MovBienesBean implements Serializable {
         FacesContext ctx = FacesContext.getCurrentInstance();
         String picture_directory = ctx.getExternalContext().getInitParameter("pictures_directory_path");
         //If directory exists ? do nothing : make directory
-        File storage_folder = new File(picture_directory + nuevoDeta.getTMovdCodigo());
+        File storage_folder = new File(picture_directory + nuevoArch.getTArchCodref());
     }
+    
+ public void prepararImagen() throws FileNotFoundException{
+    FacesContext ctx = FacesContext.getCurrentInstance();
+    String picture_directory = ctx.getExternalContext().getInitParameter("pictures_directory_path");
+    String path;
+    if (archSeleccionado.getTArchUrl()== null){
+        String rutai = "/inicio/nuevo.jpg";
+        path = picture_directory+rutai;
+    }
+    else{
+       path = picture_directory+archSeleccionado.getTArchUrl();}
+    System.out.println("path "+path);
+//    String path = "C:\\imagenes\\buhoos.jpg";
+    imagen = new DefaultStreamedContent(new FileInputStream(path), "image/png");
+  }    
 
 }

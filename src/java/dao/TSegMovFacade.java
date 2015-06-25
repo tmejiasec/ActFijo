@@ -6,6 +6,7 @@
 package dao;
 
 import entidades.TSegMov;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,5 +28,21 @@ public class TSegMovFacade extends AbstractFacade<TSegMov> implements TSegMovFac
     public TSegMovFacade() {
         super(TSegMov.class);
     }
+
+       @Override
+    public List getList() {			
+	return em.createNamedQuery("TSegMov.findAll").getResultList();
+    }
+    
+    @Override
+    public List getListM(Integer move) {			
+	return em.createNamedQuery("TSegMov.findByTMoveId").setParameter("tMoveId",move).getResultList();
+    }
+    
+    @Override
+	public TSegMov getSegM(Integer segm){		
+		return (TSegMov) em.createNamedQuery("TSegMov.findByTSegId").setParameter("tSegId",segm).getSingleResult();
+	}
+    
     
 }

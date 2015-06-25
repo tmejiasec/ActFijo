@@ -53,7 +53,7 @@ public class CDependencias implements Serializable {
     @Size(min = 1, max = 150)
     @Column(name = "c_depen_desc")
     private String cDepenDesc;
-    @Size(max = 8)
+    @Size(max = 12)
     @Column(name = "c_depen_jerar")
     private String cDepenJerar;
     @OneToMany(mappedBy = "cDepenId")

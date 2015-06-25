@@ -505,7 +505,7 @@
                                         <label >Correlativo</label>
                                         <div>
                                             <p:inputText id="corrS" value="#{movBienesBean.correl}" style="color:#157ab5">
-                                                <p:ajax listener="#{movBienesBean.buscarMov}" update="@this :formSeg:growls :formSeg:adicSMov"/>
+                                                <p:ajax listener="#{movBienesBean.buscarMov}" update="@this :formSeg:growls :formSeg:adicSMov :formSeg:seguim"/>
                                             </p:inputText>
                                         </div>
                                     </div>
@@ -619,8 +619,8 @@
                             </fieldset>
                             <div class="form-group">
                                 <div class="col-lg-12 col-lg-offset-8">
-                                    <p:commandButton id="verDeta" value="Ver Detalle de Bienes"  styleClass="btn btn-primary" action="#{movBienesBean.genDetaS()}" pt:data-toggle="modal" pt:data-target="#verDetaC" update=":formSeg:detaSeg" />
-                                    <p:commandButton id="agregaDet" value="Agregar Seguimiento"  styleClass="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicDetseg" />
+                                    <p:commandButton id="verDeta" value="Ver Detalle de Bienes"  styleClass="btn btn-primary" action="#{movBienesBean.genDetaS()}" pt:data-toggle="modal" pt:data-target="#verDetaC" update=":formSeg:detaSeg :formSeg:seguim" />
+                                    <p:commandButton id="agregaDet" value="Agregar Seguimiento"  styleClass="btn btn-primary" action="#{movBienesBean.llevaDatS()}" pt:data-toggle="modal" pt:data-target="#adicDetseg" update=":formSeg:seguim"/>
                                 </div>
                             </div>
                         </h:panelGroup>
@@ -640,6 +640,7 @@
                                 </p:column>
                                 <p:column headerText="Hora">
                                     <h:outputText value="#{seg.TSegHora}">
+                                        <f:convertDateTime pattern="HH:mm a" locale="es" timeZone="America/Mexico_City"/>
                                     </h:outputText>
                                 </p:column>   
                                 <p:column headerText="Usuario">
@@ -701,16 +702,42 @@
                                             <fieldset>
                                                 <legend></legend>
                                                 <div class="form-group">
-                                                    <div class="col-md-4">
-                                                        <label >Estado del Movimiento</label>
+                                                    <div class="col-md-3">
+                                                        <label >Nuevo Estado</label>
                                                         <div >
-                                                            <h:selectOneMenu id="depen" value="#{movBienesBean.nuevoSeg.CEstmovId}" style="width: 100%" >
+                                                            <h:selectOneMenu id="estmo" value="#{movBienesBean.estmoSeleccionado}" style="width: 100%" >
                                                                 <f:selectItem itemLabel="Seleccione uno..." noSelectionOption="true" itemValue=""/>
                                                                 <f:selectItems value="#{movBienesBean.estmovs}" var="estmove" itemLabel="#{estmove.CEstmovDesc}" itemValue="#{estmove.CEstmovId}"/>
                                                             </h:selectOneMenu>
                                                         </div>                                                        
                                                     </div>
-                                                    <div class="col-md-8">
+                                                    <div class="col-md-4">
+                                                        <label >Fecha Seguimiento</label>
+                                                        <div >
+                                                            <p:calendar id="fecse"
+                                                                        value="#{movBienesBean.nuevoSeg.TSegFecha}" locale="es"
+                                                                        pattern="dd/MM/yyyy" showOn="button" 
+                                                                        size="12" tabindex="2" style="width: 100%;">
+                                                                <p:ajax event="dateSelect" />
+                                                            </p:calendar>
+
+                                                        </div>                                                        
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <label>Hora del Seguimiento</label>
+                                                        <div>
+                                                            <p:calendar id="time" value="#{movBienesBean.nuevoSeg.TSegHora}" pattern="HH:mm a" timeOnly="true" showOn="button">                                                               
+                                                                <p:ajax update="@this time" />
+                                                            </p:calendar>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </fieldset>
+                                            <fieldset>
+                                                <legend></legend>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
                                                         <label>Observación</label>
                                                         <div>
                                                             <p:inputTextarea value="#{movBienesBean.nuevoSeg.TSegObserv}"
@@ -720,12 +747,27 @@
                                                     </div>
                                                 </div>
                                             </fieldset>
-
-                                            <div class="form-group">
-                                                <div>
-                                                    <p:commandButton icon="ui-icon-plusthick" value="Guardar Seguimiento" process="@this" action="#{movBienesBean.guardarS()}" update=":formSeg:seguim" oncomplete="#adicDetseg.hide();" style="margin-top: 10px;"/>
+                                            <fieldset>
+                                                <legend></legend>
+                                                <div class="form-group">
+                                                    <div class="col-md-8">
+                                                        <label >Usuario que ejecuta el Seguimiento</label>
+                                                        <div >
+                                                            <h:outputText id="using" value="#{appSession.usuario.CUserNombre}"/>
+                                                        </div>                                                        
+                                                    </div>
                                                 </div>
-                                            </div>
+                                            </fieldset>
+                                            <fieldset>
+                                                <legend></legend>
+
+                                                <div class="form-group">
+                                                    <div>
+                                                        <p:commandButton icon="ui-icon-plusthick" value="Guardar Seguimiento" process="@this adiSeg" action="#{movBienesBean.guardarS()}" update=":formSeg:seguim" oncomplete="#adicDetseg.hide();" style="margin-top: 10px;"/>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+
                                         </h:panelGroup>
                                     </div>
                                 </div>
@@ -734,7 +776,7 @@
                         <div class="form-group">
                             <div class="col-lg-12 col-lg-offset-9">
                                 <p:commandButton id="Nuevo" value="Limpiar Datos" class="btn btn-primary"
-                                                 action="#{movBienesBean.limpiarS()}" process="@this" update=":formSeg:adicSMov detaSeg">
+                                                 action="#{movBienesBean.limpiarS()}" process="@this" update=":formSeg:adicSMov detaSeg seguim">
                                 </p:commandButton>
                             </div>
                         </div>
@@ -810,42 +852,74 @@
                                     <h:form id="formDoc" enctype="multipart/form-data">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                            <h4 class="modal-title">Agregar Imagen/documento</h4>
+                                            <h4 class="modal-title">Agregar Imagen/documento de Traslado de Bienes</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <div class="form-group">
-                                                <div class="col-md-3">
-                                                    <label for="codi" >Código</label>
-                                                    <div>
-                                                        <p:inputMask id="codi" value="#{movBienesBean.nuevoArch.TArchCodref}" mask="99-9999-9999" style="width: 100%;"> 
-                                                            <p:ajax listener="#{movBienesBean.buscarCodI}" update="@this :formImag:growl :formImag:formDoc:guardI"/>
-                                                        </p:inputMask>
+                                            <fieldset>
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label for="anio" >Año</label>
+                                                        <div>
+                                                            <p:inputText id="anioS" value="#{movBienesBean.anio}" style="width: 100%; color:#157ab5"> 
+                                                                <p:ajax listener="#{movBienesBean.asigAnio()}" update="@this"/>
+                                                            </p:inputText>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-md-5">
-                                                    <label for="descm" >Descripción</label>
-                                                    <div>
-                                                        <h:inputText id="descm" value="#{movBienesBean.nuevoArch.TArchDesc}" style="width: 100%;"/> 
+                                                    <div class="col-md-3">
+                                                        <label >Correlativo</label>
+                                                        <div>
+                                                            <p:inputText id="corrS" value="#{movBienesBean.correl}" style="width: 100%; color:#157ab5">
+                                                                <p:ajax listener="#{movBienesBean.buscarMovI}" update="estmo" />
+                                                            </p:inputText>
+                                                        </div>
                                                     </div>
+                                                    <div class="col-md-6">
+                                                        <label >Estado del Movimiento</label>
+                                                        <div>
+                                                            <h:outputText id="estmo" value="#{movBienesBean.encaSeleccionado.CEstmovId.CEstmovDesc}" style="width: 100%; color:#157ab5"/>
+                                                        </div>
+                                                    </div>                                
                                                 </div>
-                                                <div class="col-md-4">
-                                                    <label >Tipo de Archivo</label>
-                                                    <h:selectOneMenu value="#{movBienesBean.nuevoArch.TArchTipo}">
-                                                        <f:selectItem itemValue="F" itemLabel="Foto" />
-                                                        <f:selectItem itemValue="D" itemLabel="Documento" />
-                                                    </h:selectOneMenu>                                        
+                                            </fieldset>
+                                            <fieldset>
+                                                <legend></legend>
+                                                <div class="form-group">
+                                                    <div class="col-md-3">
+                                                        <label >Tipo de Archivo</label>
+                                                        <h:selectOneMenu value="#{movBienesBean.nuevoArch.TArchTipo}">
+                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                        </h:selectOneMenu>                                        
+                                                    </div> 
+                                                    <div class="col-md-3">
+                                                        <label for="codi" >Código</label>
+                                                        <div>
+                                                            <p:inputMask id="codi" value="#{movBienesBean.nuevoArch.TArchCodref}" mask="99-9999-9999" style="width: 100%;"> 
+                                                                <p:ajax listener="#{movBienesBean.buscarCodIT}" update="@this :formImag:growl :formImag:formDoc:guardI"/>
+                                                            </p:inputMask>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label for="descm" >Descripción Imagen/Documento</label>
+                                                        <div>
+                                                            <h:inputText id="descm" value="#{movBienesBean.nuevoArch.TArchDesc}" style="width: 100%;"/> 
+                                                        </div>
+                                                    </div>
+
                                                 </div> 
-                                            </div> 
+                                            </fieldset>
                                             <br></br>
-                                            <br></br>
-                                            <div class="col-md-12">
-                                                <p:panelGrid id="doc1" columns="2" >
-                                                    <p:fileUpload id="doc" fileUploadListener="#{movBienesBean.handleFileUpload(event)}" value="#{movBienesBean.picture}" mode="simple" required="true" sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="mesaj" >
-                                                        <p:growl id="mesaj" showDetail="true" />
-                                                    </p:fileUpload>
-                                                    <p:commandButton id="guardI" value="Guardar" ajax="false" disabled="#{movBienesBean.estadoI}" action="#{movBienesBean.guardarImagen()}" />
-                                                </p:panelGrid>  
-                                            </div>
+                                            <fieldset>
+                                                <legend></legend>
+                                                <div class="col-md-12">
+                                                    <p:panelGrid id="doc1" columns="2" >
+                                                        <p:fileUpload id="doc" fileUploadListener="#{movBienesBean.handleFileUpload(event)}" value="#{movBienesBean.picture}" mode="simple" required="true" sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="mesaj" >
+                                                            <p:growl id="mesaj" showDetail="true" />
+                                                        </p:fileUpload>
+                                                        <p:commandButton id="guardI" value="Guardar" ajax="false" disabled="#{movBienesBean.estadoI}" action="#{movBienesBean.guardarImagen()}" />
+                                                    </p:panelGrid>  
+                                                </div>
+                                            </fieldset>
                                             <br></br>
                                         </div>
                                         <div class="modal-footer">
@@ -861,69 +935,77 @@
                                     <h:head></h:head>
                                     <h:form id="modImag" enctype="multipart/form-data">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                             <h4 class="modal-title">Modificación de Documentos e Imágenes</h4>
                                         </div>
                                         <div class="modal-body">
                                             <h:panelGroup id="dispDoc2"  >  
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label for="ida" class="control-label">Corr Img</label>
-                                                        <h:outputText id="ida" value="#{movBienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="codia" class="control-label">Código</label>
-                                                        <h:outputText id="codia" value="#{movBienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="noma" class="control-label">Nombre del Archivo</label>
-                                                        <h:outputText id="noma" value="#{movBienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
-                                                    </div>                                      
-                                                </div> 
+                                                <fieldset>
+                                                    <legend></legend>
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label for="ida" class="control-label">Corr Img</label>
+                                                            <h:outputText id="ida" value="#{movBienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="codia" class="control-label">Código</label>
+                                                            <h:outputText id="codia" value="#{movBienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="noma" class="control-label">Nombre del Archivo</label>
+                                                            <h:outputText id="noma" value="#{movBienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
+                                                        </div>                                      
+                                                    </div> 
+                                                </fieldset>
                                                 <br></br>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label for="desci" class="control-label">Descripción</label>
-                                                        <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{movBienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
-                                                    </div>        
-                                                    <div class="col-md-3">
-                                                        <label for="tipar" class="control-label">Archivo Tipo</label>
-                                                        <h:selectOneMenu id="tipar" value="#{movBienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
-                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
-                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
-                                                        </h:selectOneMenu>                                                
-                                                    </div>                             
-                                                    <div class="col-md-3">
-                                                        <label for="ref" class="control-label">Referencia</label>
-                                                        <h:outputText id="ref" value="#{movBienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                <fieldset>
+                                                    <legend></legend>
+                                                    <div class="form-group">
+                                                        <div class="col-md-6">
+                                                            <label for="desci" class="control-label">Descripción</label>
+                                                            <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{movBienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
+                                                        </div>        
+                                                        <div class="col-md-3">
+                                                            <label for="tipar" class="control-label">Archivo Tipo</label>
+                                                            <h:selectOneMenu id="tipar" value="#{movBienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
+                                                                <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                                <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                            </h:selectOneMenu>                                                
+                                                        </div>                             
+                                                        <div class="col-md-3">
+                                                            <label for="ref" class="control-label">Referencia</label>
+                                                            <h:outputText id="ref" value="#{movBienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <br></br>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                    </div>                                                 
-                                                    <div class="col-md-6">
-                                                        <p:commandButton id="actuaI" icon="ui-icon-pencil" styleClass="btn btn-primary" value="Actualizar"  action="#{movBienesBean.actualA()}"  rendered="#{!movBienesBean.edit}" update="@all" process="@this :formImag:modImag:dispDoc2"  oncomplete="refrescarI(xhr, status, args); ;modifDoc.hide();" />
-                                                        <script type="text/javascript">
-                                                            function refrescarI(xhr, status, args) {
-                                                                if (args.validationFailed) {
-                                                                    alert('Ha ocurrido un error');
-                                                                } else {
-                                                                    alert('Datos actualizados correctamente');
-                                                                    location.reload(true);
-                                                                    modifDoc.hide();
+                                                    <br></br>
+                                                </fieldset>
+                                                <fieldset>
+                                                    <legend></legend>
+                                                    <div class="form-group">
+                                                        <div class="col-md-6">
+                                                        </div>                                                 
+                                                        <div class="col-md-6">
+                                                            <p:commandButton id="actuaI" icon="ui-icon-pencil" styleClass="btn btn-primary" value="Actualizar"  action="#{movBienesBean.actualA()}"  rendered="#{!movBienesBean.edit}" update="@all" process="@this :formImag:modImag:dispDoc2"  oncomplete="refrescarI(xhr, status, args); ;modifDoc.hide();" />
+                                                            <script type="text/javascript">
+                                                                function refrescarI(xhr, status, args) {
+                                                                    if (args.validationFailed) {
+                                                                        alert('Ha ocurrido un error');
+                                                                    } else {
+                                                                        alert('Datos actualizados correctamente');
+                                                                        location.reload(true);
+                                                                        modifDoc.hide();
+                                                                    }
                                                                 }
-                                                            }
-                                                        </script>                                                    
-
-                                                        <!--<p:commandButton value="Actualizar" icon="ui-icon-pencil" action="{bienesBean.actualA()}" rendered="{!bienesBean.edit}" update="@all" process="@this :formImag:dispDoc2"  oncomplete="modifDoc.hide();"/>-->
-                                                    </div>                                             
-                                                </div>
+                                                            </script>                                                    
+                                                        </div>                                             
+                                                    </div>
+                                                </fieldset>
                                             </h:panelGroup>  
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+                                            <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>-->
                                         </div>
+
                                     </h:form>
                                 </div>
                             </div>
@@ -935,15 +1017,53 @@
                                     <h:form id="verDoc" enctype="multipart/form-data"> 
                                         <p:growl id="growl" />
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                             <h4 class="modal-title">Descargar Documento o Imagen</h4>
                                         </div>
                                         <div class="modal-body">
                                             <h:panelGroup id="dispDocD"  >  
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label for="ida" class="control-label">Corr Img</label>
+                                                            <h:outputText id="ida" value="#{movBienesBean.archSeleccionado.TArchId}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="codia" class="control-label">Código</label>
+                                                            <h:outputText id="codia" value="#{movBienesBean.archSeleccionado.TArchCodref}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="noma" class="control-label">Nombre del Archivo</label>
+                                                            <h:outputText id="noma" value="#{movBienesBean.archSeleccionado.TArchNombre}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>                                      
+                                                    </div>
+                                                </fieldset>
+                                                <br></br>
+                                                <fieldset>
+                                                    <legend></legend>
+                                                    <div class="form-group">
+                                                        <div class="col-md-6">
+                                                            <label for="desci" class="control-label">Descripción</label>
+                                                            <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{movBienesBean.archSeleccionado.TArchDesc}" style="width: 100%; color:#157ab5" class="form-control"/> 
+                                                        </div>        
+                                                        <div class="col-md-3">
+                                                            <label for="tipar" class="control-label">Archivo Tipo</label>
+                                                            <h:selectOneMenu id="tipar" value="#{movBienesBean.archSeleccionado.TArchTipo}" style="width: 100%; color:#157ab5" class="form-control">
+                                                                <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                                <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                            </h:selectOneMenu>                                                
+                                                        </div>                             
+                                                        <div class="col-md-3">
+                                                            <label for="ref" class="control-label">Referencia</label>
+                                                            <h:outputText id="ref" value="#{movBienesBean.archSeleccionado.TArchTipref}" style="width: 100%; color:#157ab5" class="form-control"/> 
+                                                        </div>
+                                                    </div>
+                                                </fieldset>
+                                                <br></br>
+                                                <p:graphicImage cache="false" height="200" id="dimage" title="imagen" value="#{movBienesBean.imagen}" width="200">
+                                                </p:graphicImage>
+
                                             </h:panelGroup>  
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                         </div>
                                     </h:form>
                                 </div>
@@ -955,43 +1075,51 @@
                                     <h:head></h:head>
                                     <h:form id="elimImag" enctype="multipart/form-data">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
                                             <h4 class="modal-title">Eliminar Documento o Imagen</h4>
                                         </div>
                                         <div class="modal-body">
                                             <h:panelGroup id="dispDoc3" >  
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label for="idae" class="control-label">Corr Img</label>
-                                                        <h:outputText id="idae" value="#{movBienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="codiae" class="control-label">Código</label>
-                                                        <h:outputText id="codiae" value="#{movBienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="nomae" class="control-label">Nombre del Archivo</label>
-                                                        <h:outputText id="nomae" value="#{movBienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
-                                                    </div>                                      
-                                                </div> 
+                                                <fieldset>
+                                                    <legend></legend>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label for="idae" class="control-label">Corr Img</label>
+                                                            <h:outputText id="idae" value="#{movBienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="codiae" class="control-label">Código</label>
+                                                            <h:outputText id="codiae" value="#{movBienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="nomae" class="control-label">Nombre del Archivo</label>
+                                                            <h:outputText id="nomae" value="#{movBienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
+                                                        </div>                                      
+                                                    </div> 
+                                                </fieldset>
                                                 <br></br>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label for="descie" class="control-label">Descripción</label>
-                                                        <h:inputText id="descie" onkeyup="this.value = this.value.toUpperCase();" value="#{movBienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
-                                                    </div>        
-                                                    <div class="col-md-3">
-                                                        <label for="tipare" class="control-label">Archivo Tipo</label>
-                                                        <h:selectOneMenu id="tipare" value="#{movBienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
-                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
-                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
-                                                        </h:selectOneMenu>                                                
-                                                    </div>                             
-                                                    <div class="col-md-3">
-                                                        <label for="refe" class="control-label">Referencia</label>
-                                                        <h:outputText id="refe" value="#{movBienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                <fieldset>
+                                                    <legend></legend>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-6">
+                                                            <label for="descie" class="control-label">Descripción</label>
+                                                            <h:inputText id="descie" onkeyup="this.value = this.value.toUpperCase();" value="#{movBienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
+                                                        </div>        
+                                                        <div class="col-md-3">
+                                                            <label for="tipare" class="control-label">Archivo Tipo</label>
+                                                            <h:selectOneMenu id="tipare" value="#{movBienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
+                                                                <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                                <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                            </h:selectOneMenu>                                                
+                                                        </div>                             
+                                                        <div class="col-md-3">
+                                                            <label for="refe" class="control-label">Referencia</label>
+                                                            <h:outputText id="refe" value="#{movBienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </fieldset>
                                                 <br></br>
                                                 <div class="form-group">
                                                     <div class="col-md-10">
@@ -1011,9 +1139,6 @@
                                                 </div>
                                             </h:panelGroup>  
 
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                         </div>
                                     </h:form>
                                 </div>

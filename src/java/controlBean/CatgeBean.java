@@ -1048,6 +1048,7 @@ public class CatgeBean implements Serializable {
         munic = getDaoMunic().getListM(depSeleccionado);
     }
 
+    
     public void asignarDeptoMuni() {
         munSeleccionado = edifSeleccionado.getCMuniId().getCMuniId();
         depSeleccionado = edifSeleccionado.getCDeptoId().getCDeptoId();

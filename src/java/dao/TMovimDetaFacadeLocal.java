@@ -36,6 +36,9 @@ public interface TMovimDetaFacadeLocal {
    public List<TMovimDeta> getListM(Integer move);
     
    public TMovimDeta getMoved(Integer moved);
+   
+   public Integer busCod(String cod, Integer move);
+
     
     
 }

@@ -837,6 +837,7 @@
                                                 </h:commandLink>
                                             </td>
                                             <td>
+
                                                 <h:commandLink value="Descargar" class="btn btn-default" pt:data-toggle="modal" pt:data-target="#viewDoc">
                                                     <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
                                                     <f:setPropertyActionListener value="#{docs}"
@@ -897,7 +898,7 @@
                                             <br></br>
                                             <div class="col-md-12">
                                                 <p:panelGrid id="doc1" columns="2" >
-                                                    <p:fileUpload id="doc" fileUploadListener="#{bienesBean.handleFileUpload(event)}" value="#{bienesBean.picture}" mode="simple" required="true" sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="mesaj" >
+                                                    <p:fileUpload id="doc" fileUploadListener="#{bienesBean.handleFileUpload(event)}" value="#{bienesBean.picture}" mode="simple" required="true" sizeLimit="1000000" allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx)$/" update="mesaj" >
                                                         <p:growl id="mesaj" showDetail="true" />
                                                     </p:fileUpload>
                                                     <p:commandButton id="guardI" value="Guardar" ajax="false" disabled="#{bienesBean.estadoI}"
@@ -924,42 +925,45 @@
                                         </div>
                                         <div class="modal-body">
                                             <h:panelGroup id="dispDoc2"  >  
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label for="ida" class="control-label">Corr Img</label>
-                                                        <h:outputText id="ida" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label for="ida" class="control-label">Corr Img</label>
+                                                            <h:outputText id="ida" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="codia" class="control-label">Código</label>
+                                                            <h:outputText id="codia" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="noma" class="control-label">Nombre del Archivo</label>
+                                                            <h:outputText id="noma" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>                                      
+                                                    </div> 
+                                                </fieldset>
+                                                <br></br>
+                                                <fieldset>
+                                                    <legend></legend>
+                                                    <div class="form-group">
+                                                        <div class="col-md-6">
+                                                            <label for="desci" class="control-label">Descripción</label>
+                                                            <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%; color:#157ab5" class="form-control"/> 
+                                                        </div>        
+                                                        <div class="col-md-3">
+                                                            <label for="tipar" class="control-label">Archivo Tipo</label>
+                                                            <h:selectOneMenu id="tipar" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%; color:#157ab5" class="form-control">
+                                                                <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                                <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                            </h:selectOneMenu>                                                
+                                                        </div>                             
+                                                        <div class="col-md-3">
+                                                            <label for="ref" class="control-label">Referencia</label>
+                                                            <h:outputText id="ref" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%; color:#157ab5" class="form-control"/> 
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <label for="codia" class="control-label">Código</label>
-                                                        <h:outputText id="codia" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="noma" class="control-label">Nombre del Archivo</label>
-                                                        <h:outputText id="noma" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
-                                                    </div>                                      
-                                                </div> 
+                                                </fieldset>
                                                 <br></br>
                                                 <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label for="desci" class="control-label">Descripción</label>
-                                                        <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
-                                                    </div>        
-                                                    <div class="col-md-3">
-                                                        <label for="tipar" class="control-label">Archivo Tipo</label>
-                                                        <h:selectOneMenu id="tipar" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
-                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
-                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
-                                                        </h:selectOneMenu>                                                
-                                                    </div>                             
-                                                    <div class="col-md-3">
-                                                        <label for="ref" class="control-label">Referencia</label>
-                                                        <h:outputText id="ref" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
-                                                    </div>
-                                                </div>
-                                                <br></br>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                    </div>                                                 
                                                     <div class="col-md-6">
                                                         <p:commandButton id="actuaI" icon="ui-icon-pencil" styleClass="btn btn-primary" value="Actualizar"  action="#{bienesBean.actualA()}"  rendered="#{!bienesBean.edit}" update="@all" process="@this :formImag:modImag:dispDoc2"  oncomplete="refrescarI(xhr, status, args); ;modifDoc.hide();" />
                                                         <script type="text/javascript">
@@ -997,43 +1001,51 @@
                                             <h4 class="modal-title">Descargar Documento o Imagen</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <h:panelGroup id="dispDocD"  >  
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label for="ida" class="control-label">Corr Img</label>
-                                                        <h:outputText id="ida" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
+                                            <h:panelGroup id="dispDocD">
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label for="ida" class="control-label">Corr Img</label>
+                                                            <h:outputText id="ida" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="codia" class="control-label">Código</label>
+                                                            <h:outputText id="codia" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="noma" class="control-label">Nombre del Archivo</label>
+                                                            <h:outputText id="noma" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>                                      
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <label for="codia" class="control-label">Código</label>
-                                                        <h:outputText id="codia" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="noma" class="control-label">Nombre del Archivo</label>
-                                                        <h:outputText id="noma" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
-                                                    </div>                                      
-                                                </div> 
+                                                </fieldset>
                                                 <br></br>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label for="desci" class="control-label">Descripción</label>
-                                                        <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
-                                                    </div>        
-                                                    <div class="col-md-3">
-                                                        <label for="tipar" class="control-label">Archivo Tipo</label>
-                                                        <h:selectOneMenu id="tipar" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
-                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
-                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
-                                                        </h:selectOneMenu>                                                
-                                                    </div>                             
-                                                    <div class="col-md-3">
-                                                        <label for="ref" class="control-label">Referencia</label>
-                                                        <h:outputText id="ref" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                <fieldset>
+                                                    <legend></legend>
+                                                    <div class="form-group">
+                                                        <div class="col-md-6">
+                                                            <label for="desci" class="control-label">Descripción</label>
+                                                            <h:inputText id="desci" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%; color:#157ab5" class="form-control"/> 
+                                                        </div>        
+                                                        <div class="col-md-3">
+                                                            <label for="tipar" class="control-label">Archivo Tipo</label>
+                                                            <h:selectOneMenu id="tipar" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%; color:#157ab5" class="form-control">
+                                                                <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                                <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                            </h:selectOneMenu>                                                
+                                                        </div>                             
+                                                        <div class="col-md-3">
+                                                            <label for="ref" class="control-label">Referencia</label>
+                                                            <h:outputText id="ref" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%; color:#157ab5" class="form-control"/> 
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </fieldset>
                                                 <br></br>
-
-                                                <h:commandLink value="">Descargar</h:commandLink>
-
+                                                <p:graphicImage cache="false" height="200" id="dimage" title="imagen" value="#{bienesBean.imagen}" width="200">
+                                                </p:graphicImage>
+                                                <!--<h:graphicImage value="aqui signo numero{request.contextPath}aqui signo numero{bienesBean.archSeleccionado.TArchUrl}" width="200" height="171" />-->
+                                                <!--                                                <p:commandButton id="downloadLink" value="Descargar" ajax="false" actionListener="{descargarBean.prepDownload(bienesBean.archSeleccionado.TArchUrl)}">
+                                                                                                    <p:fileDownload value="{descargarBean.download}" />
+                                                                                                </p:commandButton>-->
                                             </h:panelGroup>  
                                         </div>
                                         <div class="modal-footer">
@@ -1054,38 +1066,43 @@
                                         </div>
                                         <div class="modal-body">
                                             <h:panelGroup id="dispDoc3" >  
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label for="idae" class="control-label">Corr Img</label>
-                                                        <h:outputText id="idae" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label for="codiae" class="control-label">Código</label>
-                                                        <h:outputText id="codiae" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%;" class="form-control"/>    
-                                                    </div>
-                                                    <div class="col-md-6">
-                                                        <label for="nomae" class="control-label">Nombre del Archivo</label>
-                                                        <h:outputText id="nomae" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%;" class="form-control"/>    
-                                                    </div>                                      
-                                                </div> 
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label for="idae" class="control-label">Corr Img</label>
+                                                            <h:outputText id="idae" value="#{bienesBean.archSeleccionado.TArchId}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <label for="codiae" class="control-label">Código</label>
+                                                            <h:outputText id="codiae" value="#{bienesBean.archSeleccionado.TArchCodref}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <label for="nomae" class="control-label">Nombre del Archivo</label>
+                                                            <h:outputText id="nomae" value="#{bienesBean.archSeleccionado.TArchNombre}" style="width: 100%; color:#157ab5" class="form-control"/>    
+                                                        </div>                                      
+                                                    </div> 
+                                                </fieldset>
                                                 <br></br>
-                                                <div class="form-group">
-                                                    <div class="col-md-6">
-                                                        <label for="descie" class="control-label">Descripción</label>
-                                                        <h:inputText id="descie" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%;" class="form-control"/> 
-                                                    </div>        
-                                                    <div class="col-md-3">
-                                                        <label for="tipare" class="control-label">Archivo Tipo</label>
-                                                        <h:selectOneMenu id="tipare" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%;" class="form-control">
-                                                            <f:selectItem itemValue="F" itemLabel="Foto" />
-                                                            <f:selectItem itemValue="D" itemLabel="Documento" />
-                                                        </h:selectOneMenu>                                                
-                                                    </div>                             
-                                                    <div class="col-md-3">
-                                                        <label for="refe" class="control-label">Referencia</label>
-                                                        <h:outputText id="refe" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%;" class="form-control"/> 
+                                                <fieldset>
+                                                    <legend></legend>
+                                                    <div class="form-group">
+                                                        <div class="col-md-6">
+                                                            <label for="descie" class="control-label">Descripción</label>
+                                                            <h:inputText id="descie" onkeyup="this.value = this.value.toUpperCase();" value="#{bienesBean.archSeleccionado.TArchDesc}" style="width: 100%; color:#157ab5" class="form-control"/> 
+                                                        </div>        
+                                                        <div class="col-md-3">
+                                                            <label for="tipare" class="control-label">Archivo Tipo</label>
+                                                            <h:selectOneMenu id="tipare" value="#{bienesBean.archSeleccionado.TArchTipo}" style="width: 100%; color:#157ab5" class="form-control">
+                                                                <f:selectItem itemValue="F" itemLabel="Foto" />
+                                                                <f:selectItem itemValue="D" itemLabel="Documento" />
+                                                            </h:selectOneMenu>                                                
+                                                        </div>                             
+                                                        <div class="col-md-3">
+                                                            <label for="refe" class="control-label">Referencia</label>
+                                                            <h:outputText id="refe" value="#{bienesBean.archSeleccionado.TArchTipref}" style="width: 100%; color:#157ab5" class="form-control"/> 
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                </fieldset>
                                                 <br></br>
                                                 <div class="form-group">
                                                     <div class="col-md-10">
@@ -1168,48 +1185,53 @@
                                             <h4 class="modal-title">Ingreso por Lote</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <h:panelGroup id="dispIng" >                                              
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label>Código</label>
-                                                        <div>
-                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienCodigo}" style="width: 100%;"/> 
+                                            <h:panelGroup id="dispIng" >   
+                                                <fieldset>
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Código</label>
+                                                            <div>
+                                                                <h:outputText value="#{bienesBean.bienIngLote.TBienCodigo}" style="width: 100%; color:#157ab5"/> 
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-9">
-                                                        <label >Descripción</label>
-                                                        <div>
-                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienDesc}" style="width: 100%;"/> 
+                                                        <div class="col-md-9">
+                                                            <label >Descripción</label>
+                                                            <div>
+                                                                <h:outputText value="#{bienesBean.bienIngLote.TBienDesc}" style="width: 100%; color:#157ab5"/> 
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div> 
+                                                    </div> 
+                                                </fieldset>
                                                 <br></br>
-                                                <div class="form-group">
-                                                    <div class="col-md-3">
-                                                        <label>Marca</label>
-                                                        <div>
-                                                            <h:outputText value="#{bienesBean.bienIngLote.CMarcaId.CMarcaDesc}" style="width: 100%;"/> 
+                                                <fieldset>
+                                                    <legend></legend>
+                                                    <div class="form-group">
+                                                        <div class="col-md-3">
+                                                            <label>Marca</label>
+                                                            <div>
+                                                                <h:outputText value="#{bienesBean.bienIngLote.CMarcaId.CMarcaDesc}" style="width: 100%; color:#157ab5"/> 
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label >Modelo</label>
-                                                        <div>
-                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienModelo}" style="width: 100%;"/> 
+                                                        <div class="col-md-3">
+                                                            <label >Modelo</label>
+                                                            <div>
+                                                                <h:outputText value="#{bienesBean.bienIngLote.TBienModelo}" style="width: 100%; color:#157ab5"/> 
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label >Serie</label>
-                                                        <div>
-                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienSerie}" style="width: 100%;"/> 
+                                                        <div class="col-md-3">
+                                                            <label >Serie</label>
+                                                            <div>
+                                                                <h:outputText value="#{bienesBean.bienIngLote.TBienSerie}" style="width: 100%; color:#157ab5"/> 
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <label >Cantidad a Ingresar</label>
-                                                        <div>
-                                                            <h:outputText value="#{bienesBean.bienIngLote.TBienCantxlote}" style="width: 100%;"/> 
+                                                        <div class="col-md-3">
+                                                            <label >Cantidad a Ingresar</label>
+                                                            <div>
+                                                                <h:outputText value="#{bienesBean.bienIngLote.TBienCantxlote}" style="width: 100%; color:#157ab5"/> 
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div> 
+                                                    </div> 
+                                                </fieldset>
                                                 <br></br>
                                             </h:panelGroup>
                                         </div>
@@ -1220,8 +1242,6 @@
                                                                              target="#{bienesBean.bienIngLote}"  />
                                                 <!--<p:ajax listener="{bienesBean.espCorrSeleccion}" />-->
                                             </h:commandLink>
-
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar</button>
                                         </div>
 
 

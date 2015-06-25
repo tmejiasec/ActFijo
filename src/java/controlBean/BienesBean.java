@@ -85,6 +85,7 @@ import util.FacesUtil;
 public class BienesBean implements Serializable {
 
     protected Integer tabIndex = 1;
+    private StreamedContent imagen;
     private List<CResponsables> respons = new ArrayList<>();
     private List<CNiveles> niveles = new ArrayList<>();
     private List<CDependencias> depens = new ArrayList<>();
@@ -1084,6 +1085,15 @@ public class BienesBean implements Serializable {
         this.download = download;
     }
 
+     public StreamedContent getImagen() throws FileNotFoundException {  
+        prepararImagen();
+        return imagen;
+    }
+
+    public void setImagen(StreamedContent imagen) {
+        this.imagen = imagen;
+    }
+    
     public Date getFech() {
         return fech;
     }
@@ -1653,7 +1663,7 @@ public class BienesBean implements Serializable {
             inputStream.close();
             nuevoArch.setTArchNombre(picture.getFileName());
             nuevoArch.setTArchTipref(tipref);
-            nuevoArch.setTArchUrl("/adjuntos/" + nuevoArch.getTArchCodref() + "/" + picture.getFileName());
+            nuevoArch.setTArchUrl(nuevoArch.getTArchCodref() + "/" + picture.getFileName());
             getDaoArchiv().create(nuevoArch);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Archivo cargado"));
             nuevoArch = new TArchivos();
@@ -1674,4 +1684,20 @@ public class BienesBean implements Serializable {
         File storage_folder = new File(picture_directory + nuevoBien.getTBienCodigo());
     }
 
+    public void prepararImagen() throws FileNotFoundException{
+    FacesContext ctx = FacesContext.getCurrentInstance();
+    String picture_directory = ctx.getExternalContext().getInitParameter("pictures_directory_path");
+    String path;
+    if (archSeleccionado.getTArchUrl()== null){
+        String rutai = "/inicio/nuevo.jpg";
+        path = picture_directory+rutai;
+    }
+    else{
+       path = picture_directory+archSeleccionado.getTArchUrl();}
+    System.out.println("path "+path);
+//    String path = "C:\\imagenes\\buhoos.jpg";
+    imagen = new DefaultStreamedContent(new FileInputStream(path), "image/png");
+  }
+    
+    
 }

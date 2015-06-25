@@ -21,6 +21,12 @@ public interface TSegMovFacadeLocal {
     void edit(TSegMov tSegMov);
 
     void remove(TSegMov tSegMov);
+    
+    public List getList();
+       
+    public TSegMov getSegM(Integer segm);
+
+    public List<TSegMov> getListM(Integer move);
 
     TSegMov find(Object id);
 

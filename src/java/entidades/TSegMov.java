@@ -32,6 +32,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TSegMov.findAll", query = "SELECT t FROM TSegMov t"),
     @NamedQuery(name = "TSegMov.findByTSegId", query = "SELECT t FROM TSegMov t WHERE t.tSegId = :tSegId"),
     @NamedQuery(name = "TSegMov.findByTSegObserv", query = "SELECT t FROM TSegMov t WHERE t.tSegObserv = :tSegObserv"),
+    @NamedQuery(name = "TSegMov.findByTMoveId", query="SELECT m FROM TSegMov m WHERE m.tMoveId.tMoveId = :tMoveId"),
     @NamedQuery(name = "TSegMov.findByTSegFecha", query = "SELECT t FROM TSegMov t WHERE t.tSegFecha = :tSegFecha"),
     @NamedQuery(name = "TSegMov.findByTSegHora", query = "SELECT t FROM TSegMov t WHERE t.tSegHora = :tSegHora"),
     @NamedQuery(name = "TSegMov.findByCUserId", query = "SELECT t FROM TSegMov t WHERE t.cUserId.cUserId = :cUserId")})
