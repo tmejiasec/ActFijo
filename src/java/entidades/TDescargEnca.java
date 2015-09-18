@@ -53,6 +53,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "TDescargEnca.findByTDescencFechm", query = "SELECT t FROM TDescargEnca t WHERE t.tDescencFechm = :tDescencFechm"),
     @NamedQuery(name = "TDescargEnca.findByTDescencFechsolId", query = "SELECT t FROM TDescargEnca t WHERE t.tDescencFechsolId = :tDescencFechsolId"),
     @NamedQuery(name = "TDescargEnca.findByTDescencFechdesId", query = "SELECT t FROM TDescargEnca t WHERE t.tDescencFechdesId = :tDescencFechdesId"),
+    @NamedQuery(name = "TDescargEnca.findByCJefesId", query="SELECT m FROM TDescargEnca m WHERE m.cJefesdId.cJefesdId = :cJefesId"),
     @NamedQuery(name = "TDescargEnca.findByTDescencFechautId", query = "SELECT t FROM TDescargEnca t WHERE t.tDescencFechautId = :tDescencFechautId")})
 public class TDescargEnca implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -120,6 +121,9 @@ public class TDescargEnca implements Serializable {
     @Temporal(TemporalType.TIME)
     private Date tDescencHoraut;
     
+    @JoinColumn(name = "c_resp_id", referencedColumnName = "c_resp_id")
+    @ManyToOne(optional = false)
+    private CResponsables cRespId;
     @JoinColumn(name = "c_jefesd_id", referencedColumnName = "c_jefesd_id")
     @ManyToOne(optional = false)
     private CJefesDep cJefesdId;
@@ -313,6 +317,14 @@ public class TDescargEnca implements Serializable {
 
     public void setTDescencFechautId(Integer tDescencFechautId) {
         this.tDescencFechautId = tDescencFechautId;
+    }
+
+    public CResponsables getCRespId() {
+        return cRespId;
+    }
+
+    public void setCRespId(CResponsables cRespId) {
+        this.cRespId = cRespId;
     }
 
     public CJefesDep getCJefesdId() {

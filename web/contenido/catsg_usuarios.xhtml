@@ -45,7 +45,7 @@
                             <div class="col-md-6" align="center" >
                                 <!--<a data-toggle="modal" href="#adicUsuar" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
                                 <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicUsuar" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
-                                    <p:ajax process="@this" update=":formUsuarios:displayUs1"/>
+                                    <p:ajax process="@this" update=":formUsuarios:adiUs:displayUs1"/>
                                 </h:commandLink>                                   
                                 
                             </div>                              

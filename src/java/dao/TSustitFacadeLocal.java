@@ -30,7 +30,9 @@ public interface TSustitFacadeLocal {
 
     int count();
 
-    public List<TSustit> getList();
+    public List getList();
+    
+    public List<TSustit> getListJ(Integer jefe);
 
     public List<TSustit> busqueda(String desc);
 

@@ -48,7 +48,61 @@ public class TBienesFacade extends AbstractFacade<TBienes> implements TBienesFac
     public List getListM(Integer respo) {
         return em.createNamedQuery("TBienes.findByResponsable").setParameter("cRespId", respo).getResultList();
     }
+    
+    @Override
+    public List getListU(Integer ubic) {
+        return em.createNamedQuery("TBienes.findByCUbicId").setParameter("cUbicId", ubic).getResultList();
+    }
 
+    @Override
+    public List getListE(Integer espec) {
+        return em.createNamedQuery("TBienes.findByCEspecId").setParameter("cEspecId", espec).getResultList();
+    }
+    
+    @Override
+    public List getListEB(Integer estb) {
+        return em.createNamedQuery("TBienes.findByCEstadbId").setParameter("cEstadbId", estb).getResultList();
+    }
+    
+    @Override
+    public List getListCB(Integer conb) {
+        return em.createNamedQuery("TBienes.findByCCondbId").setParameter("cCondbId", conb).getResultList();
+    }
+    
+    @Override
+    public List getListTD(Integer tipdes) {
+        return em.createNamedQuery("TBienes.findByCTipdescId").setParameter("cTipdescId", tipdes).getResultList();
+    }
+
+    @Override
+    public List getListEP(Integer estpro) {
+        return em.createNamedQuery("TBienes.findByCEstproId").setParameter("cEstproId", estpro).getResultList();
+    }
+    
+    @Override
+    public List getListPV(Integer prov) {
+        return em.createNamedQuery("TBienes.findByCProvId").setParameter("cProvId", prov).getResultList();
+    }
+
+    @Override
+    public List getListPY(Integer proy) {
+        return em.createNamedQuery("TBienes.findByCProyId").setParameter("cProyId", proy).getResultList();
+    }
+    
+    @Override
+    public List getListMB(Integer marca) {
+        return em.createNamedQuery("TBienes.findByCMarcaId").setParameter("cMarcaId", marca).getResultList();
+    }
+
+    @Override
+    public List getListFT(Integer fuente) {
+        return em.createNamedQuery("TBienes.findByCFuentesId").setParameter("cFuentesId", fuente).getResultList();
+    }
+
+    @Override
+    public List getListFM(Integer forma) {
+        return em.createNamedQuery("TBienes.findByCFormadId").setParameter("cFormadId", forma).getResultList();
+    }
     @Override
     public List busqueda(String desc) {
 

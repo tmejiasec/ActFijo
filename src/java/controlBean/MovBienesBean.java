@@ -105,6 +105,7 @@ public class MovBienesBean implements Serializable {
     private Boolean estadoI = false;
     private Boolean estadoC = true;
     private Boolean estadoR = true;
+    private Boolean estanio = false;
     
     Date fecs, fecr, feci, feca;
     private Integer iniCorr=0;
@@ -157,7 +158,7 @@ public class MovBienesBean implements Serializable {
     private Object[] ingre;
 
     protected Boolean edit = false;
-    private String desc, cod, modelo, serie;
+    private String desc, cod, modelo, serie, tipt;
     private UploadedFile picture;
     private static final int BUFFER_SIZE = 1000000;
     private DefaultStreamedContent download;
@@ -225,6 +226,7 @@ public class MovBienesBean implements Serializable {
         m_id=nuevoEnca.getTMoveId();
         movdeta = getDaoDeta().getListM(m_id);
         estado = true;
+        // act datos nuevoEnca
         return null;
     }
 
@@ -428,6 +430,7 @@ public class MovBienesBean implements Serializable {
     }
     
         public void updateDetalle() {
+            System.out.println("entrando a ver el detalle");
         try {
             System.out.println("longi: "+selectedBienes.length);
             for (int i = 0; i < selectedBienes.length; i++) {
@@ -939,6 +942,14 @@ public class MovBienesBean implements Serializable {
         this.estadoR = estadoR;
     }
 
+    public Boolean getEstanio() {
+        return estanio;
+    }
+
+    public void setEstanio(Boolean estanio) {
+        this.estanio = estanio;
+    }
+
     
     public Integer getIdFecc() {
         return idFecc;
@@ -1408,6 +1419,14 @@ public class MovBienesBean implements Serializable {
         this.imagen = imagen;
     }
 
+    public String getTipt() {
+        return tipt;
+    }
+
+    public void setTipt(String tipt) {
+        this.tipt = tipt;
+    }
+
 
     public void asignarEdifArea() {
 //        areas = getDaoArea().getListM(edifSeleccionado);
@@ -1440,6 +1459,33 @@ public class MovBienesBean implements Serializable {
 //        String cod;
 //        cod = nuevoDeta.getTMovdCodigo();
         tipmo=traslad;
+        estmoSeleccionado=estini;
+        anio = nuevoEnca.getTMoveAnio();
+//        System.out.println("tipmo: "+tipmo);
+//        System.out.println("anio: "+anio);
+        resul = getDaoCorrel().getCorrel(tipmo, anio).getTCorrCorrel();
+        if (resul == 0) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No puede encontrar correlativo"));
+            estado = false;
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Ok."));
+            estado = true;
+            estanio = true;
+        }
+//        System.out.println("resul "+resul);
+        nuevoEnca.setTMoveAnio(anio);
+        nuevoEnca.setTMoveCorr(resul);
+//        System.out.println("correl: "+nuevoEnca.getTMoveCorr());
+    }
+    
+    public void buscarCorrP() throws NamingException {
+        
+        int resul = 0;
+        int anio;
+        this.tipt = nuevoEnca.getTMoveTipt();
+//        String cod;
+//        cod = nuevoDeta.getTMovdCodigo();
+        tipmo=2;
         estmoSeleccionado=estini;
         anio = nuevoEnca.getTMoveAnio();
 //        System.out.println("tipmo: "+tipmo);
@@ -1690,7 +1736,7 @@ public class MovBienesBean implements Serializable {
     String picture_directory = ctx.getExternalContext().getInitParameter("pictures_directory_path");
     String path;
     if (archSeleccionado.getTArchUrl()== null){
-        String rutai = "/inicio/nuevo.jpg";
+        String rutai = "inicio/nuevo.jpg";
         path = picture_directory+rutai;
     }
     else{

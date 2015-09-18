@@ -6,6 +6,7 @@
 package dao;
 
 import entidades.TDescargEnca;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,5 +28,11 @@ public class TDescargEncaFacade extends AbstractFacade<TDescargEnca> implements 
     public TDescargEncaFacade() {
         super(TDescargEnca.class);
     }
+    
+    @Override
+    public List getListJ(Integer jefe) {			
+	return em.createNamedQuery("TDescargEnca.findByCJefesId").setParameter("cJefesId",jefe).getResultList();
+    }
+                
     
 }

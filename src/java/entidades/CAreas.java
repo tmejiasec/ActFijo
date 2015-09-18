@@ -32,6 +32,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CAreas.findAll", query = "SELECT c FROM CAreas c"),
     @NamedQuery(name = "CAreas.findByCAreaId", query = "SELECT c FROM CAreas c WHERE c.cAreaId = :cAreaId"),
     @NamedQuery(name = "CAreas.findByCEdifId", query="SELECT m FROM CAreas m WHERE m.cEdifId.cEdifId = :cEdifId"),
+    @NamedQuery(name = "CAreas.findByCDepenId", query="SELECT m FROM CAreas m WHERE m.cDepenId.cDepenId = :cDepenId"),
     @NamedQuery(name = "CAreas.findByCAreaDesc", query = "SELECT c FROM CAreas c WHERE c.cAreaDesc = :cAreaDesc")})
 public class CAreas implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -52,6 +53,9 @@ public class CAreas implements Serializable {
     @JoinColumn(name = "c_edif_id", referencedColumnName = "c_edif_id")
     @ManyToOne(optional = false)
     private CEdificios cEdifId;
+    @JoinColumn(name = "c_depen_id", referencedColumnName = "c_depen_id")
+    @ManyToOne(optional = false)
+    private CDependencias cDepenId;    
     @OneToMany(mappedBy = "cAreaId")
     private List<TBienes> tBienesList;
     @OneToMany(mappedBy = "cAreaId")
@@ -112,6 +116,15 @@ public class CAreas implements Serializable {
         this.cEdifId = cEdifId;
     }
 
+    public CDependencias getCDepenId() {
+        return cDepenId;
+    }
+
+    public void setCDepenId(CDependencias cDepenId) {
+        this.cDepenId = cDepenId;
+    }
+
+    
     public List<TBienes> getTBienesList() {
         return tBienesList;
     }

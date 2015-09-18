@@ -161,6 +161,7 @@ public class BienesBean implements Serializable {
     protected Boolean edit = false;
     private String desc, cod;
     private UploadedFile picture;
+  //  private FacesContext ctx;
     private static final int BUFFER_SIZE = 1000000;
     private DefaultStreamedContent download;
     
@@ -804,6 +805,14 @@ public class BienesBean implements Serializable {
     public void setPicture(UploadedFile picture) {
         this.picture = picture;
     }
+
+//    public FacesContext getCtx() {
+//        return ctx;
+//    }
+//
+//    public void setCtx(FacesContext ctx) {
+//        this.ctx = ctx;
+//    }
 
     public TArchivos getArchSeleccionado() {
         return archSeleccionado;
@@ -1636,16 +1645,15 @@ public class BienesBean implements Serializable {
         String picture_directory = ctx.getExternalContext().getInitParameter("pictures_directory_path");
         //If directory exists ? do nothing : make directory
         System.out.println("directorio: "+picture_directory);
+        System.out.println("cod "+nuevoArch.getTArchCodref());
+        System.out.println("name: "+picture.getFileName());
         File storage_folder = new File(picture_directory + nuevoArch.getTArchCodref());
         System.out.println("folder: "+storage_folder);
         if (!storage_folder.exists()) {
             storage_folder.mkdir();
         }
-
-        String nomAr = picture.getFileName();
-        System.out.println("nombre arch: "+nomAr);
-        System.out.println("codigo: "+nuevoArch.getTArchCodref());
-        File archivoImagen = new File(picture_directory + nuevoArch.getTArchCodref() + "/" + nomAr);
+       // String nomAr = picture.getFileName();
+        File archivoImagen = new File(picture_directory + nuevoArch.getTArchCodref() + "/" + picture.getFileName());
         try {
             FileOutputStream fileOutputStream = new FileOutputStream(archivoImagen);
             byte[] buffer = new byte[BUFFER_SIZE];
@@ -1677,11 +1685,8 @@ public class BienesBean implements Serializable {
 
     }
 
-    public void handleFileUpload(FileUploadEvent event) {
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        String picture_directory = ctx.getExternalContext().getInitParameter("pictures_directory_path");
-        //If directory exists ? do nothing : make directory
-        File storage_folder = new File(picture_directory + nuevoBien.getTBienCodigo());
+    public void handleFileUpload(FileUploadEvent event) throws IOException {
+        picture = event.getFile();
     }
 
     public void prepararImagen() throws FileNotFoundException{
@@ -1689,7 +1694,7 @@ public class BienesBean implements Serializable {
     String picture_directory = ctx.getExternalContext().getInitParameter("pictures_directory_path");
     String path;
     if (archSeleccionado.getTArchUrl()== null){
-        String rutai = "/inicio/nuevo.jpg";
+        String rutai = "inicio/nuevo.JPG";
         path = picture_directory+rutai;
     }
     else{

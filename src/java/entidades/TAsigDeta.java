@@ -28,6 +28,8 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "TAsigDeta.findAll", query = "SELECT t FROM TAsigDeta t"),
     @NamedQuery(name = "TAsigDeta.findByTAsigdId", query = "SELECT t FROM TAsigDeta t WHERE t.tAsigdId = :tAsigdId"),
+    @NamedQuery(name = "TAsigDeta.findByTAsigEncaId", query = "SELECT t FROM TAsigDeta t WHERE t.tAsigeId = :tAsigeId"),
+    @NamedQuery(name = "TAsigDeta.findByTAsigEncabId", query = "SELECT t FROM TAsigDeta t WHERE t.tAsigeId.tAsigeId = :tAsigeId"),
     @NamedQuery(name = "TAsigDeta.findByTAsigdCodigo", query = "SELECT t FROM TAsigDeta t WHERE t.tAsigdCodigo = :tAsigdCodigo")})
 public class TAsigDeta implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -42,6 +44,11 @@ public class TAsigDeta implements Serializable {
     @JoinColumn(name = "t_asige_id", referencedColumnName = "t_asige_id")
     @ManyToOne(optional = false)
     private TAsigEnca tAsigeId;
+    @JoinColumn(name = "t_bien_id", referencedColumnName = "t_bien_id")
+    @ManyToOne
+    private TBienes tBienId;
+    
+    
 
     public TAsigDeta() {
     }
@@ -73,6 +80,16 @@ public class TAsigDeta implements Serializable {
     public void setTAsigeId(TAsigEnca tAsigeId) {
         this.tAsigeId = tAsigeId;
     }
+
+    public TBienes getTBienId() {
+        return tBienId;
+    }
+
+    public void setTBienId(TBienes tBienId) {
+        this.tBienId = tBienId;
+    }
+    
+    
 
     @Override
     public int hashCode() {

@@ -49,6 +49,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TAsigEnca.findByTAsigeUsec", query = "SELECT t FROM TAsigEnca t WHERE t.tAsigeUsec = :tAsigeUsec"),
     @NamedQuery(name = "TAsigEnca.findByTAsigeFechc", query = "SELECT t FROM TAsigEnca t WHERE t.tAsigeFechc = :tAsigeFechc"),
     @NamedQuery(name = "TAsigEnca.findByTAsigeUsem", query = "SELECT t FROM TAsigEnca t WHERE t.tAsigeUsem = :tAsigeUsem"),
+    @NamedQuery(name = "TAsigEnca.findByCJefesId", query="SELECT m FROM TAsigEnca m WHERE m.cJefesdId.cJefesdId = :cJefesId"),
     @NamedQuery(name = "TAsigEnca.findByTAsigeFechm", query = "SELECT t FROM TAsigEnca t WHERE t.tAsigeFechm = :tAsigeFechm")})
 public class TAsigEnca implements Serializable {
     @Column(name = "t_asige_horac")
@@ -103,6 +104,10 @@ public class TAsigEnca implements Serializable {
     @Column(name = "t_asige_fechm")
     @Temporal(TemporalType.DATE)
     private Date tAsigeFechm;
+    @Column(name = "t_asige_fechc_id")
+    private Integer tAsigeFechcId;
+    @Column(name = "t_asige_fechm_id")
+    private Integer tAsigeFechmId;
     @JoinColumn(name = "t_tm_id", referencedColumnName = "t_tm_id")
     @ManyToOne(optional = false)
     private TTiempo tTmId;
@@ -261,6 +266,22 @@ public class TAsigEnca implements Serializable {
         this.tAsigeFechm = tAsigeFechm;
     }
 
+
+    public Integer getTAsigeFechcId() {
+        return tAsigeFechcId;
+    }
+
+    public void setTAsigeFechcId(Integer tAsigeFechcId) {
+        this.tAsigeFechcId = tAsigeFechcId;
+    }
+
+    public Integer getTAsigeFechmId() {
+        return tAsigeFechmId;
+    }
+
+    public void setTAsigeFechmId(Integer tAsigeFechmId) {
+        this.tAsigeFechmId = tAsigeFechmId;
+    }
     public TTiempo getTTmId() {
         return tTmId;
     }

@@ -52,15 +52,19 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TBienes.findByTBienFoto", query = "SELECT t FROM TBienes t WHERE t.tBienFoto = :tBienFoto"),
     @NamedQuery(name = "TBienes.findByTBienDocing", query = "SELECT t FROM TBienes t WHERE t.tBienDocing = :tBienDocing"),
     @NamedQuery(name = "TBienes.findByTBienProceso", query = "SELECT t FROM TBienes t WHERE t.tBienProceso = :tBienProceso"),
-    @NamedQuery(name = "TBienes.findByTBienUscrea", query = "SELECT t FROM TBienes t WHERE t.tBienUscrea = :tBienUscrea"),
-    @NamedQuery(name = "TBienes.findByTBienFechcrea", query = "SELECT t FROM TBienes t WHERE t.tBienFechcrea = :tBienFechcrea"),
-    @NamedQuery(name = "TBienes.findByTBienUsmodif", query = "SELECT t FROM TBienes t WHERE t.tBienUsmodif = :tBienUsmodif"),
-    @NamedQuery(name = "TBienes.findByTBienFechmod", query = "SELECT t FROM TBienes t WHERE t.tBienFechmod = :tBienFechmod"),
-    @NamedQuery(name = "TBienes.findByTBienFecadId", query = "SELECT t FROM TBienes t WHERE t.tBienFecadId = :tBienFecadId"),
-    @NamedQuery(name = "TBienes.findByTBienFvgarId", query = "SELECT t FROM TBienes t WHERE t.tBienFvgarId = :tBienFvgarId"),
-    @NamedQuery(name = "TBienes.findByTBienFregId", query = "SELECT t FROM TBienes t WHERE t.tBienFregId = :tBienFregId"),
     @NamedQuery(name = "TBienes.findByResponsable", query = "SELECT t FROM TBienes t WHERE t.cRespId.cRespId = :cRespId"),
-    @NamedQuery(name = "TBienes.findByTBienFinidId", query = "SELECT t FROM TBienes t WHERE t.tBienFinidId = :tBienFinidId")})
+    @NamedQuery(name = "TBienes.findByCUbicId", query="SELECT m FROM TBienes m WHERE m.cUbicId.cUbicId = :cUbicId"),
+    @NamedQuery(name = "TBienes.findByCEspecId", query="SELECT m FROM TBienes m WHERE m.cEspecId.cEspecId = :cEspecId"),
+    @NamedQuery(name = "TBienes.findByCEstproId", query="SELECT m FROM TBienes m WHERE m.cEstproId.cEstproId = :cEstproId"),
+    @NamedQuery(name = "TBienes.findByCTipdescId", query="SELECT m FROM TBienes m WHERE m.cTipdescId.cTipdescId = :cTipdescId"),
+    @NamedQuery(name = "TBienes.findByCTipdId", query="SELECT m FROM TBienes m WHERE m.cTipdId.cTipdId = :cTipdId"),
+    @NamedQuery(name = "TBienes.findByCCondbId", query="SELECT m FROM TBienes m WHERE m.cCondbId.cCondbId = :cCondbId"),
+    @NamedQuery(name = "TBienes.findByCProvId", query="SELECT m FROM TBienes m WHERE m.cProvId.cProvId = :cProvId"),
+    @NamedQuery(name = "TBienes.findByCProyId", query="SELECT m FROM TBienes m WHERE m.cProyId.cProyId = :cProyId"),
+    @NamedQuery(name = "TBienes.findByCMarcaId", query="SELECT m FROM TBienes m WHERE m.cMarcaId.cMarcaId = :cMarcaId"),
+    @NamedQuery(name = "TBienes.findByCFormadId", query="SELECT m FROM TBienes m WHERE m.cFormadId.cFormadId = :cFormadd"),
+    @NamedQuery(name = "TBienes.findByCFuentesId", query="SELECT m FROM TBienes m WHERE m.cFuentesId.cFuentesId = :cFuentesId"),
+    @NamedQuery(name = "TBienes.findByCEstadbId", query = "SELECT t FROM TBienes t WHERE t.cEstadbId.cEstadbId = :cEstadbId")})
     public class TBienes implements Serializable {
     @OneToMany(mappedBy = "tBienId")
     private List<TSustit> tSustitList;
@@ -195,18 +199,23 @@ import javax.validation.constraints.Size;
     @JoinColumn(name = "c_edif_id", referencedColumnName = "c_edif_id")
     @ManyToOne
     private CEdificios cEdifId;
+    
     @JoinColumn(name = "c_espec_id", referencedColumnName = "c_espec_id")
     @ManyToOne(optional = false)
     private CEspecificos cEspecId;
+    
     @JoinColumn(name = "c_estadb_id", referencedColumnName = "c_estadb_id")
     @ManyToOne
     private CEstadoBien cEstadbId;
+    
     @JoinColumn(name = "c_e_c_estpro_id", referencedColumnName = "c_estpro_id")
     @ManyToOne
     private CEstadoProc cECEstproId;
+    
     @JoinColumn(name = "c_estpro_id", referencedColumnName = "c_estpro_id")
     @ManyToOne
     private CEstadoProc cEstproId;
+    
     @JoinColumn(name = "c_formad_id", referencedColumnName = "c_formad_id")
     @ManyToOne
     private CFormasAdq cFormadId;

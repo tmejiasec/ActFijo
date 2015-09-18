@@ -27,6 +27,10 @@ public interface TRecepDetaFacadeLocal {
     List<TRecepDeta> findAll();
 
     List<TRecepDeta> findRange(int[] range);
+    
+    public List<TRecepDeta> getListDet(Integer move);
+    
+    public List getList();
 
     int count();
     

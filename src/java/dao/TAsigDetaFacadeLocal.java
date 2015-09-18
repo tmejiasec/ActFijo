@@ -28,6 +28,12 @@ public interface TAsigDetaFacadeLocal {
 
     List<TAsigDeta> findRange(int[] range);
 
+    public List<TAsigDeta> getListDet(Integer move);
+    
+    public List<TAsigDeta> getListM(Integer move);
+    
+    public List getList();
+    
     int count();
     
 }

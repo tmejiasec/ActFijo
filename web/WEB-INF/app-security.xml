@@ -51,6 +51,9 @@
         <intercept-url pattern="/contenido/bm_movBienesP.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
         <intercept-url pattern="/contenido/bm_movBienesR.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
         <intercept-url pattern="/contenido/bm_sustitucbienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/bm_roboHurto.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/bm_asignacionBienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
+        <intercept-url pattern="/contenido/bm_recepcionBienes.xhtml" access="hasRole('TECNICO') OR hasRole('ADMINISTRADOR') OR hasRole('JEFE AF')" />
 
             
         <!-- Disable web URI authorization, as we're using <global-method-security> and have @Secured the services layer instead

@@ -37,7 +37,7 @@
                                     <label for="anio" >Año</label>
                                     <div>
                                         <p:inputText id="anio" value="#{sustitucionBienesBean.nuevaSustit.TSustAnio}"> 
-                                            <p:ajax listener="#{sustitucionBienesBean.buscarCorr}" update=":adiSBien:growl :adiSBien:corrS"/>
+                                            <p:ajax listener="#{sustitucionBienesBean.buscarCorr()}" update=":adiSBien:growl :adiSBien:corrS"/>
                                         </p:inputText>
                                     </div>
                                 </div>
@@ -144,8 +144,9 @@
                                 <div class="col-md-3">
                                     <label >Fecha de adquisicion</label>
                                     <div>
-                                        <h:outputText id="fecaqq" value="#{sustitucionBienesBean.codSeleccionado.TBienFechadq}"/>
-
+                                        <h:outputText id="fecaqq" value="#{sustitucionBienesBean.codSeleccionado.TBienFechadq}">
+                                            <f:convertDateTime pattern="MM/dd/YYYY"/>
+                                        </h:outputText>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -207,7 +208,7 @@
                                     <div>
                                         <h:selectOneMenu id="nvamarc" value="#{sustitucionBienesBean.nuevaSustit.TSustMarcNew}" style="width: 100%;">
                                             <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
-                                            <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca}"/>
+                                            <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca.CMarcaId}"/>
                                         </h:selectOneMenu>
                                     </div>
                                 </div>
@@ -227,35 +228,29 @@
                             <!-- Botones -->
                             <div class="form-group">
                                 <div class="col-lg-10 col-lg-offset-8">
-                                       <h:commandButton id="guardS" value="Guardar"  styleClass="btn btn-primary" >
-                                           <f:setPropertyActionListener value="#{sustitucionBienesBean.sustituc}" target="#{sustitucionBienesBean.nuevaSustit}" />
-                                           <p:ajax listener="#{sustitucionBienesBean.guardarSustit()}" rendered="#{!sustitucionBienesBean.edit}" process="@this :adiSBien" update="growl guardS" />
-                                        </h:commandButton>	
-
-                                    <!--<p:commandButton id="guardS" styleClass="btn btn-primary" value="Guardar "  action="{sustitucionBienesBean.guardarSustit()}"  rendered="{!sustitucionBienesBean.edit}" disabled="{sustitucionBienesBean.estado}" update="@this"  process="@this adiSBien" />-->
-<!--                                    <script type="text/javascript">
-                                                function handleRequest(xhr, status, args) {
+                                    <p:commandButton id="guardS" styleClass="btn btn-primary" value="Guardar"  action="#{sustitucionBienesBean.guardarSustit()}"  rendered="#{!sustitucionBienesBean.edit}"  update="@this growl guardS" process="@this adiSBien"  oncomplete="handleRequest(xhr, status, args);" />
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
                                             if (args.validationFailed) {
                                                 alert('Ha ocurrido un error. Complete los datos necesarios');
                                             } else {
-                                        alert('Datos adicionados correctamente');
-        }
+                                                alert('Datos adicionados correctamente');
+                                            }
                                         }
-                                    </script>-->
+                                    </script>
                                     <p:commandButton id="Nuevo" value="Agregar Otro" styleClass="btn btn-primary"
                                                      action="#{sustitucionBienesBean.limpiarTSutit()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
                                         <script type="text/javascript">
-                                                    function refrescar(xhr, status, args) {
+                                            function refrescar(xhr, status, args) {
                                                 if (args.validationFailed) {
                                                     alert('Ha ocurrido un error');
-                                                    } else {
-                                                alert('nuevo');
-                                            location.reload(true);
-        }
+                                                } else {
+                                                    alert('nuevo');
+                                                    location.reload(true);
+                                                }
                                             }
                                         </script>
                                     </p:commandButton>
-
                                 </div>
                             </div>
                             <!-- Botones -->
@@ -263,12 +258,12 @@
                     </div>
                 </div>
 
-
+                <!-- Inicio Pestaña Consulta -->
                 <div class="tab-pane fade" id="consulta">
-                    <h:head></h:head>                    
+
                     <h:form id="formSustitucion" >
                         <div class="table table-responsive table-bordered" >
-                            <table id="tbienes" class="table table-striped table-condensed paginada" >
+                            <table id="sustitucion" class="table table-striped table-condensed paginada" >
                                 <thead>
                                     <tr align="center">
                                         CONSULTA DE SUSTITUCION DE BIENES MUEBLES
@@ -284,19 +279,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <ui:repeat value="#{sustitucionBienesBean.sustituc}" var="susti" >
+                                    <ui:repeat value="#{sustitucionBienesBean.sustit}" var="susti" >
                                         <tr>
                                             <td>#{susti.TSustCorr}</td>
                                             <td>#{susti.TSustCodigo}</td>
                                             <td>#{susti.TBienId.CRubroId.CRubroDesc}</td>
                                             <td>#{susti.TBienId.CEspecId.CEspecDesc}</td>
-                                            <td>#{susti.TSustFecha}</td>
-                                            <td>#{susti.TBienId.CRespId.CRespNom1}#{susti.TBienId.CRespId.CRespNom2}#{susti.TBienId.CRespId.CRespApe1}#{susti.TBienId.CRespId.CRespApe2}</td>
                                             <td>
-                                                <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modiSus" action="#{sustitucionBienesBean.guardarSustit()}">
-                                                    <f:setPropertyActionListener value="#{susti}"
-                                                                                 target="#{sustitucionBienesBean.sustitSeleccionada}"  />
-                                                    <p:ajax process="@this" update=":formAreas:displayS3"/>
+                                                <h:outputText value="#{susti.TSustFecha}">
+                                                    <f:convertDateTime pattern="MM/dd/YYYY"/>
+                                                </h:outputText>
+                                            </td>
+
+                                            <td>#{susti.TBienId.CRespId.CRespNom1} #{susti.TBienId.CRespId.CRespNom2} #{susti.TBienId.CRespId.CRespApe1} #{susti.TBienId.CRespId.CRespApe2}</td>
+                                            <td>
+                                                <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modiSus">
+                                                    <f:setPropertyActionListener value="#{susti}" target="#{sustitucionBienesBean.sustitucionSeleccionada}"  />
+                                                    <p:ajax process="@this" update=":formSustitucion:modalSus"/>
                                                 </h:commandLink>
                                             </td>
                                         </tr>
@@ -304,44 +303,130 @@
                                 </tbody>  
                             </table>
                         </div>
-                        <div id="modifSus" class="modal">
-                            <div class="modal-dialog">
-                                <h:head></h:head>
-                                <h:form id="modiSus" > 
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cancelar ×</button>
-                                            <h4 class="modal-title">Modificacion de Sustitucion de Bienes</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body" id="modiPy2">
-                                                    <h:panelGroup id="displayS3"> 
 
-                                                    </h:panelGroup>  
-                                                </div>
-                                            </div>
-                                            <!--  -->
-
-                                        </div>
+                        <div id="modiSus" class="modal fade">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title">Modificación de Sustituciones</h4>
                                     </div>
-                                </h:form>
+                                    <div class="modal-body">
+                                        <h:panelGrid id="modalSus" columns="5" border="0">
+
+                                            <h:outputLabel value="Año" style="font-weight: bold"/>
+                                            <h:outputText id="yearMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TSustAnio}"/>
+                                            <label/>
+                                            <h:outputLabel value="Correlativo" style="font-weight: bold"/>
+                                            <h:outputText id="corrMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TSustCorr}"/>
+
+                                            <h:outputLabel value="Tipo de Sustitucion" style="font-weight: bold"/>
+                                            <!--<h:outputText id="tipoSustitucionMod" value="{sustitucionBienesBean}"/>-->
+                                            <label/>
+                                            <h:outputLabel value="Codigo del Bien a sustituir" style="font-weight: bold"/>
+                                            <h:outputText id="codBienMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.TBienCodigo}"/>
+
+                                            <h:outputLabel value="Rubro" style="font-weight: bold"/>
+                                            <h:outputText id="rubMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.CRubroId.CRubroDesc}"/>
+                                            <label/>
+                                            <h:outputLabel value="Especifico" style="font-weight: bold"/>
+                                            <h:outputText id="respecMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.CEspecId.CEspecDesc}"/>
+
+                                            <h:outputLabel value="Descripcion" style="font-weight: bold"/>
+                                            <h:outputText id="descMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.TBienDesc}"/>
+                                            <label/>
+                                            <h:outputLabel value="Marca Anterior" style="font-weight: bold"/>
+                                            <h:outputText id="marcaAnteriorMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.CMarcaId.CMarcaDesc}"/>
+
+                                            <h:outputLabel value="Modelo Anterior" style="font-weight: bold"/>
+                                            <h:outputText id="modeloAnteriorMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.TBienModelo}"/>
+                                            <label/>
+                                            <h:outputLabel value="Serie Anterior" style="font-weight: bold"/>
+                                            <h:outputText id="serieAnteriorMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.TBienSerie}"/>
+
+                                            <h:outputLabel value="Responsable" style="font-weight: bold"/>
+                                            <h:outputText id="responsableAnteriorMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.CRespId.CRespNom1} #{sustitucionBienesBean.sustitucionSeleccionada.TBienId.CRespId.CRespApe1}"/>
+                                            <label/>
+                                            <h:outputLabel value="Dependencia" style="font-weight: bold"/>
+                                            <h:outputText id="dependenciaMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.CDepenId.CDepenDesc}"/>
+
+                                            <h:outputLabel value="Estado Fisico" style="font-weight: bold"/>
+                                            <h:outputText id="estadoFisicoMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.CEstadbId.CEstadbDesc}"/>
+                                            <label/>
+                                            <h:outputLabel value="Fecha de Adquisicion" style="font-weight: bold"/>
+                                            <h:outputText id="fechaAdMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.TBienFechadq}">
+                                                <f:convertDateTime pattern="MM/dd/YYYY"/>
+                                            </h:outputText>
+
+                                            <h:outputLabel value="Valor del bien" style="font-weight: bold"/>
+                                            <h:outputText id="volorBienMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TBienId.TBienValoradq}"/>
+                                            <label/>
+                                            <h:outputLabel value="Fecha de Resolucion" style="font-weight: bold"/>
+                                            <p:calendar id="fechResMod"
+                                                        value="#{sustitucionBienesBean.sustitucionSeleccionada.TSustFechres}" locale="es"
+                                                        pattern="dd/MM/yyyy" showOn="button" 
+                                                        size="12" tabindex="2" style="width: 100%;">
+                                                <p:ajax event="dateSelect" />
+                                            </p:calendar>
+
+                                            <h:outputLabel value="Fecha de Dictamen" style="font-weight: bold"/>
+                                            <p:calendar id="fechDictaMod"
+                                                        value="#{sustitucionBienesBean.sustitucionSeleccionada.TSustFechdict}" locale="es"
+                                                        pattern="dd/MM/yyyy" showOn="button" 
+                                                        size="12" tabindex="2" style="width: 100%;">
+                                                <p:ajax event="dateSelect" />
+                                            </p:calendar>
+                                            <label/>
+                                            <h:outputLabel value="Fecha de Resolucion" style="font-weight: bold"/>
+                                            <p:calendar id="fechResolMod"
+                                                        value="#{sustitucionBienesBean.sustitucionSeleccionada.TSustFechres}" locale="es"
+                                                        pattern="dd/MM/yyyy" showOn="button" 
+                                                        size="12" tabindex="2" style="width: 100%;">
+                                                <p:ajax event="dateSelect" />
+                                            </p:calendar>
+
+                                            <h:outputLabel value="Nueva Descripcion" style="font-weight: bold"/>
+                                            <h:inputText id="nuevaDescMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TSustDescNew}" required="true" style="width: 100%;"/>
+                                            <label/>
+                                            <h:outputLabel value="Nueva Marca" style="font-weight: bold"/>
+                                            <h:selectOneMenu id="nuevaMarcaMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TSustMarcNew}" style="width: 100%;">
+                                                <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{sustitucionBienesBean.marcas}" var="marca" itemLabel="#{marca.CMarcaDesc}" itemValue="#{marca.CMarcaId}"/>
+                                            </h:selectOneMenu>
+
+                                            <h:outputLabel value="Nuevo Modelo" style="font-weight: bold"/>
+                                            <h:inputText id="nuevoModelMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TSustModeNew}" required="true" style="width: 100%;"/>
+                                            <label/>
+                                            <h:outputLabel value="Nueva Serie" style="font-weight: bold"/>
+                                            <h:inputText id="nuevaSerieMod" value="#{sustitucionBienesBean.sustitucionSeleccionada.TSustSerieNew}" required="true" style="width: 100%;"/>
+
+                                            <p:commandButton value="Actualizar" icon="ui-icon-pencil" styleClass="btn btn-primary" action="#{sustitucionBienesBean.actualizarSustit()}" rendered="#{!sustitucionBienesBean.edit}" update="@all" process="@this modalSus"  oncomplete="modiSus.hide();"/>
+
+                                        </h:panelGrid>  
+
+                                    </div>
+                                    <div class="modal-footer">
+
+                                        <h:outputLabel value="Modificado Por"/>
+                                        <h:outputText value="#{appSession.usuario.CUserNombre}"/>
+                                        <button class="btn btn-default">Cancelar</button>
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
                     </h:form>
                 </div>
-
-
-                <!-- HASTA AQUI -->
 
             </div>
         </ui:define>
         <ui:define name="scripts">
             <script>
-                                $(document).ready(function () {
-                                    $('.paginada').dataTable(
+                $(document).ready(function () {
+                    $('.paginada').dataTable(
                             {
-                                    "oLanguage": {
+                                "oLanguage": {
                                     "sProcessing": "Procesando...",
                                     "sLengthMenu": "Mostrar _MENU_ registros",
                                     "sZeroRecords": "No se encontraron resultados",
@@ -353,36 +438,24 @@
                                     "sSearch": "Buscar:",
                                     "sUrl": "",
                                     "sInfoThousands": ",",
-                                        "sLoadingRecords": "Cargando...",
-                                        "oPaginate": {
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
                                         "sFirst": "Primero",
                                         "sLast": "Último",
-                                    "sNext": "Siguiente",
+                                        "sNext": "Siguiente",
                                         "sPrevious": "Anterior"
                                     },
                                     "oAria": {
                                         "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
-                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-                }
-                    }
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
                             }
                     );
                 });
             </script>
 
         </ui:define>
-
-        <!--***********************************************************************************************************
-        ***************************************************************************************************************
-        ***************************************************************************************************************-->
-
-
-
-
-        <!--***********************************************************************************************************
-        ***************************************************************************************************************
-        ***************************************************************************************************************-->
-
     </ui:composition>
 </html>
 

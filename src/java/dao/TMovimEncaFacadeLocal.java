@@ -40,4 +40,11 @@ public interface TMovimEncaFacadeLocal {
 
     public TMovimEnca getCorrel(Integer anio,Integer correl);
     
+    public List<TMovimEnca> getListJ(Integer jefe);
+    
+    public List<TMovimEnca> getListTipmo(Integer tipmo);
+    
+    public List<TMovimEnca> getListEstmo(Integer estmo);
+    
+
 }

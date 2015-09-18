@@ -1,0 +1,506 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"        
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+        <ui:define name="content">
+
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a aria-expanded="true" href="#adicion" data-toggle="tab">Adición</a></li>
+                <li class=""><a aria-expanded="false" href="#consulta" data-toggle="tab">Consulta</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="adicion">
+                    <div class="well bs-component">
+                        <h:form id="adiRecepBien" class="form-horizontal" enctype="multipart/form-data" >
+                            <p:growl id="growl" />
+                            <legend>
+                                <div class="form-header">
+                                    <button type="button" class="close"  aria-hidden="true">Cancelar ×</button>
+                                    <h4 class="modal-title">Adicion de ficha de Recepcion de Bienes</h4>
+                                </div>
+                            </legend>
+
+                            <!--Fila 1-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label for="anio">Año</label>
+                                    <div>
+                                        <p:inputText id="annioRecep" value="#{recepcionBienesBean.nuevoEncaResep.TReceAnio}">
+                                            <p:ajax listener="#{recepcionBienesBean.buscarCorr()}" update=":adiRecepBien:growl :adiRecepBien:corrRecep"/>
+                                        </p:inputText> 
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label> Elaborado por</label>
+                                    <div>
+                                        <h:outputText id="using" value="#{appSession.usuario.CUserNombre}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Fila 2-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label> Correlativo</label>
+                                    <div>
+                                        <h:outputText id="corrRecep" value="#{recepcionBienesBean.nuevoEncaResep.TReceCorr}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Motivo de Recepcion</label>
+                                    <div>
+                                        <h:selectOneMenu id="motivoRecep" value="#{recepcionBienesBean.nuevoEncaResep.TReceMot}" style="width:250px">
+                                            <f:selectItem itemLabel="Seleccione uno"/>
+
+                                            <f:selectItem itemLabel="TRASLADO" itemValue="t">
+                                            </f:selectItem>
+
+                                            <f:selectItem itemLabel="RETIRO" itemValue="n">
+                                            </f:selectItem>
+
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!--Fila 3-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Recibir de</label>
+                                    <div>
+                                        <h:selectOneMenu id="respRecep" value="#{recepcionBienesBean.responSeleccionado}" style="width:250px">
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{recepcionBienesBean.reponRecep}" var="resp" itemLabel="#{resp.CRespNom1} #{resp.CRespNom2} #{resp.CRespApe1} #{resp.CRespApe2}" itemValue="#{resp.CRespId}"/>
+                                            <p:ajax  listener="#{recepcionBienesBean.generarTablaDetalle()}" update="depenAs jefeRecep"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Dependencia</label>
+                                    <div>
+                                        <h:outputText id="depenAs" value="#{recepcionBienesBean.responRes.CDepenId.CDepenDesc}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Fila 4-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Jefe Inmediato</label>
+                                    <div>
+                                        <h:outputText id="jefeRecep" value="#{recepcionBienesBean.jefeDpendencia.CJefesdNombre}" style="width:250px"/>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Tecnico de Activo Fijo</label>
+                                    <div>
+                                        <h:selectOneMenu id="techRecep" value="#{recepcionBienesBean.tecnicoSeleccionado}" style="width:250px" >
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{recepcionBienesBean.tecRecep}" var="tec" itemLabel="#{tec.CTecafNombre}" itemValue="#{tec.CTecafId}"/>                                                         
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Fila 5-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Observacion</label>
+                                    <div>
+                                        <h:inputTextarea id="observRecep" onkeyup="this.value = this.value.toUpperCase();" value="#{recepcionBienesBean.nuevoEncaResep.TReceObserv}" style="width:350px"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label for="fechres">Fecha de Recepcion</label>
+                                    <div>
+                                        <p:calendar id="fechRecepEnca" value="#{recepcionBienesBean.nuevoEncaResep.TReceFecha}"
+                                                    locale="es"
+                                                    pattern="dd/MM/yyyy" showOn="button" 
+                                                    size="12" tabindex="2" style="width: 100%;">
+                                            <p:ajax event="dateSelect" />
+                                        </p:calendar>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Fila 6-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Hora Inicio</label>
+                                    <div>
+                                        <p:calendar id="horaIC" value="#{recepcionBienesBean.nuevoEncaResep.TReceHorai}" locale="es" pattern="HH:mm" timeOnly="true" showOn="button"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Hora Fin</label>
+                                    <div>
+                                        <p:calendar id="horaFC" value="#{recepcionBienesBean.nuevoEncaResep.TReceHoraf}" locale="es"  pattern="HH:mm" timeOnly="true" showOn="button"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Fila 7-->
+                            <div class="form-group">
+                                <div class="col-lg-9 col-lg-offset-7">
+                                    <p:commandButton id="guardEncaRecep" styleClass="btn btn-primary" value="Guardar" action="#{recepcionBienesBean.guardarRecepEnca()}" rendered="#{!recepcionBienesBean.edit}" update="@this growl guardEncaRecep" process="@this adiRecepBien" oncomplete="handleRequest(xhr, status, args);"/>
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                            }
+                                        }
+                                    </script>
+                                    <p:commandButton id="nuevoEncaRecep" value="Agregar Otro" styleClass="btn btn-primary" action="#{recepcionBienesBean.limpiarRecEnca()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                        <script type="text/javascript">
+                                            function refrescar(xhr, status, args) {
+                                                if (args.validationFailed) {
+                                                    alert('Ha ocurrido un error');
+                                                } else {
+                                                    alert('nuevo');
+                                                    location.reload(true);
+                                                }
+                                            }
+                                        </script>
+                                    </p:commandButton>
+                                </div>
+                            </div>
+
+                            <div class="table table-responsive table-bordered" >
+                                  <p:dataTable id="encab" var="detalle" value="#{recepcionBienesBean.detaList}" rowKey="#{detalle.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
+                                    <p:column headerText="Nº" >
+                                        <h:outputText value="#{detalle.TReceId.TReceId}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Codigo">
+                                        <h:outputText value="#{detalle.TBienId.TBienCodigo}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Descripcion" >
+                                        <h:outputText value="#{detalle.TBienId.TBienDesc}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Marca" >
+                                        <h:outputText value="#{detalle.TBienId.CMarcaId.CMarcaDesc}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Modelo" >
+                                        <h:outputText value="#{detalle.TBienId.TBienModelo}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Serie" >
+                                        <h:outputText value="#{detalle.TBienId.TBienSerie}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Eliminar">
+                                        <h:selectBooleanCheckbox/>
+                                    </p:column>
+                                </p:dataTable>
+
+                                <div class="form-group">
+                                    <div class="col-lg-6 col-lg-offset-9">
+                                        <p:commandButton id="agregaDeta" value="Adicionar Bienes"  styleClass="btn btn-primary" pt:data-toggle="modal" pt:data-target="#artBienRecep"/>
+                                    </div>
+                                </div>
+
+                                <div id="artBienRecep" class="modal">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content">   
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                <h4 class="modal-title" align="center">Agregar Bienes</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <!--<style>.c1{width: 175px;}.c2{width: 300px;}</style>-->
+                                                <h:panelGrid id="compRecepBienes" columns="2" border="0" columnClasses="c1,c2">
+                                                    <h:outputLabel value="Codigo" style="font-weight: bold"/>
+                                                    <p:inputMask id="cod" value="#{recepcionBienesBean.cod}" mask="99-9999-9999"> 
+                                                        <p:ajax listener="#{recepcionBienesBean.datosCodigo()}"  update="descBienRecep marcaBienRecep modelBienRecep serieBienRecep"/>
+                                                    </p:inputMask>
+
+                                                    <h:outputLabel value="Descipcion" style="font-weight: bold"/>
+                                                    <h:outputText id="descBienRecep" value="#{recepcionBienesBean.bienRecep.TBienDesc}"/>
+
+                                                    <h:outputLabel value="Marca" style="font-weight: bold"/>
+                                                    <h:outputText id="marcaBienRecep" value="#{recepcionBienesBean.bienRecep.CMarcaId.CMarcaDesc}"/>
+
+                                                    <h:outputLabel value="Modelo" style="font-weight: bold"/>
+                                                    <h:outputText id="modelBienRecep" value="#{recepcionBienesBean.bienRecep.TBienModelo}"/>
+
+                                                    <h:outputLabel value="Serie" style="font-weight: bold"/>
+                                                    <h:outputText id="serieBienRecep" value="#{recepcionBienesBean.bienRecep.TBienSerie}"/>
+                                                </h:panelGrid> 
+                                                <p:commandButton styleClass="btn btn-primary" action="#{recepcionBienesBean.generarDetalle()}" value="Agregar" process="@this" update="encab" oncomplete="refrescar(xhr, status, args) artBienAsig.hide();"/>
+                                                <script type="text/javascript">
+                                                    function refrescar(xhr, status, args) {
+                                                        if (args.validationFailed) {
+                                                            alert('Ha ocurrido un error');
+                                                        } else {
+                                                            artBienAsig.hide();
+                                                           // location.reload(true);
+                                                        }
+                                                    }
+                                                </script>                                    
+                                            </div>
+                                        </div>                                                               
+                                    </div>
+                                </div>  
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="consulta">
+                    <h:form id="formRecepcion" >
+                        <div class="table table-responsive table-bordered" >
+                            <table id="recepcion" class="table table-striped table-condensed paginada" >
+                                <thead>
+                                    <tr align="center">
+                                        CONSULTA DE RECEPCION DE BIENES MUEBLES
+                                    </tr>
+                                    <tr>
+                                        <th>Correlativo</th>
+                                        <th>Entregdo por</th>
+                                        <th>Dependencia</th>
+                                        <th>Fecha de Recepcion</th>
+                                        <th >Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{recepcionBienesBean.encaRecep}" var="enca" >
+                                        <tr>
+                                            <td align="center">#{enca.TReceCorr}</td>
+                                            <td align="center">#{enca.CRespId.CRespNom1} #{enca.CRespId.CRespNom2} #{enca.CRespId.CRespNom3} #{enca.CRespId.CRespApe1} #{enca.CRespId.CRespApe2} #{enca.CRespId.CRespApec}</td>
+                                            <td align="center">#{enca.CDepenId.CDepenDesc}</td>
+                                            <td>
+                                                <h:outputText value="#{enca.TReceFecha}">
+                                                    <f:convertDateTime pattern="dd/MM/YYYY"/>
+                                                </h:outputText>
+                                            </td>
+                                            <td>
+                                                <h:commandLink value="Ver / Editar" class="btn btn-link" action="#{recepcionBienesBean.generarDetaRecep()}" pt:data-toggle="modal" pt:data-target="#modiEncaRecep">
+                                                    <f:setPropertyActionListener value="#{enca}" target="#{recepcionBienesBean.encaResepSeleccionado}"  />
+                                                    <p:ajax process="@this" update=":formRecepcion:modalER :formRecepcion:encabe"/>
+                                                </h:commandLink>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--Comienza modificar recepcionBienesBean-->
+                        <div id="modiEncaRecep" class="modal fade">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title">Modificación de ficha de Recepcion de Bienes</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <h:panelGrid id="modalER" columns="5" border="0">
+                                            <h:outputLabel value="Año" style="font-weight: bold"/>
+                                            <h:outputText id="yearMod" value="#{recepcionBienesBean.encaResepSeleccionado.TReceAnio}"/>
+                                            <label/>
+                                            <h:outputLabel value="Correlativo" style="font-weight: bold"/>
+                                            <h:outputText id="correlMod" value="#{recepcionBienesBean.encaResepSeleccionado.TReceCorr}"/>
+                                            
+                                            <h:outputLabel value="Recibir de" style="font-weight: bold"/>
+                                            <h:outputText id="respRecep" value="#{recepcionBienesBean.encaResepSeleccionado.CRespId.CRespNom1} #{recepcionBienesBean.encaResepSeleccionado.CRespId.CRespNom2}#{recepcionBienesBean.encaResepSeleccionado.CRespId.CRespNom3} #{recepcionBienesBean.encaResepSeleccionado.CRespId.CRespApe1} #{recepcionBienesBean.encaResepSeleccionado.CRespId.CRespApe2}"/>
+                                            <label/>
+                                            <h:outputLabel value="Motivo de la Recepcion" style="font-weight: bold"/>
+                                            <h:selectOneMenu id="motivoRecMod" value="#{recepcionBienesBean.encaResepSeleccionado.TReceMot}" style="width:250px">
+                                                <f:selectItem itemLabel="Seleccione uno"/>
+                                                <f:selectItem itemLabel="TRASLADO"        itemValue="t"/>
+                                                <f:selectItem itemLabel="Retiro"      itemValue="n"/>
+                                            </h:selectOneMenu>
+                                            
+                                            <h:outputLabel value="" style="font-weight: bold"/>
+                                            <h:selectOneMenu id="respRecepMod" value="#{recepcionBienesBean.responMod}" style="width:250px">
+                                                <f:selectItem itemLabel="Seleccione una ..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{recepcionBienesBean.reponRecep}" var="resp" itemLabel="#{resp.CRespNom1} #{resp.CRespNom2} #{resp.CRespApe1} #{resp.CRespApe2}" itemValue="#{resp.CRespId}"/>
+                                                <p:ajax  listener="#{recepcionBienesBean.respToMod()}" update="depRecMod jefRecMod"/>
+                                            </h:selectOneMenu>
+                                            <label/>
+                                            <h:outputLabel value="" style="font-weight: bold"/>
+                                            <h:outputLabel value="" style="font-weight: bold"/>
+                                            
+                                            <h:outputLabel value="Dependencia" style="font-weight: bold"/>
+                                            <h:outputText id="depRecMod" value="#{recepcionBienesBean.responToMod.CDepenId.CDepenDesc}"/>
+                                            <label/>
+                                            <h:outputLabel value="Tecnicio Activo Fijo" style="font-weight: bold"/>
+                                            <h:selectOneMenu id="tecAfMod" value="#{recepcionBienesBean.encaResepSeleccionado.TReceTec}" style="width:250px">
+                                                <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{recepcionBienesBean.tecRecep}" var="tech" itemLabel="#{tech.CTecafNombre}" itemValue="#{tech.CJefesdId}"/>
+                                            </h:selectOneMenu>
+
+                                            <h:outputLabel value="Jefe" style="font-weight: bold"/>
+                                            <h:outputText id="jefRecMod" value="#{recepcionBienesBean.jefeToMod.CJefesdNombre}"/>
+
+                                            <label/>
+                                            <h:outputLabel value="Fecha de Recepcion" style="font-weight: bold"/>
+                                            <p:calendar id="fechaRecepEncaModi"
+                                                        value="#{recepcionBienesBean.encaResepSeleccionado.TReceFecha}" locale="es"
+                                                        pattern="dd/MM/yyyy" showOn="button" 
+                                                        size="12" tabindex="2" style="width: 200px;">
+                                                <p:ajax event="dateSelect" />
+                                            </p:calendar>
+
+                                            <h:outputLabel value="Hora Inicio" style="font-weight: bold"/>
+                                            <p:calendar id="horaIM" value="#{recepcionBienesBean.encaResepSeleccionado.TReceHorai}" locale="es" pattern="HH:mm" timeOnly="true" showOn="button" style="width: 200px;"/>
+                                            <label/>
+                                            <h:outputLabel value="Hora Fin" style="font-weight: bold"/>
+                                            <p:calendar id="horaIF" value="#{recepcionBienesBean.encaResepSeleccionado.TReceHoraf}" locale="es" pattern="HH:mm" timeOnly="true" showOn="button" style="width: 200px;"/>
+
+                                            <h:outputLabel value="Observaciones" style="font-weight: bold"/>
+                                            <h:inputTextarea style="width:250px" onkeyup="this.value = this.value.toUpperCase();" id="observAsMod" value="#{recepcionBienesBean.encaResepSeleccionado.TReceObserv}"/>
+                                            <label/>
+                                            <h:outputLabel value=""/>
+                                            <h:outputLabel value=""/>
+
+                                            <h:outputLabel value=""/>
+                                            <h:outputLabel value=""/>
+                                            <label/>
+                                            <h:outputLabel value=""/>
+                                            <p:commandButton id="actualizaEnca" class="btn btn-primary" value="Actualizar" action="#{recepcionBienesBean.actualizarEncaRecep()}" rendered="#{!recepcionBienesBean.edit}" update="@all" process="@this modalER" oncomplete="modiEncaRecep.hide();">
+
+                                            </p:commandButton>
+                                        </h:panelGrid>
+                                        <br></br>
+                                        <br></br>
+                                        <div class="table table-responsive table-bordered" >
+                                            <p:dataTable id="encabe"  value="#{recepcionBienesBean.detaByEnca}" var="detalle" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
+                                                <p:column headerText="Nº" >
+                                                    <h:outputText value="#{detalle.TReceId.TReceId}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Codigo" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienDesc}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Descripcion" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienDesc}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Marca" >
+                                                    <h:outputText value="#{detalle.TBienId.CMarcaId.CMarcaDesc}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Modelo" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienModelo}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Serie" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienSerie}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Eliminar" >
+                                                    <h:selectBooleanCheckbox/>
+                                                </p:column>
+                                            </p:dataTable>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:outputLabel value="Modificado Por "/>
+                                        <h:outputText value="#{appSession.usuario.CUserNombre}"/>
+                                        <button class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Termina Modificar-->
+
+                    </h:form>
+                </div>
+            </div>
+        </ui:define>
+
+        <ui:define name="scripts">
+            <script type="text/javascript">
+                PrimeFaces.locales['es'] = {
+                    closeText: 'Cerrar',
+                    prevText: 'Anterior',
+                    nextText: 'Siguiente',
+                    monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+                    monthNamesShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                    dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
+                    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+                    dayNamesMin: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                    weekHeader: 'Semana',
+                    firstDay: 1,
+                    isRTL: false,
+                    showMonthAfterYear: false,
+                    yearSuffix: '',
+                    timeOnlyTitle: 'Seleccionar',
+                    timeText: 'Tiempo',
+                    hourText: 'Hora',
+                    minuteText: 'Minuto',
+                    secondText: 'Segundo',
+                    currentText: 'Fecha actual',
+                    ampm: false,
+                    month: 'Mes',
+                    week: 'Semana',
+                    day: 'Día',
+                    allDayText: 'Todo el día'
+                };
+            </script>
+            <script>
+                $(document).ready(function () {
+                    $('.paginada').dataTable(
+                            {
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
+                });
+            </script>
+        </ui:define>
+
+    </ui:composition>
+
+</html>
+

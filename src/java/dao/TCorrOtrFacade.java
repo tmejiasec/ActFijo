@@ -33,30 +33,22 @@ public class TCorrOtrFacade extends AbstractFacade<TCorrOtr> implements TCorrOtr
 
 
    
-    public Integer updateC( Integer anio, Integer corr) {
+    @Override
+    public List getList() {
+        throw new UnsupportedOperationException("TCorrOtr.findAll"); //To change body of generated methods, choose Tools | Templates.
+    }
 
+    @Override
+    public Integer updateC(int anio, int nvoCorr, int idMovim) {
         String actualiz = "UPDATE t_corr_otr SET t_otroc_correl= ?2 WHERE t_otroc_id= ?3 AND t_otroc_anio= ?1";
-        Query qactual = em.createNativeQuery(actualiz).setParameter(1, anio).setParameter(2, corr).setParameter(3,5);
+        Query qactual = em.createNativeQuery(actualiz).setParameter(1, anio).setParameter(2, nvoCorr).setParameter(3, idMovim);
         int resultado = qactual.executeUpdate();
         return resultado;
     }
 
     @Override
-    public List<TCorrOtr> getList() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Integer updateC(int anio, int nvoCorr) {
-        String actualiz = "UPDATE t_corr_otr SET t_otroc_correl= ?2 WHERE t_otroc_id= ?3 AND t_otroc_anio= ?1";
-        Query qactual = em.createNativeQuery(actualiz).setParameter(1, anio).setParameter(2, nvoCorr).setParameter(3, 5);
-        int resultado = qactual.executeUpdate();
-        return resultado;
-    }
-
-    @Override
-    public TCorrOtr getCorrel(int corId, int anio) {
-        return  (TCorrOtr) em.createNamedQuery("TCorrOtr.findByTOtrocAnio").setParameter("tOtrocId", corId).setParameter("tOtrocAnio",anio).getSingleResult();
+    public TCorrOtr getTOtrocCorrel(int corId, int anio) {
+        return  (TCorrOtr) em.createNamedQuery("TCorrOtr.findByTOtrocAnio").setParameter("tOtrocId", corId).setParameter("tOtrocAnio", anio).getSingleResult();
    }
 
     

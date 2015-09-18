@@ -64,5 +64,10 @@ public class CAreasFacade extends AbstractFacade<CAreas> implements CAreasFacade
 		return (CAreas) em.createNamedQuery("CAreas.findByCAreaId").setParameter("cAreaId",area).getSingleResult();
 	}
     
+    @Override
+    public List getListD(Integer dep) {			
+	return em.createNamedQuery("CAreas.findByCDepenId").setParameter("cDepenId",dep).getResultList();
+    }
+    
     
 }

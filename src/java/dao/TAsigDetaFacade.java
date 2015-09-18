@@ -6,6 +6,7 @@
 package dao;
 
 import entidades.TAsigDeta;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +27,21 @@ public class TAsigDetaFacade extends AbstractFacade<TAsigDeta> implements TAsigD
 
     public TAsigDetaFacade() {
         super(TAsigDeta.class);
+    }
+
+    @Override
+    public List<TAsigDeta> getListDet(Integer move) {
+        return em.createNamedQuery("TAsigDeta.findByTAsigEncabId").setParameter("tAsigeId",move).getResultList();
+    }
+
+    @Override
+    public List<TAsigDeta> getListM(Integer move) {
+        return em.createNamedQuery("TMovimDeta.findByTAsigEncabId").setParameter("tMoveId",move).getResultList();
+    }
+
+    @Override
+    public List getList() {
+        return em.createNamedQuery("TAsigDeta.findAll").getResultList();
     }
     
 }

@@ -24,6 +24,8 @@ public interface CJefesDepFacadeLocal {
     
     public List getList();
    
+    public List<CJefesDep> getListM(Integer dep);
+    
     public List busqueda(String nombre);
     
     public CJefesDep getJefeDep(Integer jef);

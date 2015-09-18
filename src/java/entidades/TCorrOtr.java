@@ -28,7 +28,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "TCorrOtr.findAll", query = "SELECT t FROM TCorrOtr t"),
     @NamedQuery(name = "TCorrOtr.findByTOtrocId", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocId = :tOtrocId"),
-    @NamedQuery(name = "TCorrOtr.findByTOtrocDesc", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocDesc = :tOtrocDesc"),
+   // @NamedQuery(name = "TCorrOtr.findByTOtrocDesc", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocDesc = :tOtrocDesc"),
     @NamedQuery(name = "TCorrOtr.findByTOtrocAnio", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocId = :tOtrocId AND t.tOtrocAnio = :tOtrocAnio"),
     @NamedQuery(name = "TCorrOtr.findByTOtrocCorrel", query = "SELECT t FROM TCorrOtr t WHERE t.tOtrocCorrel = :tOtrocCorrel")})
 public class TCorrOtr implements Serializable {
@@ -41,9 +41,7 @@ public class TCorrOtr implements Serializable {
     @Basic(optional = false)
     @Column(name = "t_otroc_id")
     private Integer tOtrocId;
-    @Size(max = 25)
-    @Column(name = "t_otroc_desc")
-    private String tOtrocDesc;
+    
     @Column(name = "t_otroc_anio")
     private Integer tOtrocAnio;
     @Column(name = "t_otroc_correl")
@@ -62,14 +60,6 @@ public class TCorrOtr implements Serializable {
 
     public void setTOtrocId(Integer tOtrocId) {
         this.tOtrocId = tOtrocId;
-    }
-
-    public String getTOtrocDesc() {
-        return tOtrocDesc;
-    }
-
-    public void setTOtrocDesc(String tOtrocDesc) {
-        this.tOtrocDesc = tOtrocDesc;
     }
 
     public Integer getTOtrocAnio() {

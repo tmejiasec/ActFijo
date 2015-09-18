@@ -15,8 +15,8 @@
     <context-param>
         <description>Path where pictures will be stored</description>
         <param-name>pictures_directory_path</param-name>
-        <!--<param-value>/home/adjuntos/</param-value> para servidor y la próxima linea para local-->
-        <param-value>c:/home/adjuntos/</param-value>
+        <!--<param-value>/home/adjuntos/</param-value> para servidor y la próxima linea lleva c: para local-->
+        <param-value>c:/home/olvarey/adjuntos/</param-value>
     </context-param>
     <context-param>
         <description>State saving method: 'client' or 'server' (=default). See JSF Specification 2.5.2</description>

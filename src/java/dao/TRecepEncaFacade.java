@@ -6,6 +6,7 @@
 package dao;
 
 import entidades.TRecepEnca;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,5 +28,19 @@ public class TRecepEncaFacade extends AbstractFacade<TRecepEnca> implements TRec
     public TRecepEncaFacade() {
         super(TRecepEnca.class);
     }
-    
+
+    @Override
+    public List getList() {
+        return em.createNamedQuery("TRecepEnca.findAll").getResultList();
+    }
+
+    @Override
+    public TRecepEnca getEnca(Integer mov) {
+        return (TRecepEnca) em.createNamedQuery("TRecepEnca.findByTReceId").setParameter("tReceId", mov).getSingleResult();
+    }
+
+    @Override
+    public List getListJ(Integer jefe) {			
+	return em.createNamedQuery("TRecepEnca.findByCJefesId").setParameter("cJefesId",jefe).getResultList();
+    }            
 }

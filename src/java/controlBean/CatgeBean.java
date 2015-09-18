@@ -28,7 +28,21 @@ import dao.CDeptosFacadeLocal;
 import dao.CEdificiosFacadeLocal;
 import entidades.CDeptos;
 import dao.CMunicFacadeLocal;
+import dao.TAsigEncaFacadeLocal;
+import dao.TBienesFacadeLocal;
+import dao.TDescargEncaFacadeLocal;
+import dao.TMovimEncaFacadeLocal;
+import dao.TRecepEncaFacadeLocal;
+import dao.TRobHurFacadeLocal;
+import dao.TSustitFacadeLocal;
 import entidades.CMunic;
+import entidades.TAsigEnca;
+import entidades.TBienes;
+import entidades.TDescargEnca;
+import entidades.TMovimEnca;
+import entidades.TRecepEnca;
+import entidades.TRobHur;
+import entidades.TSustit;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +76,7 @@ public class CatgeBean implements Serializable {
     private CNiveles nivelSeleccionado = new CNiveles();
     private int jerarq;
     private List<CDependencias> depens = new ArrayList<>();
+     private List<CDependencias> depenf = new ArrayList<>();
     private CDependencias depen;
     private Integer nivSeleccionado;
     private CDependencias nuevaDep = new CDependencias();
@@ -92,11 +107,13 @@ public class CatgeBean implements Serializable {
     private CUbic ubic;
     private Integer areSeleccionada;
     private CUbic nuevaUbic = new CUbic();
+    private Integer ubicaSel;
     private CUbic ubicSeleccionada = new CUbic();
     private List<CResponsables> respons = new ArrayList<>();
     private CResponsables respon;
     private CResponsables nuevoResp = new CResponsables();
     private CResponsables respSeleccionado = new CResponsables();
+    private Integer respoSeleccionado;
     private List<CZonas> zonas = new ArrayList<>();
     private CZonas zona;
     private CZonas nuevaZona = new CZonas();
@@ -112,7 +129,13 @@ public class CatgeBean implements Serializable {
     private Integer depSeleccionado;
     private Integer munSeleccionado;
     private Integer zonSeleccionada;
-
+    private List<TAsigEnca> asig = new ArrayList<>();
+    private List<TRecepEnca> recep = new ArrayList<>();
+    private List<TDescargEnca> descarg = new ArrayList<>();
+    private List<TMovimEnca> movim = new ArrayList<>();
+    private List<TRobHur> robos = new ArrayList<>();
+    private List<TSustit> susti = new ArrayList<>();
+    private List<TBienes> bienes = new ArrayList<>();
     /**
      * Creates a new instance
      */
@@ -150,6 +173,18 @@ public class CatgeBean implements Serializable {
     }
 
     public String borrarNv() throws NamingException {
+ 	nivSeleccionado = nivelSeleccionado.getCNivelId();
+        depenf = getDaoDepen().getListM(nivSeleccionado);
+	Integer resuldet=0;
+	if (depenf.isEmpty()){
+             FacesUtil.addMensaje("Nivel eliminado satisfactoriamente");
+	getDaoNivel().remove(nivelSeleccionado);
+	nuevoNivel = new CNiveles();
+            
+	}
+	else{
+        FacesUtil.addMensaje("Nivel no puede borrarse ya que hay Dependencias asociadas");
+	}
         return null;
     }
 
@@ -160,7 +195,7 @@ public class CatgeBean implements Serializable {
 
     public String buscarDp() throws NamingException {
 
-        depens = getDaoDepen().busqueda(desc);
+        depenf = getDaoDepen().busqueda(desc);
 
         return null;
     }
@@ -182,6 +217,20 @@ public class CatgeBean implements Serializable {
     }
 
     public String borrarDp() throws NamingException {
+ 	depenSeleccionada = depSeleccionada.getCDepenId();
+        jefes = getDaoJefes().getListM(depenSeleccionada);
+        areas = getDaoArea().getListD(depenSeleccionada);
+        System.out.println("registros asociados: "+jefes.size());
+	Integer resuldet=0;
+	if (jefes.isEmpty() && areas.isEmpty() ){
+             FacesUtil.addMensaje("Dependencia eliminada satisfactoriamente");
+	getDaoDepen().remove(depSeleccionada);
+	nuevaDep = new CDependencias();
+            
+	}
+	else{
+        FacesUtil.addMensaje("Dependencia no puede borrarse ya que tiene datos asociados");
+	}
         return null;
     }
 
@@ -214,6 +263,24 @@ public class CatgeBean implements Serializable {
     }
 
     public String borrarJd() throws NamingException {
+      	jefSeleccionado = jefeSeleccionado.getCJefesdId();
+        asig = getDaoAsig().getListJ(jefSeleccionado);
+        recep = getDaoRecep().getListJ(jefSeleccionado);
+        descarg = getDaoDesca().getListJ(jefSeleccionado);
+        movim = getDaoMovim().getListJ(jefSeleccionado);
+        robos = getDaoRobHur().getListJ(jefSeleccionado);
+        susti = getDaoSusti().getListJ(jefSeleccionado);
+        
+	Integer resuldet=0;
+	if (asig.isEmpty() && recep.isEmpty() && descarg.isEmpty() && movim.isEmpty() && robos.isEmpty() && susti.isEmpty()){
+             FacesUtil.addMensaje("Jefe eliminado satisfactoriamente");
+	getDaoJefes().remove(jefeSeleccionado);
+	nuevoJefe = new CJefesDep();
+        jefes = getDaoJefes().getList();            
+	}
+	else{
+        FacesUtil.addMensaje("Jefe no puede borrarse ya que hay movimientos asociadas. Debe dejarlo en estado INACTIVO");
+	}
         return null;
     }
 
@@ -284,6 +351,18 @@ public class CatgeBean implements Serializable {
     }
 
     public String borrarEd() throws NamingException {
+	ediSeleccionado = edifSeleccionado.getCEdifId();
+        areas = getDaoArea().getListM(ediSeleccionado);
+	Integer resuldet=0;
+	if (areas.isEmpty()){
+             FacesUtil.addMensaje("Edificio eliminado satisfactoriamente");
+	getDaoEdif().remove(edifSeleccionado);
+	nuevoEdificio = new CEdificios();
+        edificios = getDaoEdif().getList();            
+	}
+	else{
+        FacesUtil.addMensaje("Edificio no puede borrarse ya que hay dependencias asociadas.");
+	}        
         return null;
     }
 
@@ -301,6 +380,7 @@ public class CatgeBean implements Serializable {
 
     public String guardarAr() throws NamingException {
         nuevaArea.setCEdifId(getDaoEdif().getEdif(ediSeleccionado));
+        nuevaArea.setCDepenId(getDaoDepen().getDepend(depenSeleccionada));
         getDaoArea().create(nuevaArea);
         FacesUtil.addMensaje("Datos de Area Guardados");
         nuevaArea = new CAreas();
@@ -310,12 +390,26 @@ public class CatgeBean implements Serializable {
 
     public String actualAr() throws NamingException {
         areaSeleccionada.setCEdifId(getDaoEdif().getEdif(ediSeleccionado));
+        areaSeleccionada.setCDepenId(getDaoDepen().getDepend(depenSeleccionada));
         getDaoArea().edit(areaSeleccionada);
-        FacesUtil.addMensaje("Datos de Area Actualizado");
+        FacesUtil.addMensaje("Datos de Area Actualizados");
         return null;
     }
 
     public String borrarAr() throws NamingException {
+ 	areSeleccionada = areaSeleccionada.getCAreaId();
+        ubics = getDaoUbic().getListA(areSeleccionada);
+	Integer resuldet=0;
+	if (ubics.isEmpty()){
+             FacesUtil.addMensaje("Dependencia por Edificio eliminada satisfactoriamente");
+	getDaoArea().remove(areaSeleccionada);
+	nuevaArea = new CAreas();
+            
+	}
+	else{
+        FacesUtil.addMensaje("Dependencia no puede borrarse ya que tiene datos asociados");
+	}
+        
         return null;
     }
 
@@ -350,6 +444,18 @@ public class CatgeBean implements Serializable {
     }
 
     public String borrarUb() throws NamingException {
+        ubicaSel = ubicSeleccionada.getCUbicId();
+        bienes = getDaoBienes().getListU(ubicaSel);
+	Integer resuldet=0;
+	if (bienes.isEmpty()){
+             FacesUtil.addMensaje("Area por Dependencia eliminada satisfactoriamente");
+	getDaoUbic().remove(ubicSeleccionada);
+	nuevaUbic = new CUbic();
+        ubics = getDaoUbic().getList();            
+	}
+	else{
+        FacesUtil.addMensaje("Area por Dependencia no puede borrarse ya que tiene bienes asociados");
+	}
         return null;
     }
 
@@ -384,6 +490,18 @@ public class CatgeBean implements Serializable {
     }
 
     public String borrarRp() throws NamingException {
+      	respoSeleccionado = respSeleccionado.getCRespId();
+        bienes = getDaoBienes().getListM(respoSeleccionado);
+	Integer resuldet=0;
+	if (bienes.isEmpty()){
+             FacesUtil.addMensaje("Responsable eliminado satisfactoriamente");
+	getDaoResp().remove(respSeleccionado);
+	nuevoResp = new CResponsables();
+        respons = getDaoResp().getList();            
+	}
+	else{
+        FacesUtil.addMensaje("Responsable no puede borrarse ya que hay movimientos asociadas. Debe dejarlo en estado INACTIVO");
+	}
         return null;
     }
 
@@ -535,6 +653,33 @@ public class CatgeBean implements Serializable {
         return (CZonasFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CZonasFacade!dao.CZonasFacadeLocal");
     }
 
+    private TAsigEncaFacadeLocal getDaoAsig() {
+        return (TAsigEncaFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TAsigEncaFacade!dao.TAsigEncaFacadeLocal");
+    }
+    
+    private TRecepEncaFacadeLocal getDaoRecep() {
+        return (TRecepEncaFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TRecepEncaFacade!dao.TRecepEncaFacadeLocal");
+    }
+    
+    private TDescargEncaFacadeLocal getDaoDesca() {
+        return (TDescargEncaFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TDescargEncaFacade!dao.TDescargEncaFacadeLocal");
+    }
+
+    private TMovimEncaFacadeLocal getDaoMovim() {
+        return (TMovimEncaFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TMovimEncaFacade!dao.TMovimEncaFacadeLocal");
+    }
+    
+    private TRobHurFacadeLocal getDaoRobHur() {
+        return (TRobHurFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TRobHurFacade!dao.TRobHurFacadeLocal");
+    }
+
+    private TSustitFacadeLocal getDaoSusti() {
+        return (TSustitFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TSustitFacade!dao.TSustitFacadeLocal");
+    }
+
+    private TBienesFacadeLocal getDaoBienes() {
+        return (TBienesFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TBienesFacade!dao.TBienesFacadeLocal");
+    }
     public Boolean getEdit() {
         return edit;
     }
@@ -609,6 +754,14 @@ public class CatgeBean implements Serializable {
 
     public void setDepens(List<CDependencias> depens) {
         this.depens = depens;
+    }
+
+    public List<CDependencias> getDepenf() {
+        return depenf;
+    }
+
+    public void setDepenf(List<CDependencias> depenf) {
+        this.depenf = depenf;
     }
 
     public CDependencias getDepen() {
@@ -769,6 +922,14 @@ public class CatgeBean implements Serializable {
 
     public void setEdifSeleccionado(CEdificios edifSeleccionado) {
         this.edifSeleccionado = edifSeleccionado;
+    }
+
+    public Integer getUbicaSel() {
+        return ubicaSel;
+    }
+
+    public void setUbicaSel(Integer ubicaSel) {
+        this.ubicaSel = ubicaSel;   
     }
 
     public List<CAreas> getAreas() {
@@ -1003,6 +1164,14 @@ public class CatgeBean implements Serializable {
         this.zonSeleccionada = zonSeleccionada;
     }
 
+    public Integer getRespoSeleccionado() {
+        return respoSeleccionado;
+    }
+
+    public void setRespoSeleccionado(Integer respoSeleccionado) {
+        this.respoSeleccionado = respoSeleccionado;
+    }
+
     public Boolean getEstado() {
         return estado;
     }
@@ -1042,6 +1211,7 @@ public class CatgeBean implements Serializable {
     
     public void asignarEdif() {
         ediSeleccionado = areaSeleccionada.getCEdifId().getCEdifId();
+        depenSeleccionada = areaSeleccionada.getCDepenId().getCDepenId();
     }
 
     public void municipioSeleccion() {
@@ -1068,11 +1238,11 @@ public class CatgeBean implements Serializable {
     public void asignarNivelDep() {
         nivSeleccionado = respSeleccionado.getCNivelId().getCNivelId();
         depenSeleccionada = respSeleccionado.getCDepenId().getCDepenId();
-        depens = getDaoDepen().getListM(nivSeleccionado);
+        depenf = getDaoDepen().getListM(nivSeleccionado);
     }
 
     public void dependenciaSeleccion() {
-        depens = getDaoDepen().getListM(nivSeleccionado);
+        depenf = getDaoDepen().getListM(nivSeleccionado);
     }
 
         public void buscarCodN() throws NamingException {

@@ -12,18 +12,20 @@
 
         <ui:define name="content" >
             <h:form id="formAreas" >
+                <p:growl id="growl" />                
                 <div class="table table-responsive table-bordered " >
 
                     <table id="tarea" class="table table-striped table-condensed">
                         <thead>
                             <tr>
-                                CATALOGO DE AREAS POR EDIFICIO
+                                CATALOGO DE DEPENDENCIAS POR EDIFICIO
                             </tr>
                             <tr>
                                 <th>Código</th>
-                                <th>Descripción</th>
+                                <th>Descripción de Dependencia</th>
                                 <th>Edificio</th>
                                 <th>Opciones</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,6 +40,14 @@
                                                                          target="#{catgeBean.areaSeleccionada}"  />
                                             <p:ajax process="@this" update=":formAreas:displayA2"/>
                                         </h:commandLink>
+                                    </td>
+                                    <td>
+                                        <h:commandLink value="Eliminar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#elimArea" >
+                                            <f:setPropertyActionListener value="#{area}"
+                                             target="#{catgeBean.areaSeleccionada}" />
+                                            <p:ajax process="@this" update=":formAreas:displayEa"/>
+                                        </h:commandLink>
+
                                     </td>
                                 </tr>
                             </ui:repeat>
@@ -55,7 +65,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
-                                <h4 class="modal-title">Adición de Areas por Edificio</h4>
+                                <h4 class="modal-title">Adición de Dependencia por Edificio</h4>
                             </div>
                             <div class="modal-body">
                                 <p:panelGrid id="displayA1" columns="2" >  
@@ -70,6 +80,13 @@
 
                                     <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevaArea.CAreaDesc}" size="65" required="true"/> 
+                                    
+                                    <h:outputLabel value="Dependencia: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="depena" value="#{catgeBean.depenSeleccionada}" required="true" style="width: 80%;">
+                                        <f:selectItem itemLabel="Seleccione una..." itemValue="0"/>
+                                        <f:selectItems value="#{catgeBean.depens}" var="depen" itemLabel="#{depen.CDepenDesc}" itemValue="#{depen.CDepenId}"/>
+                                    </h:selectOneMenu>
+
 
                                     <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarAr()}"  rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayA1"  oncomplete="handleRequest(xhr, status, args); ; adicArea.hide();" />
                                     <script type="text/javascript">
@@ -96,7 +113,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
-                                <h4 class="modal-title">Modificación de Areas por Edificio</h4>
+                                <h4 class="modal-title">Modificación de Dependencia por Edificio</h4>
                             </div>
                             <div class="modal-body">
                                 <p:panelGrid id="displayA2" columns="2" >  
@@ -111,8 +128,14 @@
 
                                     <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
                                     <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.areaSeleccionada.CAreaDesc}" size="65"/> 
+                                    
+                                   <h:outputLabel value="Dependencia: *" style="font-weight: bold"/>
+                                    <h:selectOneMenu id="depen" value="#{catgeBean.depenSeleccionada}" required="true" style="width: 80%;">
+                                        <f:selectItem itemLabel="Seleccione una..." itemValue="0"/>
+                                        <f:selectItems value="#{catgeBean.depens}" var="depen" itemLabel="#{depen.CDepenDesc}" itemValue="#{depen.CDepenId}"/>
+                                    </h:selectOneMenu>                                    
 
-                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualAr()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayA2"  oncomplete="modifAarea.hide();"/>
+                                    <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualAr()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayA2"  oncomplete="modifArea.hide();"/>
 
                                 </p:panelGrid>  
 
@@ -120,6 +143,46 @@
                         </div>
                     </div>
                 </div>
+                
+                <div id="elimArea" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar×</button>
+                                <h4 class="modal-title">Eliminar Dependencia por Edificio</h4>
+                            </div>
+                            <div class="modal-body">
+                                 <p:panelGrid id="displayEa" columns="2" >  
+                                    <h:outputLabel value="Corr. Dependencia:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.areaSeleccionada.CAreaId}" />    
+
+                                    <h:outputLabel value="Edificio: *" style="font-weight: bold"/>
+                                    <h:outputText value="#{catgeBean.areaSeleccionada.CEdifId.CEdifDesc}" />    
+
+                                    <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.areaSeleccionada.CAreaDesc}" size="65"/> 
+                                    
+                                   <h:outputLabel value="Dependencia: *" style="font-weight: bold"/>
+                                   <h:outputText value="#{catgeBean.areaSeleccionada.CDepenId.CDepenDesc}" />    
+                                    
+                                    <p:commandButton value="Confirmar Eliminar" icon="ui-icon-trash" action="#{catgeBean.borrarAr()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayEa"  oncomplete="refrescar(xhr, status, args);"/>
+                                    <script type="text/javascript">
+                                        function refrescar(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error');
+                                            } else {
+                                                elimArea.hide();
+                                                location.reload(true);
+                                            }
+                                        }
+                                    </script>                                    
+                                    
+                                </p:panelGrid>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </h:form>
         </ui:define>
         <ui:define name="scripts">

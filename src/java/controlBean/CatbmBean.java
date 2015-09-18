@@ -21,8 +21,12 @@ import entidades.CEstadoProc;
 import dao.CTiposMovFacadeLocal;
 import entidades.CTiposMov;
 import dao.CTipDescargFacadeLocal;
+import dao.TBienesFacadeLocal;
+import dao.TMovimEncaFacadeLocal;
 import entidades.CEstadoMov;
 import entidades.CTipDescarg;
+import entidades.TBienes;
+import entidades.TMovimEnca;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +50,11 @@ public class CatbmBean implements Serializable {
     private CRubros nuevoRubro = new CRubros();
     private CRubros rubroSeleccionado = new CRubros();
     private List<CEspecificos> especs = new ArrayList<>();
+    private List<CEspecificos> especf = new ArrayList<>();
     private CEspecificos espec;
-    private Integer rubSeleccionado;
+    private Integer rubSeleccionado, espSeleccionado, estbSeleccionado;
+    private Integer conbSeleccionado, estproSeleccionado, tipdeSeleccionado;
+    private Integer tipmoSeleccionado, estmoSeleccionado;
     private CEspecificos nuevoEspec = new CEspecificos();
     private CEspecificos especSeleccionado = new CEspecificos();
     private List<CEstadoBien> estbiens = new ArrayList<>();
@@ -78,6 +85,8 @@ public class CatbmBean implements Serializable {
     private CEstadoMov estmov;
     private CEstadoMov nuevoEstmov = new CEstadoMov();
     private CEstadoMov estMovSeleccionado = new CEstadoMov();
+    private List<TBienes> bienesE = new ArrayList<>();
+    private List<TMovimEnca> movs = new ArrayList<>();     
 
     /**
      * Creates a new instance 
@@ -109,6 +118,18 @@ public class CatbmBean implements Serializable {
     }
 
     public String borrarRb() throws NamingException {
+ 	rubSeleccionado = rubroSeleccionado.getCRubroId();
+        especf = getDaoEspec().getListM(rubSeleccionado);
+	Integer resuldet=0;
+	if (especf.isEmpty()){
+             FacesUtil.addMensaje("Rubro eliminado satisfactoriamente");
+	getDaoRubro().remove(rubroSeleccionado);
+	nuevoRubro = new CRubros();
+        rubros  =  getDaoRubro().getList();    
+	}
+	else{
+        FacesUtil.addMensaje("Rubro no puede borrarse ya que hay Específicos asociados");
+	}
         return null;
     }
 
@@ -135,6 +156,18 @@ public class CatbmBean implements Serializable {
     }
 
     public String borrarEs() throws NamingException {
+ 	espSeleccionado = especSeleccionado.getCEspecId();
+        bienesE = getDaoBienes().getListE(espSeleccionado);
+	Integer resuldet=0;
+	if (bienesE.isEmpty()){
+          FacesUtil.addMensaje("Específico eliminado satisfactoriamente");
+	getDaoEspec().remove(especSeleccionado);
+	nuevoEspec = new CEspecificos();
+        especs  =  getDaoEspec().getList();            
+	}
+	else{
+        FacesUtil.addMensaje("Específico no puede borrarse ya que tiene bienes asociados");
+	}
         return null;
     }
 
@@ -168,14 +201,19 @@ public class CatbmBean implements Serializable {
     }
 
     public String borrarEb() throws NamingException {
-//        Integer resultado = getDaoNivel().remove(nivelSeleccionado);
-//        if (resultado == -1) {
-//            FacesUtil.addMensaje("Nivel tiene movimientos");
-//        } else {
-//            FacesUtil.addMensaje("Nivel Borrado");
-//            niveles.remove(nivelSeleccionado);
-//            nivel = new CNiveles();
-//        }
+ 	estbSeleccionado = estBienSeleccionado.getCEstadbId();
+        bienesE = getDaoBienes().getListEB(estbSeleccionado);
+	Integer resuldet=0;
+	if (bienesE.isEmpty()){
+             FacesUtil.addMensaje("Estado de bien eliminado satisfactoriamente");
+	getDaoEstBien().remove(estBienSeleccionado);
+        nuevoEstbien = new CEstadoBien();
+        estbiens  =  getDaoEstBien().getList();
+	}
+	else{
+        FacesUtil.addMensaje("Estado del bien no puede borrarse ya que hay bienes asociados");
+	}
+        
         return null;
     }
 
@@ -205,6 +243,18 @@ public class CatbmBean implements Serializable {
     }
     
     public String borrarCb() throws NamingException {
+  	conbSeleccionado = conBienSeleccionado.getCCondbId();
+        bienesE = getDaoBienes().getListCB(conbSeleccionado);
+	Integer resuldet=0;
+	if (bienesE.isEmpty()){
+             FacesUtil.addMensaje("Condidión de bien eliminado satisfactoriamente");
+	getDaoConBien().remove(conBienSeleccionado);
+        nuevoConbien = new CCondBien();
+        conbiens  =  getDaoConBien().getList();
+	}
+	else{
+        FacesUtil.addMensaje("Condición del bien no puede borrarse ya que hay bienes asociados");
+	}
         return null;
     }
 
@@ -230,6 +280,18 @@ public class CatbmBean implements Serializable {
     }
     
     public String borrarEp() throws NamingException {
+  	estproSeleccionado = estProcSeleccionado.getCEstproId();
+        bienesE = getDaoBienes().getListEP(estproSeleccionado);
+	Integer resuldet=0;
+	if (bienesE.isEmpty()){
+             FacesUtil.addMensaje("Estado de proceso de bien eliminado satisfactoriamente");
+	getDaoEstProc().remove(estProcSeleccionado);
+        nuevoEstproc = new CEstadoProc();
+        estprocs  =  getDaoEstProc().getList();
+	}
+	else{
+        FacesUtil.addMensaje("Estado de proceso de bien no puede borrarse ya que hay bienes asociados");
+	}
         return null;
     }
 
@@ -254,6 +316,19 @@ public class CatbmBean implements Serializable {
     }
     
     public String borrarTm() throws NamingException {
+  	tipmoSeleccionado = tipMovSeleccionado.getCTipmId();
+        movs = getDaoMovi().getListTipmo(tipmoSeleccionado);
+	Integer resuldet=0;
+	if (movs.isEmpty()){
+             FacesUtil.addMensaje("Tipo de Movimiento eliminado satisfactoriamente");
+	getDaoTipMov().remove(tipMovSeleccionado);
+        nuevoTipmov = new CTiposMov();
+        tipmovs  =  getDaoTipMov().getList();
+	}
+	else{
+        FacesUtil.addMensaje("Tipo de movimiento no puede borrarse ya que hay movimientos asociados");
+	}
+        
         return null;
     }
     
@@ -277,6 +352,18 @@ public class CatbmBean implements Serializable {
     }
     
     public String borrarEm() throws NamingException {
+  	estmoSeleccionado = estMovSeleccionado.getCEstmovId();
+        movs = getDaoMovi().getListEstmo(estmoSeleccionado);
+	Integer resuldet=0;
+	if (movs.isEmpty()){
+             FacesUtil.addMensaje("Estado de Movimiento eliminado satisfactoriamente");
+	getDaoEstMov().remove(estMovSeleccionado);
+        nuevoEstmov = new CEstadoMov();
+        estmovs  =  getDaoEstMov().getList();
+	}
+	else{
+        FacesUtil.addMensaje("Estado de movimiento no puede borrarse ya que hay movimientos asociados");
+	}
         return null;
     }
    
@@ -301,6 +388,19 @@ public class CatbmBean implements Serializable {
     }
 
     public String borrarTd() throws NamingException {
+        tipdeSeleccionado = tipDesSeleccionado.getCTipdescId();
+        bienesE = getDaoBienes().getListTD(tipdeSeleccionado);
+	Integer resuldet=0;
+	if (bienesE.isEmpty()){
+             FacesUtil.addMensaje("Tipo de descargo eliminado satisfactoriamente");
+	getDaoEstProc().remove(estProcSeleccionado);
+        nuevoTipdes = new CTipDescarg();
+        tipdes  =  getDaoTipDesc().getList();
+
+	}
+	else{
+        FacesUtil.addMensaje("Tipo de descargo no puede borrarse ya que hay bienes asociados");
+	}
         return null;
     }    
     public String setEditAction() {
@@ -342,6 +442,13 @@ public class CatbmBean implements Serializable {
         return (CTipDescargFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/CTipDescargFacade!dao.CTipDescargFacadeLocal");
     }
     
+    private TBienesFacadeLocal getDaoBienes() {
+        return (TBienesFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TBienesFacade!dao.TBienesFacadeLocal");
+    }   
+
+    private TMovimEncaFacadeLocal getDaoMovi() {
+        return (TMovimEncaFacadeLocal) FacesUtil.getEjb("java:global/ActFijo/TMovimEncaFacade!dao.TMovimEncaFacadeLocal");
+    }       
     public Boolean getEdit() {
         return edit;
     }
@@ -390,6 +497,22 @@ public class CatbmBean implements Serializable {
         this.rubroSeleccionado = rubroSeleccionado;
     }
 
+    public List<TMovimEnca> getMovs() {
+        return movs;
+    }
+
+    public void setMovs(List<TMovimEnca> movs) {
+        this.movs = movs;
+    }
+
+    public List<TBienes> getBienesE() {
+        return bienesE;
+    }
+
+    public void setBienesE(List<TBienes> bienesE) {
+        this.bienesE = bienesE;
+    }
+
     public List<CEspecificos> getEspecs() {
         return especs;
     }
@@ -404,6 +527,22 @@ public class CatbmBean implements Serializable {
 
     public void setEspec(CEspecificos espec) {
         this.espec = espec;
+    }
+
+    public List<CEspecificos> getEspecf() {
+        return especf;
+    }
+
+    public void setEspecf(List<CEspecificos> especf) {
+        this.especf = especf;
+    }
+
+    public Integer getEspSeleccionado() {
+        return espSeleccionado;
+    }
+
+    public void setEspSeleccionado(Integer espSeleccionado) {
+        this.espSeleccionado = espSeleccionado;
     }
 
     public Integer getRubSeleccionado() {
@@ -460,6 +599,54 @@ public class CatbmBean implements Serializable {
 
     public void setEstBienSeleccionado(CEstadoBien estBienSeleccionado) {
         this.estBienSeleccionado = estBienSeleccionado;
+    }
+
+    public Integer getEstbSeleccionado() {
+        return estbSeleccionado;
+    }
+
+    public void setEstbSeleccionado(Integer estbSeleccionado) {
+        this.estbSeleccionado = estbSeleccionado;
+    }
+
+    public Integer getConbSeleccionado() {
+        return conbSeleccionado;
+    }
+
+    public void setConbSeleccionado(Integer conbSeleccionado) {
+        this.conbSeleccionado = conbSeleccionado;
+    }
+
+    public Integer getEstproSeleccionado() {
+        return estproSeleccionado;
+    }
+
+    public void setEstproSeleccionado(Integer estproSeleccionado) {
+        this.estproSeleccionado = estproSeleccionado;
+    }
+
+    public Integer getTipdeSeleccionado() {
+        return tipdeSeleccionado;
+    }
+
+    public void setTipdeSeleccionado(Integer tipdeSeleccionado) {
+        this.tipdeSeleccionado = tipdeSeleccionado;
+    }
+
+    public Integer getTipmoSeleccionado() {
+        return tipmoSeleccionado;
+    }
+
+    public void setTipmoSeleccionado(Integer tipmoSeleccionado) {
+        this.tipmoSeleccionado = tipmoSeleccionado;
+    }
+
+    public Integer getEstmoSeleccionado() {
+        return estmoSeleccionado;
+    }
+
+    public void setEstmoSeleccionado(Integer estmoSeleccionado) {
+        this.estmoSeleccionado = estmoSeleccionado;
     }
 
     public List<CCondBien> getConbiens() {

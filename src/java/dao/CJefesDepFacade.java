@@ -63,6 +63,9 @@ public class CJefesDepFacade extends AbstractFacade<CJefesDep> implements CJefes
       return (CJefesDep) em.createNamedQuery("CJefesDep.findByCDepenId").setParameter("cDepenId",dep).getSingleResult();
     }
     
-    
+    @Override
+    public List getListM(Integer dep) {			
+	return em.createNamedQuery("CJefesDep.findByCDepenId").setParameter("cDepenId",dep).getResultList();
+    }
     
 }

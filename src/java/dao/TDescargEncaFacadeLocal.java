@@ -27,6 +27,9 @@ public interface TDescargEncaFacadeLocal {
     List<TDescargEnca> findAll();
 
     List<TDescargEnca> findRange(int[] range);
+    
+    public List<TDescargEnca> getListJ(Integer jefe);
+
 
     int count();
     

@@ -12,7 +12,7 @@
 
         <ui:define name="content" >
             <h:form id="formJefes" >
-
+                <p:growl id="growl" />
                 <div class="table table-responsive table-bordered" >
 
                     <table id="tjefes" class="table table-striped table-condensed">
@@ -26,6 +26,7 @@
                                 <th>Cargo</th>
                                 <th>Dependencia</th>
                                 <th>Opciones</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,6 +41,13 @@
                                             <f:setPropertyActionListener value="#{jefe}"
                                                                          target="#{catgeBean.jefeSeleccionado}" />
                                             <p:ajax process="@this" update=":formJefes:displayJ2"/>
+                                        </h:commandLink>
+                                    </td>
+                                    <td>
+                                        <h:commandLink value="Eliminar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#elimJefe" action="#{catgeBean.asignarDepen()}">
+                                            <f:setPropertyActionListener value="#{jefe}"
+                                                                         target="#{catgeBean.jefeSeleccionado}" />
+                                            <p:ajax process="@this" update=":formJefes:displayEj"/>
                                         </h:commandLink>
                                     </td>
                                 </tr>
@@ -68,22 +76,22 @@
                                     <h:outputText value="#{catgeBean.nuevoJefe.CJefesdId}" /> 
 
                                     <h:outputLabel value="Nombre:   *" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoJefe.CJefesdNombre}" style="width: 99%;" required="true"/> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoJefe.CJefesdNombre}" style="width: 80%;" required="true"/> 
 
                                     <h:outputLabel value="Profesión:   *" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoJefe.CJefesdProfesion}" /> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoJefe.CJefesdProfesion}" style="width: 99%;"/> 
 
                                     <h:outputLabel value="Cargo:   *" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoJefe.CJefesdCargo}" /> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoJefe.CJefesdCargo}" style="width: 80%;"/> 
 
                                     <h:outputLabel value="Dependencia: *" style="font-weight: bold"/>
-                                    <h:selectOneMenu id="depen" value="#{catgeBean.depenSeleccionada}" required="true">
+                                    <h:selectOneMenu id="depen" value="#{catgeBean.depenSeleccionada}" required="true" style="width: 80%;">
                                         <f:selectItem itemLabel="Seleccione una..." itemValue="0"/>
                                         <f:selectItems value="#{catgeBean.depens}" var="depen" itemLabel="#{depen.CDepenDesc}" itemValue="#{depen.CDepenId}"/>
                                     </h:selectOneMenu>
 
                                     <h:outputLabel value="Correo Electrónico:" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catgeBean.nuevoJefe.CJefesdCorreo}" /> 
+                                    <h:inputText value="#{catgeBean.nuevoJefe.CJefesdCorreo}" style="width: 80%;"/> 
 
                                     <h:outputLabel value="Teléfono Oficina:" style="font-weight: bold"/>  
                                     <h:inputText value="#{catgeBean.nuevoJefe.CJefesdTelofi}" /> 
@@ -129,22 +137,22 @@
                                     <h:outputText value="#{catgeBean.jefeSeleccionado.CJefesdId}" /> 
 
                                     <h:outputLabel value="Nombre:   *" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.jefeSeleccionado.CJefesdNombre}" style="width: 99%;" required="true"/> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.jefeSeleccionado.CJefesdNombre}" style="width: 80%;" required="true"/> 
 
                                     <h:outputLabel value="Profesión:   *" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.jefeSeleccionado.CJefesdProfesion}" /> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.jefeSeleccionado.CJefesdProfesion}" style="width: 99%;"/> 
 
                                     <h:outputLabel value="Cargo:   *" style="font-weight: bold"/>  
-                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.jefeSeleccionado.CJefesdCargo}" /> 
+                                    <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.jefeSeleccionado.CJefesdCargo}" style="width: 80%;" /> 
 
                                     <h:outputLabel value="Dependencia: *" style="font-weight: bold"/>
-                                    <h:selectOneMenu value="#{catgeBean.depenSeleccionada}" >
+                                    <h:selectOneMenu value="#{catgeBean.depenSeleccionada}" style="width: 80%;">
                                         <f:selectItem itemLabel="Seleccione una..." itemValue="0"/>
                                         <f:selectItems value="#{catgeBean.depens}" var="depen" itemLabel="#{depen.CDepenDesc}" itemValue="#{depen.CDepenId}"/>
                                     </h:selectOneMenu>
 
                                     <h:outputLabel value="Correo Electrónico:" style="font-weight: bold"/>  
-                                    <h:inputText value="#{catgeBean.jefeSeleccionado.CJefesdCorreo}" /> 
+                                    <h:inputText value="#{catgeBean.jefeSeleccionado.CJefesdCorreo}" style="width: 80%;" /> 
 
                                     <h:outputLabel value="Teléfono Oficina:" style="font-weight: bold"/>  
                                     <h:inputText value="#{catgeBean.jefeSeleccionado.CJefesdTelofi}" /> 
@@ -167,6 +175,55 @@
                         </div>
                     </div>
                 </div>
+                
+                <div id="elimJefe" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar×</button>
+                                <h4 class="modal-title">Eliminar Jefe de Dependencia</h4>
+                            </div>
+                            <div class="modal-body">
+                                 <p:panelGrid id="displayEj" columns="2" >  
+                                    <h:outputLabel value="No. Correlativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.jefeSeleccionado.CJefesdId}" /> 
+
+                                    <h:outputLabel value="Nombre:   *" style="font-weight: bold"/>  
+                                    <h:outputText  value="#{catgeBean.jefeSeleccionado.CJefesdNombre}" style="width: 80%;" /> 
+
+                                    <h:outputLabel value="Profesión:   *" style="font-weight: bold"/>  
+                                    <h:outputText  value="#{catgeBean.jefeSeleccionado.CJefesdProfesion}" style="width: 99%;"/> 
+
+                                    <h:outputLabel value="Cargo:   *" style="font-weight: bold"/>  
+                                    <h:outputText  value="#{catgeBean.jefeSeleccionado.CJefesdCargo}" style="width: 80%;" /> 
+
+                                    <h:outputLabel value="Dependencia: *" style="font-weight: bold"/>
+                                    <h:outputText  value="#{catgeBean.jefeSeleccionado.CDepenId.CDepenDesc}" style="width: 80%;" /> 
+
+                                    <h:outputLabel value="Correo Electrónico:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.jefeSeleccionado.CJefesdCorreo}" style="width: 80%;" /> 
+
+                                    <h:outputLabel value="Teléfono Oficina:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.jefeSeleccionado.CJefesdTelofi}" /> 
+                                    
+                                    <p:commandButton value="Confirmar Eliminar" icon="ui-icon-trash" action="#{catgeBean.borrarJd()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayEj"  oncomplete="refrescar(xhr, status, args);"/>
+                                    <script type="text/javascript">
+                                        function refrescar(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error');
+                                            } else {
+                                                elimJefe.hide();
+                                                location.reload(true);
+                                            }
+                                        }
+                                    </script>                                    
+                                    
+                                </p:panelGrid>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
             </h:form>
         </ui:define>
         <ui:define name="scripts">

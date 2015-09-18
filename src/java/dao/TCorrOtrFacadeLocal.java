@@ -32,8 +32,8 @@ public interface TCorrOtrFacadeLocal {
 
     public List<TCorrOtr> getList();
 
-    public Integer updateC(int anio, int nvoCorr);
+    public Integer updateC(int anio, int nvoCorr, int idMovim);
     
-    public TCorrOtr getCorrel(int corId, int anio);
+    public TCorrOtr getTOtrocCorrel(int corId, int anio);
     
 }

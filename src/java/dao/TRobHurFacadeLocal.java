@@ -28,6 +28,11 @@ public interface TRobHurFacadeLocal {
 
     List<TRobHur> findRange(int[] range);
 
+    public List getList();
+    
+    public List<TRobHur> getListJ(Integer jefe);
+
+    
     int count();
     
 }

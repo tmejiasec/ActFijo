@@ -46,6 +46,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TRecepEnca.findByTReceUsec", query = "SELECT t FROM TRecepEnca t WHERE t.tReceUsec = :tReceUsec"),
     @NamedQuery(name = "TRecepEnca.findByTReceFechc", query = "SELECT t FROM TRecepEnca t WHERE t.tReceFechc = :tReceFechc"),
     @NamedQuery(name = "TRecepEnca.findByTReceUsem", query = "SELECT t FROM TRecepEnca t WHERE t.tReceUsem = :tReceUsem"),
+    @NamedQuery(name = "TRecepEnca.findByCJefesId", query="SELECT m FROM TRecepEnca m WHERE m.cJefesdId.cJefesdId = :cJefesId"),
     @NamedQuery(name = "TRecepEnca.findByTReceFechm", query = "SELECT t FROM TRecepEnca t WHERE t.tReceFechm = :tReceFechm")})
 public class TRecepEnca implements Serializable {
     @Column(name = "t_rece_horac")
@@ -92,6 +93,10 @@ public class TRecepEnca implements Serializable {
     @Column(name = "t_rece_fechm")
     @Temporal(TemporalType.DATE)
     private Date tReceFechm;
+    @Column(name = "t_rece_fechc_id")
+    private Integer tReceFechcId;
+    @Column(name = "t_rece_fechm_id")
+    private Integer tReceFechmId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "tReceId")
     private List<TRecepDeta> tRecepDetaList;
     @JoinColumn(name = "t_tm_id", referencedColumnName = "t_tm_id")
@@ -103,7 +108,12 @@ public class TRecepEnca implements Serializable {
     @JoinColumn(name = "c_depen_id", referencedColumnName = "c_depen_id")
     @ManyToOne(optional = false)
     private CDependencias cDepenId;
-
+    @JoinColumn(name = "c_resp_id", referencedColumnName = "c_resp_id")
+    @ManyToOne(optional = false)
+    private CResponsables cRespId;
+    
+    //c_resp_id
+    
     public TRecepEnca() {
     }
 
@@ -255,6 +265,34 @@ public class TRecepEnca implements Serializable {
         this.cDepenId = cDepenId;
     }
 
+
+    public Integer getTReceFechcId() {
+        return tReceFechcId;
+    }
+
+    public void setTReceFechcId(Integer tReceFechcId) {
+        this.tReceFechcId = tReceFechcId;
+    }
+
+    public Integer getTReceFechmId() {
+        return tReceFechmId;
+    }
+
+    public void setTReceFechmId(Integer tReceFechmId) {
+        this.tReceFechmId = tReceFechmId;
+    }
+
+
+    public CResponsables getCRespId() {
+        return cRespId;
+    }
+
+    public void setCRespId(CResponsables cRespId) {
+        this.cRespId = cRespId;
+    }
+
+    
+        
     @Override
     public int hashCode() {
         int hash = 0;

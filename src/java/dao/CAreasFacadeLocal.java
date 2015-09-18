@@ -25,6 +25,8 @@ public interface CAreasFacadeLocal {
     public List getList();
     
     public List<CAreas> getListM(Integer edif);
+    
+    public List<CAreas> getListD(Integer dep);
    
     public List busqueda(String desc);
     

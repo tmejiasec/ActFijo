@@ -28,6 +28,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "TRecepDeta.findAll", query = "SELECT t FROM TRecepDeta t"),
     @NamedQuery(name = "TRecepDeta.findByTRecdId", query = "SELECT t FROM TRecepDeta t WHERE t.tRecdId = :tRecdId"),
+    @NamedQuery(name = "TRecepDeta.findByTRecepEncabId", query = "SELECT t FROM TRecepDeta t WHERE t.tReceId.tReceId = :tReceId"),
     @NamedQuery(name = "TRecepDeta.findByTRecdCodigo", query = "SELECT t FROM TRecepDeta t WHERE t.tRecdCodigo = :tRecdCodigo")})
 public class TRecepDeta implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -42,6 +43,9 @@ public class TRecepDeta implements Serializable {
     @JoinColumn(name = "t_rece_id", referencedColumnName = "t_rece_id")
     @ManyToOne(optional = false)
     private TRecepEnca tReceId;
+    @JoinColumn(name = "t_bien_id", referencedColumnName = "t_bien_id")
+    @ManyToOne(optional = false)
+    private TBienes tBienId;
 
     public TRecepDeta() {
     }
@@ -74,13 +78,21 @@ public class TRecepDeta implements Serializable {
         this.tReceId = tReceId;
     }
 
+    public TBienes getTBienId() {
+        return tBienId;
+    }
+
+    public void setTBienId(TBienes tBienId) {
+        this.tBienId = tBienId;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (tRecdId != null ? tRecdId.hashCode() : 0);
         return hash;
     }
-
+    
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set

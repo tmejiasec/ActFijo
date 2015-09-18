@@ -38,8 +38,7 @@
                                     <div class="col-md-3">
                                         <label for="anio" >Año</label>
                                         <div>
-                                            <p:inputText id="anio" value="#{movBienesBean.nuevoEnca.TMoveAnio}" > 
-                                                <!--disabled="{movBienesBean.estanio}" esta parte va en el input para deshabilitar :adiMBien:anio en sig linea-->
+                                            <p:inputText id="anio" value="#{movBienesBean.nuevoEnca.TMoveAnio}"> 
                                                 <p:ajax listener="#{movBienesBean.buscarCorr}" update="@this :adiMBien:growl :adiMBien:corr"/>
                                             </p:inputText>
                                         </div>
@@ -167,96 +166,89 @@
                                     </div>
 
                                 </div>
-                                <!--</h:panelGroup>-->
-                                <!--aqui agregar dialogo para adicionar datos complementarios-->
-
-
-                                <!--aqui agregar tabla de detalle de movimientos-->
-                                <div class="table table-responsive table-bordered" >
-                                    <p:dataTable id="encab" var="detalle" value="#{movBienesBean.movdeta}" rowKey="#{detalle.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
-                                        <p:column headerText="Codigo" filterBy="#{detalle.TBienId.TBienCodigo}"  style="width:125px;" >
-                                            <h:outputText value="#{detalle.TMovdCodigo}">
-                                            </h:outputText>
-                                        </p:column>
-                                        <p:column headerText="Descripción" >
-                                            <h:outputText value="#{detalle.TBienId.TBienDesc}">
-                                            </h:outputText>
-                                        </p:column>
-                                        <p:column headerText="Marca">
-                                            <h:outputText value="#{detalle.TBienId.CMarcaId.CMarcaDesc}">
-                                            </h:outputText>
-                                        </p:column>
-                                        <p:column headerText="Modelo">
-                                            <h:outputText value="#{detalle.TBienId.TBienModelo}">
-                                            </h:outputText>
-                                        </p:column>   
-                                        <p:column headerText="Serie">
-                                            <h:outputText value="#{detalle.TBienId.TBienSerie}">
-                                            </h:outputText>
-                                        </p:column>  
-                                    </p:dataTable>
-                                    <div class="form-group">
-                                        <div class="col-lg-6 col-lg-offset-9">
-                                            <p:commandButton id="agregaDet" value="Adicionar Bienes"  styleClass="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicDetmov" />
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <!--// probar aqui los botones -->
-
-                                <div id="adicDetmov" class="modal">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
-                                                <h4 class="modal-title">Seleccionar Bienes a Agregar a Movimiento</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="table table-responsive table-bordered" >
-                                                    <p:dataTable id="seleccionar_bienes" var="bienR" value="#{movBienesBean.bienes}" selection="#{movBienesBean.selectedBienes}" rowKey="#{bienR.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay códigos para agregar">
-                                                        <p:column selectionMode="multiple" style="width:40px;"/>
-                                                        <p:column headerText="Codigo" filterBy="#{bienR.TBienCodigo}" filterMatchMode="contains" style="width:125px;" >
-                                                            <h:outputText value="#{bienR.TBienCodigo}">
-                                                            </h:outputText>
-                                                        </p:column>
-                                                        <p:column headerText="Descripción" >
-                                                            <h:outputText value="#{bienR.TBienDesc}">
-                                                            </h:outputText>
-                                                        </p:column>
-                                                        <p:column headerText="Marca">
-                                                            <h:outputText value="#{bienR.CMarcaId.CMarcaDesc}">
-                                                            </h:outputText>
-                                                        </p:column>
-                                                        <p:column headerText="Modelo">
-                                                            <h:outputText value="#{bienR.TBienModelo}">
-                                                            </h:outputText>
-                                                        </p:column>   
-                                                        <p:column headerText="Serie">
-                                                            <h:outputText value="#{bienR.TBienSerie}">
-                                                            </h:outputText>
-                                                        </p:column>                                                    
-                                                    </p:dataTable>
-                                                    <div class="form-group">
-                                                        <div>
-                                                            <p:commandButton id="adDet" icon="ui-icon-plusthick" value="Agregar" action="#{movBienesBean.updateDetalle}" process="@this :adiMBien:adicMov:seleccionar_bienes" update="@this :adiMBien:adicMov:encab" oncomplete="#adicDetmov.hide();" styleClass="margin-top: 10px;"/>
-                                                            <!--<p:ajax  event="click" listener="{movBienesBean.updateDetalle}" process="@this :adiMBien:adicMov:seleccionar_bienes" update="@this :adiMBien:adicMov:encab"/>-->
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                            </div>
-                                            <!--                                        <div class="modal-footer">
-                                                                                        <button class="btn btn-default">Cancelar</button>
-                                                                                    </div>-->
-                                        </div>
-                                    </div>
-                                </div>
                             </h:panelGroup>
+                            <!--aqui agregar dialogo para adicionar datos complementarios-->
+
+                            <!--aqui agregar tabla de detalle de movimientos-->
+                            <div class="table table-responsive table-bordered" >
+                                <p:dataTable id="encab" var="detalle" value="#{movBienesBean.movdeta}" rowKey="#{detalle.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
+                                    <p:column headerText="Codigo" filterBy="#{detalle.TBienId.TBienCodigo}"  style="width:125px;" >
+                                        <h:outputText value="#{detalle.TMovdCodigo}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Descripción" >
+                                        <h:outputText value="#{detalle.TBienId.TBienDesc}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Marca">
+                                        <h:outputText value="#{detalle.TBienId.CMarcaId.CMarcaDesc}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Modelo">
+                                        <h:outputText value="#{detalle.TBienId.TBienModelo}">
+                                        </h:outputText>
+                                    </p:column>   
+                                    <p:column headerText="Serie">
+                                        <h:outputText value="#{detalle.TBienId.TBienSerie}">
+                                        </h:outputText>
+                                    </p:column>  
+                                </p:dataTable>
+                                <div class="form-group">
+                                    <div class="col-lg-6 col-lg-offset-9">
+                                        <p:commandButton id="agregaDet" value="Adicionar Bienes"  styleClass="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicDetmov" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!--// probar aqui los botones -->
+
+                            <div id="adicDetmov" class="modal">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar ×</button>
+                                            <h4 class="modal-title">Seleccionar Bienes a Agregar a Movimiento</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="table table-responsive table-bordered" >
+                                                <p:dataTable id="seleccionar_bienes" var="bienR" value="#{movBienesBean.bienes}" selection="#{movBienesBean.selectedBienes}" rowKey="#{bienR.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay códigos para agregar">
+                                                    <p:column selectionMode="multiple" style="width:40px;"/>
+                                                    <p:column headerText="Codigo" filterBy="#{bienR.TBienCodigo}" filterMatchMode="contains" style="width:125px;" >
+                                                        <h:outputText value="#{bienR.TBienCodigo}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Descripción" >
+                                                        <h:outputText value="#{bienR.TBienDesc}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Marca">
+                                                        <h:outputText value="#{bienR.CMarcaId.CMarcaDesc}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Modelo">
+                                                        <h:outputText value="#{bienR.TBienModelo}">
+                                                        </h:outputText>
+                                                    </p:column>   
+                                                    <p:column headerText="Serie">
+                                                        <h:outputText value="#{bienR.TBienSerie}">
+                                                        </h:outputText>
+                                                    </p:column>                                                    
+                                                </p:dataTable>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <p:commandButton icon="ui-icon-plusthick" value="Agregar" process="@this seleccionar_bienes" action="#{movBienesBean.updateDetalle()}" update=":adiMBien:encab" oncomplete="#adicDetmov.hide();" style="margin-top: 10px;"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--                                        <div class="modal-footer">
+                                                                                    <button class="btn btn-default">Cancelar</button>
+                                                                                </div>-->
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-lg-12 col-lg-offset-9">
-                                    <p:commandButton id="Nuevo" value="Agregar Otro Movimiento" styleClass="btn btn-primary"
+                                    <p:commandButton id="Nuevo" value="Agregar Otro Movimiento" class="btn btn-primary"
                                                      action="#{movBienesBean.limpiarE()}" process="@this" update=":adiMBien:adicMov encab">
                                     </p:commandButton>
                                 </div>
@@ -669,25 +661,25 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="table table-responsive table-bordered" >
-                                            <p:dataTable id="detaSeg" var="detalles" value="#{movBienesBean.movdeta}" rowKey="#{detalles.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
-                                                <p:column headerText="Codigo" filterBy="#{detalles.TBienId.TBienCodigo}"  style="width:125px;" >
-                                                    <h:outputText value="#{detalles.TMovdCodigo}">
+                                            <p:dataTable id="detaSeg" var="detalle" value="#{movBienesBean.movdeta}" rowKey="#{detalle.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
+                                                <p:column headerText="Codigo" filterBy="#{detalle.TBienId.TBienCodigo}"  style="width:125px;" >
+                                                    <h:outputText value="#{detalle.TMovdCodigo}">
                                                     </h:outputText>
                                                 </p:column>
                                                 <p:column headerText="Descripción" >
-                                                    <h:outputText value="#{detalles.TBienId.TBienDesc}">
+                                                    <h:outputText value="#{detalle.TBienId.TBienDesc}">
                                                     </h:outputText>
                                                 </p:column>
                                                 <p:column headerText="Marca">
-                                                    <h:outputText value="#{detalles.TBienId.CMarcaId.CMarcaDesc}">
+                                                    <h:outputText value="#{detalle.TBienId.CMarcaId.CMarcaDesc}">
                                                     </h:outputText>
                                                 </p:column>
                                                 <p:column headerText="Modelo">
-                                                    <h:outputText value="#{detalles.TBienId.TBienModelo}">
+                                                    <h:outputText value="#{detalle.TBienId.TBienModelo}">
                                                     </h:outputText>
                                                 </p:column>   
                                                 <p:column headerText="Serie">
-                                                    <h:outputText value="#{detalles.TBienId.TBienSerie}">
+                                                    <h:outputText value="#{detalle.TBienId.TBienSerie}">
                                                     </h:outputText>
                                                 </p:column>  
                                             </p:dataTable>
@@ -771,7 +763,7 @@
 
                                                 <div class="form-group">
                                                     <div>
-                                                        <p:commandButton icon="ui-icon-plusthick" value="Guardar Seguimiento" process="@this adiSeg" action="#{movBienesBean.guardarS()}" update=":formSeg:seguim" oncomplete="#adicDetseg.hide();" styleClass="margin-top: 10px;"/>
+                                                        <p:commandButton icon="ui-icon-plusthick" value="Guardar Seguimiento" process="@this adiSeg" action="#{movBienesBean.guardarS()}" update=":formSeg:seguim" oncomplete="#adicDetseg.hide();" style="margin-top: 10px;"/>
                                                     </div>
                                                 </div>
                                             </fieldset>
@@ -783,7 +775,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-lg-12 col-lg-offset-9">
-                                <p:commandButton id="Nuevo" value="Limpiar Datos" styleClass="btn btn-primary"
+                                <p:commandButton id="Nuevo" value="Limpiar Datos" class="btn btn-primary"
                                                  action="#{movBienesBean.limpiarS()}" process="@this" update=":formSeg:adicSMov detaSeg seguim">
                                 </p:commandButton>
                             </div>

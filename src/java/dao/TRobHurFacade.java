@@ -6,6 +6,7 @@
 package dao;
 
 import entidades.TRobHur;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -23,9 +24,21 @@ public class TRobHurFacade extends AbstractFacade<TRobHur> implements TRobHurFac
     protected EntityManager getEntityManager() {
         return em;
     }
+    
+    @Override
+    public List getList() {
+        
+        return em.createNamedQuery("TRobHur.findAll").getResultList();
+    }
 
     public TRobHurFacade() {
         super(TRobHur.class);
     }
+    
+    @Override
+    public List getListJ(Integer jefe) {			
+	return em.createNamedQuery("TRobHur.findByCJefesId").setParameter("cJefesId",jefe).getResultList();
+    }
+                
     
 }

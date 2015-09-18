@@ -26,6 +26,7 @@
                                 <th>Descripción</th>
                                 <th>Rubro</th>
                                 <th>Opciones</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -35,7 +36,6 @@
                                     <td>#{espec.CEspecCodigo}</td>
                                     <td>#{espec.CEspecDesc}</td>
                                     <td>#{espec.CRubroId.CRubroDesc}</td>
-
                                     <td>
                                         <h:commandLink value="Ver / Editar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modifEsp" action="#{catbmBean.asignarRubro()}">
                                             <f:setPropertyActionListener value="#{espec}"
@@ -43,6 +43,14 @@
                                             <p:ajax process="@this" update=":formEspec:displayEp2"/>
                                         </h:commandLink>
                                     </td>
+                                    <td>
+                                        <h:commandLink value="Eliminar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#elimEspec" >
+                                            <f:setPropertyActionListener value="#{espec}"
+                                                                         target="#{catbmBean.especSeleccionado}" />
+                                            <p:ajax process="@this" update=":formEspec:displayEsp"/>
+                                        </h:commandLink>
+                                    </td>
+
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center" >
@@ -131,6 +139,46 @@
                         </div>
                     </div>
                 </div>
+                <div id="elimEspec" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar×</button>
+                                <h4 class="modal-title">Eliminar Específico</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p:panelGrid id="displayEsp" columns="2" >  
+                                    <h:outputLabel value="Corr. Específico:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catbmBean.especSeleccionado.CEspecId}" />    
+
+                                    <h:outputLabel value="Rubro: *" style="font-weight: bold"/>
+                                    <h:outputText value="#{catbmBean.especSeleccionado.CRubroId.CRubroDesc}" />    
+
+                                    <h:outputLabel value="Código de Específico:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catbmBean.especSeleccionado.CEspecCodigo}" />
+
+                                    <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
+                                    <h:outputText  value="#{catbmBean.especSeleccionado.CEspecDesc}" /> 
+
+                                    <p:commandButton value="Confirmar Eliminar" icon="ui-icon-trash" action="#{catbmBean.borrarEs()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayEsp"  oncomplete="refrescar(xhr, status, args);"/>
+                                    <script type="text/javascript">
+                                        function refrescar(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error');
+                                            } else {
+                                                elimEspec.hide();
+                                                location.reload(true);
+                                            }
+                                        }
+                                    </script>                                    
+                                    
+                                </p:panelGrid>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              
+              
             </h:form>
         </ui:define>
         <ui:define name="scripts">

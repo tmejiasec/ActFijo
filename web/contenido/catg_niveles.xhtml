@@ -13,10 +13,11 @@
 
         <ui:define name="content" >
             <h:form id="formNiveles" >
+                
                 <p:growl id="growl" />
+                
                 <div class="table table-responsive table-bordered" >
-                    
-                    <table id="tnivel" class="table table-striped table-condensed">
+                    <table id="tnivel" class="table table-striped table-condensed" >
                         <thead>
                             <tr>
                                 CATALOGO DE NIVELES ORGANIZATIVOS
@@ -28,6 +29,7 @@
                                 <th>Descripción</th>
                                 <th>Jerarquía</th>
                                 <th>Opciones</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,25 +45,25 @@
                                              target="#{catgeBean.nivelSeleccionado}" />
                                             <p:ajax process="@this" update=":formNiveles:displayN2"/>
                                         </h:commandLink>
-                                           <!--<a data-toggle="modal" href="#modifNiv" class="btn btn-link glyphicon glyphicon-edit" >Modificar</a>--> 
+                                    </td>
+                                    <td>
+                                        <h:commandLink value="Eliminar" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#elimNiv" >
+                                            <f:setPropertyActionListener value="#{nivel}"
+                                             target="#{catgeBean.nivelSeleccionado}" />
+                                            <p:ajax process="@this" update=":formNiveles:displayEn"/>
+                                        </h:commandLink>
                                     </td>
                                 </tr>
                             </ui:repeat>
                             <div class="col-md-6" align="center">
                                 <h:commandLink value="Adicionar" class="btn btn-primary" pt:data-toggle="modal" pt:data-target="#adicNiv" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}">
-<!--                                <span aria-hidden="true"></span>-->
                                    <p:ajax process="@this" update=":formNiveles:displayN1"/>
                                 </h:commandLink>
-                              <!--<a data-toggle="modal" href="#adicNiv" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>-->
                             </div>                              
                         </tbody>  
                     </table>
                 </div>
-<!--                <div align="center" >
-                    <a data-toggle="modal" href="#adicNiv" class="btn btn-primary" ><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>Adicionar</a>
-                    <a href="#" class="btn btn-primary" >Retornar</a>
-                </div>-->
-
+                
                 <div id="adicNiv" class="modal">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -133,6 +135,44 @@
                     </div>
                 </div>
 
+                <div id="elimNiv" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">Cerrar×</button>
+                                <h4 class="modal-title">Eliminar Nivel Organizativo</h4>
+                            </div>
+                            <div class="modal-body">
+                                 <p:panelGrid id="displayEn" columns="2" >  
+                                    <h:outputLabel value="Corr. Nivel:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nivelSeleccionado.CNivelId}" />    
+
+                                    <h:outputLabel value="Código de Nivel Organizativo:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nivelSeleccionado.CNivelCodigo}" />
+                                   
+                                    <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nivelSeleccionado.CNivelDescrip}"/> 
+
+                                    <h:outputLabel value="Jerarquía:" style="font-weight: bold"/>  
+                                    <h:outputText value="#{catgeBean.nivelSeleccionado.CNivelJerar}" /> 
+                                    
+                                    <p:commandButton value="Confirmar Eliminar" icon="ui-icon-trash" action="#{catgeBean.borrarNv()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayEn"  oncomplete="refrescar(xhr, status, args);"/>
+                                    <script type="text/javascript">
+                                        function refrescar(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error');
+                                            } else {
+                                                elimNiv.hide();
+                                                location.reload(true);
+                                            }
+                                        }
+                                    </script>                                    
+                                    
+                                </p:panelGrid>  
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </h:form>
 

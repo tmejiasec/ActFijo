@@ -44,6 +44,22 @@ public class TMovimEncaFacade extends AbstractFacade<TMovimEnca> implements TMov
 	return em.createNamedQuery("TMovimEnca.findByMovyEst").setParameter("cTipmId",tipm).setParameter("cEstmovId",estm).getResultList();
     }
     
+  @Override
+    public List getListJ(Integer jefe) {			
+	return em.createNamedQuery("TMovimEnca.findByCJefesdId").setParameter("cJefesdId",jefe).getResultList();
+    }
+    
+    @Override
+    public List getListTipmo(Integer tipmo) {			
+	return em.createNamedQuery("TMovimEnca.findByCTipmId").setParameter("cTipmId",tipmo).getResultList();
+    }
+    
+    @Override
+    public List getListEstmo(Integer estmo) {			
+	return em.createNamedQuery("TMovimEnca.findByCEstmovId").setParameter("cEstmovId",estmo).getResultList();
+    }
+      
+                    
     @Override
 	public TMovimEnca getMove(Integer move){		
 		return (TMovimEnca) em.createNamedQuery("TMovimEnca.findByTMoveId").setParameter("tMoveId",move).getSingleResult();

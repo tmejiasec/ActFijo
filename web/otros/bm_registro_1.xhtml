@@ -883,7 +883,7 @@
                                                 <div class="col-md-5">
                                                     <label for="descm" >Descripción</label>
                                                     <div>
-                                                        <h:inputText id="descm" value="#{bienesBean.nuevoArch.TArchDesc}" required="true"  requiredMessage="Se necesita Descripción" style="width: 100%;"/> 
+                                                        <h:inputText id="descm" value="#{bienesBean.nuevoArch.TArchDesc}" required="true" style="width: 100%;"/> 
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
@@ -898,14 +898,34 @@
                                             <br></br>
                                             <div class="col-md-12">
                                                 <p:panelGrid id="doc1" columns="2" >
-                                                    <p:fileUpload id="doc" value="#{bienesBean.picture}" mode="simple" required="true" sizeLimit="1000000"
-                                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx)$/" requiredMessage="nombre requerido" update="@this :formImag:formDoc" >
+                                                    <p:fileUpload id="doc" fileUploadListener="#{bienesBean.handleFileUpload(event)}" 
+                                                                  value="#{bienesBean.picture}" mode="simple" required="true" sizeLimit="1000000"
+                                                                  allowTypes="/(\.|\/)(gif|jpe?g|png|pdf|doc|docx)$/" update="mesaj" >
                                                         <p:growl id="mesaj" showDetail="true" />
                                                     </p:fileUpload>
-                                                    <h:commandButton id="guardI" value="Guardar" disabled="#{bienesBean.estadoI}"
-                                                                     action="#{bienesBean.guardarImagen()}" class="btn btn-success"/>
+                                                    <p:commandButton id="guardI" value="Guardar" ajax="false" disabled="#{bienesBean.estadoI}"
+                                                                     action="#{bienesBean.guardarImagen()}" process=":formDoc:doc1:doc" update="@this" />
                                                 </p:panelGrid>  
                                             </div>
+                                              <p:tab title="Fotografías">
+                                <h:panelGrid columns="2" style="width: 100%; margin-bottom: 10px;">
+                                    <p:fileUpload id="aficheEvento" value="#{managerObjectId.picture}" mode="simple" required="true" styleClass="form-control" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" update="@all"/>
+                                    <h:commandButton value="Guardar imagen" action="#{managerObjectId.uploadPicture()}" class="btn btn-success"/>
+                                </h:panelGrid>
+                                <p:dataTable id="picture-list" value="#{managerObjectId.allPictures}" var="item" rows="1" paginator="true">
+                                    <p:column style="text-align: center;">
+                                        <img src="#{request.contextPath}/#{item.urlPicture}" title="#{item.descriptionPicture}" width="75%"/>
+                                        <br/>
+                                        <div class="buttons" style="margin: 10px">
+                                            <p:commandButton icon="ui-icon ui-icon-trash" value="Eliminar" process="@this" action="#{managerObjectId.deletePicture()}" update="picture-list">
+                                                <f:setPropertyActionListener value="#{item}" target="#{managerObjectId.selectedPicture}"/>
+                                            </p:commandButton>
+                                        </div>
+                                    </p:column>
+                                </p:dataTable>
+                            </p:tab>
+                                            
+                                            
                                             <br></br>
                                         </div>
                                         <div class="modal-footer">

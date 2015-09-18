@@ -92,6 +92,7 @@ public class SustitucionBienesBean implements Serializable {
     private List<TSustit> sustit = new ArrayList<>();
     private TSustit sustituc;
     private TSustit nuevaSustit = new TSustit();
+    private TSustit sustitucionSeleccionada = new TSustit();
     private List<CResponsables> respon = new ArrayList<>();
     private List<CUbic> ubic = new ArrayList();
     private List<CJefesDep> jef = new ArrayList();
@@ -108,6 +109,8 @@ public class SustitucionBienesBean implements Serializable {
     private TArchivos archSeleccionado = new TArchivos();
     private TArchivos nuevoArch = new TArchivos();
     private TBienes codSeleccionado = new TBienes();
+    
+    
 
     private Integer respoSeleccionado, especSeleccionada, rubSeleccionado, depenSeleccionado, sustitSeleccionada, correlativo;
     private Integer estadSeleccionado, bienseleccionado, ducumseleccionado, ubicacionSeleccionada, jefeSeleccionado, areaSeleccionada, edificioSeleccionado, marcaSeleccionada;
@@ -128,7 +131,7 @@ public class SustitucionBienesBean implements Serializable {
     private Integer especif;
     private String serieAnt;
     private Date fechres, fechdic, fechsut;
-    private int anio, nvoCorr;
+    private int anio, nvoCorr,idMovim = 5;
 
     private String nomResp, nomDep, regBien, especi;
     private String cod, modelo, serie;
@@ -140,6 +143,7 @@ public class SustitucionBienesBean implements Serializable {
 
     public SustitucionBienesBean() {
 
+        sustit = getDaoSustit().getList();
         respon = getDaoResp().getList();
         depen = getDaoDepen().getList();
         rub = getDaoRubro().getList();
@@ -152,6 +156,7 @@ public class SustitucionBienesBean implements Serializable {
         jef = getDaoJefes().getList();
         edif = getDaoEdificio().getList();
         areas = getDaoAreas().getList();
+        
 
     }
 
@@ -426,6 +431,26 @@ public class SustitucionBienesBean implements Serializable {
     public void setSustituc(TSustit sustituc) {
         this.sustituc = sustituc;
     }
+
+    public TSustit getSustitucionSeleccionada() {
+        return sustitucionSeleccionada;
+    }
+
+    public Integer getIdMovim() {
+        return idMovim;
+    }
+
+    public void setIdMovim(Integer idMovim) {
+        this.idMovim = idMovim;
+    }
+    
+
+    
+    
+    public void setSustitucionSeleccionada(TSustit sustitucionSeleccionada) {
+        this.sustitucionSeleccionada = sustitucionSeleccionada;
+    }
+    
     
     
 
@@ -554,8 +579,6 @@ public class SustitucionBienesBean implements Serializable {
 //        System.out.println("codsel: " + codSeleccionado);
         System.out.println("codsel: " + codSeleccionado);
         return codSeleccionado;
-        
-        
     }
 
     public void buscarJefe() {
@@ -659,12 +682,20 @@ public class SustitucionBienesBean implements Serializable {
         nvoCorr=nuevaSustit.getTSustCorr();
         nvoCorr = nvoCorr+1;
         System.out.println("nuevo corr: "+nvoCorr);
-        getDaoCorrel().updateC(anio, nvoCorr);
+        getDaoCorrel().updateC(anio, nvoCorr, idMovim);
         System.out.println("corr actualizado");
         
         getDaoSustit().create(nuevaSustit);
         estado=true;
         System.out.println("Se guardo");
+        
+        /****Revisar error al crear nueva nuevaSustit****/
+        /**/codSeleccionado = new TBienes();    /**/
+        /**/nuevaSustit = new TSustit();        /**/
+        /**/sustituc = new TSustit();           /**/
+        /**/estado=false;                       /**/
+        /******************************************/
+        
         return null;
     }
 
@@ -675,9 +706,9 @@ public class SustitucionBienesBean implements Serializable {
     public void buscarCorr() throws NamingException {
 
         int resul = 0;
-        int anio;
-        anio = nuevaSustit.getTSustAnio();
-        resul = getDaoCorrel().getCorrel(5, anio).getTOtrocCorrel();
+        int annio;
+        annio = nuevaSustit.getTSustAnio();
+        resul = getDaoCorrel().getTOtrocCorrel(5, annio).getTOtrocCorrel();
         if (resul == 0) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("No puede encontrar correlativo"));
             estado = false;
@@ -687,5 +718,64 @@ public class SustitucionBienesBean implements Serializable {
         }
         nuevaSustit.setTSustCorr(resul);
 
+    }
+    
+    public String actualizarSustit() throws NamingException, ParseException {
+        
+        //Actualizando fechas
+        Date fechaa = new Date();
+        fechres = sustitucionSeleccionada.getTSustFechres();
+        fechdic = sustitucionSeleccionada.getTSustFechdict();
+        fechsut = sustitucionSeleccionada.getTSustFecha();
+        
+        if (fechres == null) {
+        } else {
+            idFres = getDaoTiempo().getFecha(fechres).getTTmId();
+            sustitucionSeleccionada.setTFechresId(idFres);
+        }
+        if (fechdic == null) {
+        } else {
+            idFdic = getDaoTiempo().getFecha(fechdic).getTTmId();
+            sustitucionSeleccionada.setTFechdicId(idFdic);
+
+        }
+        if (fechsut == null) {
+        } else {
+            idFsus = getDaoTiempo().getFecha(fechsut).getTTmId();
+            sustitucionSeleccionada.setTFechsustId(idFsus);
+
+        }
+        
+        //Usuario que modifica
+        idUs = appSession.getUsuario().getCUserId();
+        sustitucionSeleccionada.setTSustUsem(idUs);
+       //Actualizando Tabla
+        //Fechas 
+        sustitucionSeleccionada.setTSustFechc(new Date());
+        idFec = getDaoTiempo().getFecha(new Date()).getTTmId();
+        sustitucionSeleccionada.setTSustHorac(formatoHora.parse(formatoHora.format(new Date())));
+        sustitucionSeleccionada.setTTmId(getDaoTiempo().getTm(idFec));
+        
+        //Otros Campos
+        getDaoSustit().edit(sustitucionSeleccionada);
+        return null;
+       
+    }
+    
+    public String verTipoSustit(){
+        String descripcion;
+        if(sustitucionSeleccionada.getTSustTipo() == 1){
+            descripcion = "Extravio";
+        }else{
+            descripcion = "Garantia";
+        }
+        
+        return descripcion;
+    }
+    
+    public void traerClase(){
+    
+        
+        
     }
 }

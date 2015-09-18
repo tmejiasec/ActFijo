@@ -27,7 +27,13 @@ public interface TRecepEncaFacadeLocal {
     List<TRecepEnca> findAll();
 
     List<TRecepEnca> findRange(int[] range);
-
+        
+    public TRecepEnca getEnca(Integer mov);
+    
+    public List getList();
+    
+    public List<TRecepEnca> getListJ(Integer jefe);
+    
     int count();
     
 }

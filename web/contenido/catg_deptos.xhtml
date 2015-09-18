@@ -73,7 +73,7 @@
                         <h:outputLabel value="Descripción:   *" style="font-weight: bold"/>  
                         <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.nuevoDepto.CDeptoDesc}" style="width: 99%;" required="true"/> 
 
-                        <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarDt()}"  rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')} update="@all" process="@this displayDt1"  oncomplete="handleRequest(xhr, status, args); ; adicDepto.hide();" />
+                        <p:commandButton value="Guardar" icon="ui-icon-disk" action="#{catgeBean.guardarDt()}"  rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayDt1"  oncomplete="handleRequest(xhr, status, args); ; adicDepto.hide();" />
                         <script type="text/javascript">
                             function handleRequest(xhr, status, args) {
                                 if (args.validationFailed) {
@@ -113,7 +113,7 @@
                         <h:outputLabel value="Descripción:" style="font-weight: bold"/>  
                         <h:inputText onkeyup="this.value = this.value.toUpperCase();" value="#{catgeBean.deptoSeleccionado.CDeptoDesc}" /> 
 
-                        <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualDt()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')} update="@all" process="@this displayDt2"  oncomplete="modifDepto.hide();"/>
+                        <p:commandButton value="Actualizar" icon="ui-icon-pencil" action="#{catgeBean.actualDt()}" rendered="#{appSession.usuario.CRolId.CRolNombre.equals('ADMINISTRADOR') or appSession.usuario.CRolId.CRolNombre.equals('TECNICO')}" update="@all" process="@this displayDt2"  oncomplete="modifDepto.hide();"/>
 
                                 </p:panelGrid>  
 

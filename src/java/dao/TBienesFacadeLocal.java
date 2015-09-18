@@ -27,6 +27,28 @@ public interface TBienesFacadeLocal {
        
     public List<TBienes> getListM(Integer respo);
     
+    public List<TBienes> getListU(Integer ubic);
+    
+    public List<TBienes> getListE(Integer espec);
+    
+    public List<TBienes> getListEB(Integer estb);
+    
+    public List<TBienes> getListCB(Integer conb);
+    
+    public List<TBienes> getListTD(Integer tipdes); 
+    
+    public List<TBienes> getListEP(Integer estpro);
+    
+    public List<TBienes> getListPV(Integer prov);
+
+    public List<TBienes> getListPY(Integer proy);
+    
+    public List<TBienes> getListMB(Integer marca);
+    
+    public List<TBienes> getListFT(Integer fuente);
+
+    public List<TBienes> getListFM(Integer forma);
+
     public List<TBienes> getListL();
     
     public Integer busCod(String cod);

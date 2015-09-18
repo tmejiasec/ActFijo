@@ -27,6 +27,13 @@ public interface TAsigEncaFacadeLocal {
     List<TAsigEnca> findAll();
 
     List<TAsigEnca> findRange(int[] range);
+    
+    public TAsigEnca getEnca(Integer move);
+    
+    public List getList();
+    
+    public List<TAsigEnca> getListJ(Integer jefe);
+
 
     int count();
     

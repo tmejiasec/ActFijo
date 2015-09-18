@@ -51,7 +51,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TMovimEnca.findByTMoveUsec", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveUsec = :tMoveUsec"),
     @NamedQuery(name = "TMovimEnca.findByTMoveFechm", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveFechm = :tMoveFechm"),
     @NamedQuery(name = "TMovimEnca.findByTMoveUsem", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveUsem = :tMoveUsem"),
-    @NamedQuery(name = "TMovimEnca.findByTMoveJefaut", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveJefaut = :tMoveJefaut"),
+    @NamedQuery(name = "TMovimEnca.findByCJefesdId", query="SELECT m FROM TMovimEnca m WHERE m.cJefesdId.cJefesdId = :cJefesdId"),
     @NamedQuery(name = "TMovimEnca.findByTMoveFechaut", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveFechaut = :tMoveFechaut"),
     @NamedQuery(name = "TMovimEnca.findByTMoveConfirec", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveConfirec = :tMoveConfirec"),
     @NamedQuery(name = "TMovimEnca.findByTMoveFechcr", query = "SELECT t FROM TMovimEnca t WHERE t.tMoveFechcr = :tMoveFechcr"),
@@ -121,8 +121,6 @@ public class TMovimEnca implements Serializable {
     private Date tMoveFechm;
     @Column(name = "t_move_usem")
     private Integer tMoveUsem;
-    @Column(name = "t_move_jefaut")
-    private Integer tMoveJefaut;
     @Column(name = "t_move_fechaut")
     @Temporal(TemporalType.DATE)
     private Date tMoveFechaut;
@@ -160,6 +158,12 @@ public class TMovimEnca implements Serializable {
     @JoinColumn(name = "c_estmov_id", referencedColumnName = "c_estmov_id")
     @ManyToOne(optional = false)
     private CEstadoMov cEstmovId;
+    @JoinColumn(name = "c_jefesd_id", referencedColumnName = "c_jefesd_id")
+    @ManyToOne(optional = false)
+    private CJefesDep cJefesdId;
+    @JoinColumn(name = "c_resp_id", referencedColumnName = "c_resp_id")
+    @ManyToOne(optional = false)
+    private CResponsables cRespId;
     @OneToMany(mappedBy = "tMoveId")
     private List<TMovimDeta> tMovimDetaList;
     @OneToMany(mappedBy = "tMoveId")
@@ -342,14 +346,6 @@ public class TMovimEnca implements Serializable {
         this.tMoveUsem = tMoveUsem;
     }
 
-    public Integer getTMoveJefaut() {
-        return tMoveJefaut;
-    }
-
-    public void setTMoveJefaut(Integer tMoveJefaut) {
-        this.tMoveJefaut = tMoveJefaut;
-    }
-
     public Date getTMoveFechaut() {
         return tMoveFechaut;
     }
@@ -447,6 +443,22 @@ public class TMovimEnca implements Serializable {
 
     public CEstadoMov getCEstmovId() {
         return cEstmovId;
+    }
+
+    public CJefesDep getCJefesdId() {
+        return cJefesdId;
+    }
+
+    public void setCJefesdId(CJefesDep cJefesdId) {
+        this.cJefesdId = cJefesdId;
+    }
+
+    public CResponsables getCRespId() {
+        return cRespId;
+    }
+
+    public void setCRespId(CResponsables cRespId) {
+        this.cRespId = cRespId;
     }
 
     public Date getTMoveHorac() {

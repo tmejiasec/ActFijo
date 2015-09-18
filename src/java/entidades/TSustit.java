@@ -51,6 +51,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TSustit.findByTSustUsec", query = "SELECT t FROM TSustit t WHERE t.tSustUsec = :tSustUsec"),
     @NamedQuery(name = "TSustit.findByTSustFechc", query = "SELECT t FROM TSustit t WHERE t.tSustFechc = :tSustFechc"),
     @NamedQuery(name = "TSustit.findByTSustUsem", query = "SELECT t FROM TSustit t WHERE t.tSustUsem = :tSustUsem"),
+    @NamedQuery(name = "TSustit.findByCJefesId", query="SELECT m FROM TSustit m WHERE m.cJefesdId.cJefesdId = :cJefesId"),
     @NamedQuery(name = "TSustit.findByTSustFechm", query = "SELECT t FROM TSustit t WHERE t.tSustFechm = :tSustFechm")})
 public class TSustit implements Serializable {
     

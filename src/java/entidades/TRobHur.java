@@ -49,6 +49,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "TRobHur.findByTRhUsec", query = "SELECT t FROM TRobHur t WHERE t.tRhUsec = :tRhUsec"),
     @NamedQuery(name = "TRobHur.findByTRhFechc", query = "SELECT t FROM TRobHur t WHERE t.tRhFechc = :tRhFechc"),
     @NamedQuery(name = "TRobHur.findByTRhUsem", query = "SELECT t FROM TRobHur t WHERE t.tRhUsem = :tRhUsem"),
+    @NamedQuery(name = "TRobHur.findByCJefesId", query="SELECT m FROM TRobHur m WHERE m.cJefesdId.cJefesdId = :cJefesId"),
     @NamedQuery(name = "TRobHur.findByTRhFechm", query = "SELECT t FROM TRobHur t WHERE t.tRhFechm = :tRhFechm")})
 public class TRobHur implements Serializable {
     @Column(name = "t_rh_horac")
@@ -108,6 +109,9 @@ public class TRobHur implements Serializable {
     @Column(name = "t_rh_fechm")
     @Temporal(TemporalType.DATE)
     private Date tRhFechm;
+    @JoinColumn(name = "c_resp_id", referencedColumnName = "c_resp_id")
+    @ManyToOne(optional = false)
+    private CResponsables cRespId;
     @JoinColumn(name = "c_ubic_id", referencedColumnName = "c_ubic_id")
     @ManyToOne(optional = false)
     private CUbic cUbicId;
@@ -123,7 +127,13 @@ public class TRobHur implements Serializable {
     @JoinColumn(name = "c_area_id", referencedColumnName = "c_area_id")
     @ManyToOne
     private CAreas cAreaId;
-
+    @JoinColumn(name = "t_bien_id", referencedColumnName = "t_bien_id")
+    @ManyToOne
+    private TBienes tBienId;
+    @JoinColumn(name = "t_tm_id", referencedColumnName = "t_tm_id")
+    @ManyToOne
+    private TTiempo tTmId;
+   
     public TRobHur() {
     }
 
@@ -331,6 +341,33 @@ public class TRobHur implements Serializable {
         this.cAreaId = cAreaId;
     }
 
+    public CResponsables getCRespId() {
+        return cRespId;
+    }
+
+    public void setCRespId(CResponsables cRespId) {
+        this.cRespId = cRespId;
+    }
+
+    public TBienes getTBienId() {
+        return tBienId;
+    }
+
+    public void setTBienId(TBienes tBienId) {
+        this.tBienId = tBienId;
+    }
+
+    public TTiempo getTTmId() {
+        return tTmId;
+    }
+
+    public void setTTmId(TTiempo tTmId) {
+        this.tTmId = tTmId;
+    }
+    
+    
+    
+        
     @Override
     public int hashCode() {
         int hash = 0;

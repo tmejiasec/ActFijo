@@ -1,0 +1,583 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html   xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://java.sun.com/jsf/core" 
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"        
+        xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                    template="./../plantillas/plantilla2.xhtml">
+
+
+        <ui:define name="content">
+            <ul class="nav nav-tabs">
+                <li class="active"><a aria-expanded="true" href="#adicion" data-toggle="tab">Adición</a></li>
+                <li class=""><a aria-expanded="false" href="#consulta" data-toggle="tab">Consulta</a></li>
+            </ul>
+
+            <div id="myTabContent" class="tab-content">
+
+                <div class="tab-pane fade active in" id="adicion">
+                    <div class="well bs-component">
+                        <h:form id="adiAsBien" class="form-horizontal" enctype="multipart/form-data" >
+                            <p:growl id="growl"/>
+                            <legend>
+                                <div class="form-header">
+                                    <button type="button" class="close"  aria-hidden="true">Cancelar ×</button>
+                                    <h4 class="modal-title">Adicion de ficha de Asignacion de Bienes</h4>
+                                </div>
+                            </legend>
+                            <!--Fila 1-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label for="anio" >Año</label>
+                                    <div>
+                                        <p:inputText id="annio" value="#{asignacionBienesBean.nuevoEncaAsig.TAsigeAnio}"> 
+                                            <p:ajax listener="#{asignacionBienesBean.buscarCorr()}" update=":adiAsBien:growl :adiAsBien:corrAs"/>
+                                        </p:inputText>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label> Elaborado por</label>
+                                    <div>
+                                        <h:outputText id="using" value="#{appSession.usuario.CUserNombre}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Fila 2-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label> Correlativo</label>
+                                    <div>
+                                        <h:outputText id="corrAs" value="#{asignacionBienesBean.nuevoEncaAsig.TAsigeCorr}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Motivo de la asignacion</label>
+                                    <div>
+                                        <h:selectOneMenu id="motAsig" value="#{asignacionBienesBean.nuevoEncaAsig.TAsigeMot}" style="width:250px">
+                                            <f:selectItem itemLabel="Seleccione uno"/>
+                                            <f:selectItem itemLabel="TRASLADO" itemValue="t"/>
+                                            <f:selectItem itemLabel="NUEVO INGRESO" itemValue="n"/>
+                                            <f:selectItem itemLabel="ASIGNACION" itemValue="a"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Fila 3-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label> Asignar a</label>
+                                    <div>
+                                        <h:selectOneMenu id="respAs" value="#{asignacionBienesBean.responsableSeleccionado}" style="width:250px">
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{asignacionBienesBean.reponAsig}" var="resp" itemLabel="#{resp.CRespNom1} #{resp.CRespNom2} #{resp.CRespApe1} #{resp.CRespApe2}" itemValue="#{resp.CRespId}"/>
+                                            <p:ajax  listener="#{asignacionBienesBean.generarTablaDetalle()}" update="traerBienes depenAs jefeAs cargoNAsigna"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Persona que Asigna</label>  
+                                    <h:selectOneMenu id="persAsigna" value="#{asignacionBienesBean.personaAsigna}" style="width:325px" >
+                                        <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                        <f:selectItems value="#{asignacionBienesBean.reponAsig}" var="per" itemLabel="#{per.CRespNom1} #{per.CRespNom2} #{per.CRespApe1} #{per.CRespApe2}" itemValue="#{per.CRespId}"/>
+                                        <p:ajax  listener="#{asignacionBienesBean.traerDatosModal()}" update="depenAsAnt cargoAntAs"/>
+                                    </h:selectOneMenu>
+
+                                </div>
+                            </div>
+                            <!--Fila 4-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Dependencia</label>
+                                    <div>
+                                        <h:outputText id="depenAs" value="#{asignacionBienesBean.responSel.CDepenId.CDepenDesc}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Dependencia que Asigna</label>
+                                    <div>
+                                        <h:outputText id="depenAsAnt" value="#{asignacionBienesBean.respTras.CDepenId.CDepenDesc}"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Fila 5-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Cargo</label>
+                                    <div>
+                                        <h:outputText id="cargoNAsigna" value="#{asignacionBienesBean.responSel.CRespCargo}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Cargo de Persona que Asigna</label>
+                                    <div>
+                                        <h:outputText id="cargoAntAs" value="#{asignacionBienesBean.respTras.CRespCargo}"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Fila 5-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Jefe Inmediato</label>
+                                    <div>
+                                        <h:outputText id="jefeAs" value="#{asignacionBienesBean.jefResp.CJefesdNombre}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Tecnico de Activo Fijo</label>
+                                    <div>
+                                        <h:selectOneMenu id="techAs" value="#{asignacionBienesBean.tecnocoSeleccionado}" style="width:250px" >
+                                            <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                            <f:selectItems value="#{asignacionBienesBean.tecAs}" var="tec" itemLabel="#{tec.CTecafNombre}" itemValue="#{tec.CTecafId}"/>                                                         
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Fila 6-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Observacion</label>
+                                    <div>
+                                        <h:inputTextarea id="observAs" onkeyup="this.value = this.value.toUpperCase();" style="width:350px" value="#{asignacionBienesBean.nuevoEncaAsig.TAsigeObserv}"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label for="fechres">Fecha de Asignacion</label>
+                                    <div>
+                                        <p:calendar id="fechasigEnca"
+                                                    value="#{asignacionBienesBean.nuevoEncaAsig.TAsigeFecha}" locale="es"
+                                                    pattern="dd/MM/yyyy" showOn="button" 
+                                                    size="12" tabindex="2" style="width: 100%;">
+                                            <p:ajax event="dateSelect" />
+                                        </p:calendar>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Fila 7-->
+                            <div class="form-group">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Hora Inicio</label>
+                                    <div>
+                                        <p:calendar id="horaIC" value="#{asignacionBienesBean.nuevoEncaAsig.TAsigeHorai}" pattern="HH:mm" timeOnly="true"  />
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                                <div class="col-md-5">
+                                    <label>Hora Fin</label>
+                                    <div>
+                                        <p:calendar id="horaFC" value="#{asignacionBienesBean.nuevoEncaAsig.TAsigeHoraf}" pattern="HH:mm" timeOnly="true"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+
+                                <div class="col-lg-9 col-lg-offset-7">
+                                    <p:commandButton id="guardAsig" styleClass="btn btn-primary" value="Guardar" action="#{asignacionBienesBean.guardarEncaAsignacion()}"  rendered="#{!asignacionBienesBean.edit}"  update="@this growl guardAsig" process="@this adiAsBien"  oncomplete="handleRequest(xhr, status, args);"/>
+                                    <script type="text/javascript">
+                                        function handleRequest(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error. Complete los datos necesarios');
+                                            } else {
+                                                alert('Datos adicionados correctamente');
+                                            }
+                                        }
+                                    </script>
+                                    <p:commandButton id="nuevoEnca" value="Agregar Otro" styleClass="btn btn-primary" action= "#{asignacionBienesBean.limpiarAsigEnca()}" process="@this" update="@all" oncomplete="refrescar(xhr, status, args);">
+                                    </p:commandButton>
+                                    <script type="text/javascript">
+                                        function refrescar(xhr, status, args) {
+                                            if (args.validationFailed) {
+                                                alert('Ha ocurrido un error');
+                                            } else {
+                                                alert('nuevo');
+                                                location.reload(true);
+                                            }
+                                        }
+                                    </script>
+
+                                </div>
+                            </div>
+                            <!--Modal para agregar lineas al detalle-->
+                            <div class="table table-responsive table-bordered table-condensed" >
+                                <p:dataTable id="encab" var="detalle" value="#{asignacionBienesBean.detaAsig}" rowKey="#{detalle.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
+                                    <p:column headerText="Nº" >
+                                        <h:outputText value="#{detalle.TAsigeId.TAsigeId}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Codigo">
+                                        <h:outputText value="#{detalle.TBienId.TBienCodigo}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Descripcion" >
+                                        <h:outputText value="#{detalle.TBienId.TBienDesc}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Marca" >
+                                        <h:outputText value="#{detalle.TBienId.CMarcaId.CMarcaDesc}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Modelo" >
+                                        <h:outputText value="#{detalle.TBienId.TBienModelo}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Serie" >
+                                        <h:outputText value="#{detalle.TBienId.TBienSerie}">
+                                        </h:outputText>
+                                    </p:column>
+                                    <p:column headerText="Eliminar" >
+                                        <h:selectBooleanCheckbox/>
+                                    </p:column>
+
+                                </p:dataTable>
+                                <div class="form-group">
+                                    <div class="col-lg-6 col-lg-offset-9">
+                                        <p:commandButton id="btnNew" styleClass="btn btn-primary"  value="Agregar Bienes" pt:data-toggle="modal" pt:data-target="#artBienAsig">
+                                        </p:commandButton> 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--Modal de Adicion de Bienes al Detalle-->
+                            <div id="compAsig" class="modal fade">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title">Agregar Articulos</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="table table-responsive table-bordered" >
+                                                <p:dataTable id="traerBienes" var="bienR" value="#{asignacionBienesBean.bienes}" selection="#{recepcionBienesBean.selectBienes}" rowKey="#{bienR.TBienId}" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay códigos para agregar">
+                                                    <p:column selectionMode="multiple" style="width:40px;"/>
+                                                    <p:column headerText="Codigo" filterBy="#{bienR.TBienCodigo}" filterMatchMode="contains" style="width:125px;" >
+                                                        <h:outputText value="#{bienR.TBienCodigo}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Descripción" >
+                                                        <h:outputText value="#{bienR.TBienDesc}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Marca">
+                                                        <h:outputText value="#{bienR.CMarcaId.CMarcaDesc}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                    <p:column headerText="Modelo">
+                                                        <h:outputText value="#{bienR.TBienModelo}">
+                                                        </h:outputText>
+                                                    </p:column>   
+                                                    <p:column headerText="Serie">
+                                                        <h:outputText value="#{bienR.TBienSerie}">
+                                                        </h:outputText>
+                                                    </p:column>
+                                                </p:dataTable>
+                                                <div class="form-group">
+                                                    <div>
+                                                        <p:commandButton icon="ui-icon-plusthick" value="Agregar" action="#{asignacionBienesBean.updateDeta()}" oncomplete="compAsig.hide()"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Modal complementario Agregar Bienes-->
+                            <div id="artBienAsig" class="modal">
+                                <div class="modal-dialog modal-sm">
+                                    <div class="modal-content">   
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h4 class="modal-title" align="center">Agregar Bienes</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <!--<style>.c1{width: 175px;}.c2{width: 300px;}</style>-->
+                                            <h:panelGrid id="compAsigB" columns="2" border="0" columnClasses="c1,c2">
+                                                <h:outputLabel value="Codigo" style="font-weight: bold"/>
+                                                <p:inputMask id="cod" value="#{asignacionBienesBean.cod}" mask="99-9999-9999"> 
+                                                    <p:ajax listener="#{asignacionBienesBean.datosCodigo()}"  update="descBienAsig marcaBienAsig modelBienAsig serieBienAsig"/>
+                                                </p:inputMask>
+
+                                                <h:outputLabel value="Descipcion" style="font-weight: bold"/>
+                                                <h:outputText id="descBienAsig" value="#{asignacionBienesBean.bienAsigN.TBienDesc}"/>
+
+                                                <h:outputLabel value="Marca" style="font-weight: bold"/>
+                                                <h:outputText id="marcaBienAsig" value="#{asignacionBienesBean.bienAsigN.CMarcaId.CMarcaDesc}"/>
+
+                                                <h:outputLabel value="Modelo" style="font-weight: bold"/>
+                                                <h:outputText id="modelBienAsig" value="#{asignacionBienesBean.bienAsigN.TBienModelo}"/>
+
+                                                <h:outputLabel value="Serie" style="font-weight: bold"/>
+                                                <h:outputText id="serieBienAsig" value="#{asignacionBienesBean.bienAsigN.TBienSerie}"/>
+                                            </h:panelGrid> 
+                                            <!--<div class="modal-footer">-->
+                                            <!--                                            <style>.c3{width: 100px;}</style>
+                                                                                        <h:panelGrid id="btnAgBienes" columns="3" border="0" columnClasses="c3">-->
+                                            <p:commandButton styleClass="btn btn-primary" action="#{asignacionBienesBean.crearListaBienes()}" value="Agregar" process="@this" update="encab" oncomplete="refrescar(xhr, status, args);">
+                                            </p:commandButton>
+                                            <script type="text/javascript">
+                                                function refrescar(xhr, status, args) {
+                                                    if (args.validationFailed) {
+                                                        alert('Ha ocurrido un error');
+                                                    } else {
+                                                        artBienAsig.hide();
+                                                        location.reload(true);
+                                                    }
+                                                }
+                                            </script>                                    
+
+                                            <!--<label/>-->
+                                            <!--                                                <h:button styleClass="btn btn-primary" value="Finalizar">
+                                                                                                
+                                                                                            </h:button>-->
+                                            <!--</h:panelGrid>-->                                            
+                                            <!--</div>-->
+                                        </div>
+                                    </div>                                                               
+                                </div>
+                            </div>
+                        </h:form>
+                    </div>
+                </div>
+
+                <!-- Inicio Pestaña Consulta -->
+                <div class="tab-pane fade" id="consulta">
+                    <h:form id="formAsignacion" >
+                        <div class="table table-responsive table-bordered">
+                            <table id="sustitucion" class="table table-striped table-condensed paginada" >
+                                <thead>
+                                    <tr align="center">
+                                        CONSULTA DE ASIGNACION DE BIENES MUEBLES
+                                    </tr>
+                                    <tr>
+                                        <th>Correlativo</th>
+                                        <th>Asignado a</th>
+                                        <th>Dependencia</th>
+                                        <th>Fecha de Asignacion</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ui:repeat value="#{asignacionBienesBean.encaAsig}" var="enca" >
+                                        <tr>
+                                            <td align="center">#{enca.TAsigeCorr}</td>
+                                            <td>#{enca.TAsigePers}</td>
+                                            <td>#{enca.CDepenId.CDepenDesc}</td>
+                                            <td>
+                                                <h:outputText value="#{enca.TAsigeFecha}">
+                                                    <f:convertDateTime pattern="MM/dd/YYYY"/>
+                                                </h:outputText>
+                                            </td>
+                                            <td>
+                                                <h:commandLink value="Ver / Editar" action="#{asignacionBienesBean.detaFiltro()}" class="btn btn-link" pt:data-toggle="modal" pt:data-target="#modiEncaAsig">
+                                                    <f:setPropertyActionListener value="#{enca}" target="#{asignacionBienesBean.encaAsigSeleccionado}"/>
+                                                    <p:ajax process="@this" update=":formAsignacion:modalEA :formAsignacion:encabe"/>
+                                                </h:commandLink>
+                                            </td>
+                                        </tr>
+                                    </ui:repeat>
+                                </tbody>  
+                            </table>
+                        </div>
+
+                        <div id="modiEncaAsig" class="modal fade">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title">Modificación de ficha de Asignacion de Bienes</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <h:panelGrid id="modalEA" columns="5" border="0">
+                                            <h:outputLabel value="Año" style="font-weight: bold"/>
+                                            <h:outputText id="yearMod" value="#{asignacionBienesBean.encaAsigSeleccionado.TAsigeAnio}" style="width:250px"/>
+
+                                            <h:outputLabel value="Correlativo" style="font-weight: bold"/>
+                                            <h:outputText id="correlMod" value="#{asignacionBienesBean.encaAsigSeleccionado.TAsigeCorr}" style="width:250px"/>
+                                            <label/><!--Termina Fila 1-->
+                                            <h:outputLabel value="Asignar a" style="font-weight: bold"/>
+                                            <h:outputText value="#{asignacionBienesBean.encaAsigSeleccionado.TAsigePers}"/>
+
+                                            <h:outputLabel value="Motivo de la Asignacion" style="font-weight: bold"/>
+                                            <h:selectOneMenu id="motivoAMod" value="#{asignacionBienesBean.encaAsigSeleccionado.TAsigeMot}" style="width:250px">
+                                                <f:selectItem itemLabel="Seleccione uno"/>
+                                                <f:selectItem itemLabel="TRASLADO"        itemValue="t"/>
+                                                <f:selectItem itemLabel="NUEVO INGRESO"      itemValue="n"/>
+                                                <f:selectItem itemLabel="ASIGNACION DE BIENES"    itemValue="a"/>
+                                            </h:selectOneMenu>
+                                            <label/><!--Termina Fila 2-->
+                                            <h:outputLabel  value="" style="font-weight: bold"/>
+                                            <h:selectOneMenu id="respAsMod" value="#{asignacionBienesBean.responMod}" style="width:250px">
+                                                <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{asignacionBienesBean.reponAsig}" var="resp" itemLabel="#{resp.CRespNom1} #{resp.CRespNom2} #{resp.CRespApe1} #{resp.CRespApe2}" itemValue="#{resp.CRespId}"/>
+                                                <!--<p:ajax  listener="{asignacionBienesBean.generarTablaDetalle()}"/>-->
+                                            </h:selectOneMenu>
+
+                                            <h:outputLabel  value="" style="font-weight: bold"/>
+                                            <h:outputLabel  value="" style="font-weight: bold"/>
+                                            <label/><!--Termina Fila 3-->
+                                            <h:outputLabel for="depenModalMod" value="Dependencia" style="font-weight: bold"/>
+                                            <h:outputText id="depenModalMod" value="#{asignacionBienesBean.encaAsigSeleccionado.CDepenId.CDepenDesc}" style="width:250px"/>
+
+                                            <h:outputLabel value="Jefe" style="font-weight: bold"/>
+                                            <h:outputText id="jefAsMod" value="#{asignacionBienesBean.encaAsigSeleccionado.CJefesdId.CJefesdNombre}" style="width:250px"/>
+
+                                            <label/><!--Termina Fila 4-->
+                                            <h:outputLabel value="Tecnicio Activo Fijo" style="font-weight: bold"/>
+                                            <h:selectOneMenu id="tecAfMod" value="#{asignacionBienesBean.encaAsigSeleccionado.TAsigeTec}" style="width:250px">
+                                                <f:selectItem itemLabel="Seleccione una..." noSelectionOption="true" itemValue=""/>
+                                                <f:selectItems value="#{asignacionBienesBean.tecAs}" var="tech" itemLabel="#{tech.CTecafNombre}" itemValue="#{tech.CTecafId}"/>
+                                            </h:selectOneMenu>
+
+                                            <h:outputLabel value="Fecha de Asignacion" style="font-weight: bold"/>
+                                            <p:calendar id="fechasigEncaModi"
+                                                        value="#{asignacionBienesBean.encaAsigSeleccionado.TAsigeFecha}" locale="es"
+                                                        pattern="dd/MM/yyyy" showOn="button" 
+                                                        size="12" tabindex="2" style="width: 100%;">
+                                                <p:ajax event="dateSelect" />
+                                            </p:calendar>
+
+                                            <label/><!--Termina Fila 6-->
+                                            <h:outputLabel value="Observaciones" style="font-weight: bold"/>
+                                            <h:inputTextarea style="width:350px" onkeyup="this.value = this.value.toUpperCase();" id="observAsMod" value="#{asignacionBienesBean.encaAsigSeleccionado.TAsigeObserv}"/>
+
+                                            <h:outputLabel value=""/>
+                                            <h:outputLabel value=""/>
+                                            <label/>
+                                            
+                                            <h:outputLabel value="Hora Inicio" style="font-weight: bold"/>
+                                            <p:calendar valueChangeListener="#{asignacionBienesBean.cambiodeHoraInicio(e)}" showOn="button" value="#{asignacionBienesBean.encaAsigSeleccionado.TAsigeHorai}" pattern="hh:mm a" timeOnly="true" >
+                                                <p:ajax  event="dateSelect" ></p:ajax>
+                                            </p:calendar>  
+                                            <h:outputLabel value="Hora Fin" style="font-weight: bold"/>
+                                            <p:calendar valueChangeListener="#{asignacionBienesBean.cambiodeHorafin(e)}" showOn="button" value="#{asignacionBienesBean.encaAsigSeleccionado.TAsigeHoraf}" pattern="hh:mm a" timeOnly="true" >
+                                                <p:ajax  event="dateSelect" ></p:ajax>
+                                            </p:calendar>  
+
+                                            <h:outputLabel value=""/>
+                                            <h:outputLabel value=""/>
+
+                                            <h:outputLabel value=""/>
+                                            
+                                            <p:commandButton id="actualizaEnca" value="Actualizar" action="#{asignacionBienesBean.actualizarEncaAsig()}" rendered="#{!asignacionBienesBean.edit}" update="@all" process="@this modalEA" class="btn btn-primary" oncomplete="refrescar(xhr, status, args);" >
+                                            </p:commandButton>
+                                            <script type="text/javascript">
+                                                function refrescar(xhr, status, args) {
+                                                    if (args.validationFailed) {
+                                                        alert('Ha ocurrido un error');
+                                                    } else {
+                                                        alert('Datos Actualizados');
+                                                        modalEA.hide();
+                                                        location.reload(true);
+                                                    }
+                                                }
+                                            </script>
+
+                                        </h:panelGrid>
+                                        <br></br>
+                                        <br></br>
+
+                                        <div class="table table-responsive table-bordered" >
+                                            <p:dataTable id="encabe" value="#{asignacionBienesBean.detaByEnca}" var="detalle" paginator="true"  paginatorPosition="top" rows="4" emptyMessage="No hay datos agregados">
+                                                <p:column headerText="Nº" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienDesc}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Codigo" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienCodigo}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Descripcion" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienDesc}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Marca" >
+                                                    <h:outputText value="#{detalle.TBienId.CMarcaId.CMarcaDesc}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Modelo" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienModelo}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Serie" >
+                                                    <h:outputText value="#{detalle.TBienId.TBienSerie}">
+                                                    </h:outputText>
+                                                </p:column>
+                                                <p:column headerText="Eliminar" >
+                                                    <h:selectBooleanCheckbox/>
+                                                </p:column>
+
+                                            </p:dataTable>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <h:outputLabel value="Modificado Por "/>
+                                        <h:outputText value="#{appSession.usuario.CUserNombre}"/>
+                                        <button class="btn btn-primary" data-dismiss="modal">Cancelar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>	
+                    </h:form>
+                </div>
+            </div>
+        </ui:define>
+
+        <ui:define name="scripts">
+            <script>
+                $(document).ready(function () {
+                    $('.paginada').dataTable(
+                            {
+                                "oLanguage": {
+                                    "sProcessing": "Procesando...",
+                                    "sLengthMenu": "Mostrar _MENU_ registros",
+                                    "sZeroRecords": "No se encontraron resultados",
+                                    "sEmptyTable": "Ningún dato disponible en esta tabla",
+                                    "sInfo": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+                                    "sInfoEmpty": "Mostrando registros del 0 al 0 de un total de 0 registros",
+                                    "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                                    "sInfoPostFix": "",
+                                    "sSearch": "Buscar:",
+                                    "sUrl": "",
+                                    "sInfoThousands": ",",
+                                    "sLoadingRecords": "Cargando...",
+                                    "oPaginate": {
+                                        "sFirst": "Primero",
+                                        "sLast": "Último",
+                                        "sNext": "Siguiente",
+                                        "sPrevious": "Anterior"
+                                    },
+                                    "oAria": {
+                                        "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                                        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                                    }
+                                }
+                            }
+                    );
+                });
+            </script>
+        </ui:define>
+    </ui:composition>
+</html>
+

@@ -4,6 +4,6 @@
 <glassfish-web-app>
     <context-root>/Actfijo</context-root>
     <parameter-encoding default-charset="UTF-8"/>
-<!--    <property name="alternatedocroot_1" value="from=/adjuntos/* dir=c:/home"/> para local esta línea, la sig. para servidor -->
-    <property name="alternatedocroot_1" value="from=/adjuntos/* dir=c:/home"/>    
+<!--    <property name="alternatedocroot_1" value="from=/adjuntos/* dir=c:/home"/> para local esta línea, la sig. sin c: para servidor -->
+    <property name="alternatedocroot_1" value="from=/adjuntos/* dir=c:/home/olvarey"/>    
 </glassfish-web-app>
